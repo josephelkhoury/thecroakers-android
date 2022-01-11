@@ -2,8 +2,8 @@
 
     <string name="app_name" translatable="false">The Croakers</string>
 
-    <string name="facebook_app_id" translatable="false">fb_id</string>
-    <string name="fb_login_protocol_scheme" translatable="false">fb(fb_id)</string>
+    <string name="facebook_app_id" translatable="false">1042008916594737</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb(1042008916594737)</string>
 
 
     <string name="google_web_client_id" translatable="false">google_auth_web_client_id</string>
@@ -37,9 +37,7 @@
     <string name="privacy_function_not_available_in_demo">Privacy Setting Function not available in demo</string>
     <string name="friends">\@Friends</string>
 
-
     <string name="hashtags">#Hashtags</string>
-
 
     <!--String for no data -->
     <string name="whoops">Whoops!</string>
@@ -484,7 +482,7 @@
     <string name="promote_video">Promote Video</string>
     <string name="sounds">Sounds</string>
     <string name="favourite">Favourite</string>
-    <string name="hashtag">HashTag</string>
+    <string name="hashtag">Hashtag</string>
     <string name="views">Views</string>
     <string name="other">Other</string>
     <string name="sms">SMS</string>

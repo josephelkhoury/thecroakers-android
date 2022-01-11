@@ -1073,9 +1073,9 @@ public class Functions {
                 item.video_url = Constants.BASE_URL + item.video_url;
             }
 
-            if (TicTic.appLevelContext!=null)
+            if (TheCroakers.appLevelContext!=null)
             {
-                HttpProxyCacheServer proxy = TicTic.getProxy(TicTic.appLevelContext);
+                HttpProxyCacheServer proxy = TheCroakers.getProxy(TheCroakers.appLevelContext);
                 String proxyUrl = proxy.getProxyUrl(item.video_url);
                 item.video_url=proxyUrl;
             }

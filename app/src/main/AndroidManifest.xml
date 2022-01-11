@@ -31,7 +31,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
-        android:name=".SimpleClasses.TicTic"
+        android:name=".SimpleClasses.TheCroakers"
         android:allowBackup="false"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"

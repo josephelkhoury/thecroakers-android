@@ -255,9 +255,7 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
 
             }
         });
-
     }
-
 
     @Override
     public void onClick(View v) {
@@ -299,9 +297,7 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
             default:
                 return;
         }
-
     }
-
 
     ArrayList<FollowingModel> suggestionList=new ArrayList<>();
     private InfiniteScrollAdapter<?> infiniteAdapter;

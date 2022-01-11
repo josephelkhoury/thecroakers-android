@@ -186,7 +186,7 @@ public class LiveActivity extends RtcBaseActivity implements View.OnClickListene
                                }
                            });
                        }
-                   },com.thecroakers.app.Constants.MAX_STREMING_TIME);
+                   },com.thecroakers.app.Constants.MAX_STREAMING_TIME);
                }
             }
             catch (Exception e)

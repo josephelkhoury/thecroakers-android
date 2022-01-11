@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.thecroakers.app.ActivitiesFragment.LiveStreaming.rtc.EngineConfig;
 import com.thecroakers.app.ActivitiesFragment.LiveStreaming.rtc.EventHandler;
 import com.thecroakers.app.ActivitiesFragment.LiveStreaming.stats.StatsManager;
-import com.thecroakers.app.SimpleClasses.TicTic;
+import com.thecroakers.app.SimpleClasses.TheCroakers;
 
 import io.agora.rtc.IRtcEngineEventHandler;
 import io.agora.rtc.RtcEngine;
@@ -19,8 +19,8 @@ public abstract class BaseActivity extends AppCompatActivity implements EventHan
         super.onCreate(savedInstanceState);
     }
 
-    protected TicTic application() {
-        return (TicTic) getApplication();
+    protected TheCroakers application() {
+        return (TheCroakers) getApplication();
     }
 
     protected RtcEngine rtcEngine() {

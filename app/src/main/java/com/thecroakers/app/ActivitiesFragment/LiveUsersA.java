@@ -32,7 +32,7 @@ import com.thecroakers.app.Interfaces.InternetCheckCallback;
 import com.thecroakers.app.R;
 import com.thecroakers.app.SimpleClasses.Functions;
 import com.thecroakers.app.SimpleClasses.PermissionUtils;
-import com.thecroakers.app.SimpleClasses.TicTic;
+import com.thecroakers.app.SimpleClasses.TheCroakers;
 import com.thecroakers.app.SimpleClasses.Variables;
 
 import java.util.ArrayList;
@@ -178,8 +178,8 @@ public class LiveUsersA extends AppCompatActivity implements View.OnClickListene
         intent.putExtra("user_role", role);
         intent.putExtra(com.thecroakers.app.ActivitiesFragment.LiveStreaming.Constants.KEY_CLIENT_ROLE, role);
         intent.setClass(LiveUsersA.this, LiveActivity.class);
-        TicTic ticTic = (TicTic)getApplication();
-        ticTic.engineConfig().setChannelName(userId);
+        TheCroakers thecroakers = (TheCroakers)getApplication();
+        thecroakers.engineConfig().setChannelName(userId);
         startActivity(intent);
 
     }

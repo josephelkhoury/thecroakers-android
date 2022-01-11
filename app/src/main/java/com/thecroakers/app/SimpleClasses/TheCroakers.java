@@ -36,7 +36,7 @@ import static com.thecroakers.app.SimpleClasses.ImagePipelineConfigUtils.getDefa
  * Created by thecroakers on 3/18/2019.
  */
 
-public class TicTic extends Application {
+public class TheCroakers extends Application {
 
     public static Context appLevelContext;
     public static SimpleCache simpleCache = null;
@@ -79,7 +79,7 @@ public class TicTic extends Application {
 
     // below code is for cache the videos in local
     public static HttpProxyCacheServer getProxy(Context context) {
-        TicTic app = (TicTic) context.getApplicationContext();
+        TheCroakers app = (TheCroakers) context.getApplicationContext();
         return app.proxy == null ? (app.proxy = app.newProxy()) : app.proxy;
     }
 
@@ -124,10 +124,6 @@ public class TicTic extends Application {
             return false;
         }
     }
-
-
-
-
 
     private RtcEngine mRtcEngine;
     private EngineConfig mGlobalConfig = new EngineConfig();
@@ -178,10 +174,7 @@ public class TicTic extends Application {
         mHandler.removeHandler(handler);
     }
 
-
-
-
-    public void initCrashActivity(){
+    public void initCrashActivity() {
         CaocConfig.Builder.create()
                 .backgroundMode(CaocConfig.BACKGROUND_MODE_SILENT)
                 .enabled(true)
@@ -194,5 +187,4 @@ public class TicTic extends Application {
                 .errorActivity(CustomErrorActivity.class)
                 .apply();
     }
-
 }

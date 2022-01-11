@@ -149,12 +149,12 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
     }
 
 
-    TextView username, descTxt, soundName, skipBtn;
-    SimpleDraweeView userPic, soundImage,thumb_image;
-    ImageView varifiedBtn;
+    TextView username, descTxt, /*soundName,*/ skipBtn;
+    SimpleDraweeView userPic, /*soundImage,*/thumb_image;
+    ImageView verifiedBtn;
     RelativeLayout duetLayoutUsername, animateRlt, mainlayout;
     LinearLayout duetOpenVideo;
-    LinearLayout likeLayout, commentLayout, sharedLayout, soundImageLayout;
+    LinearLayout likeLayout, commentLayout, sharedLayout;
     LikeButton likeImage;
     ImageView commentImage;
     TextView likeTxt, commentTxt, duetUsername;
@@ -175,9 +175,9 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
         username = view.findViewById(R.id.username);
         userPic = view.findViewById(R.id.user_pic);
         thumb_image=view.findViewById(R.id.thumb_image);
-        soundName = view.findViewById(R.id.sound_name);
-        soundImage = view.findViewById(R.id.sound_image);
-        varifiedBtn = view.findViewById(R.id.varified_btn);
+        //soundName = view.findViewById(R.id.sound_name);
+        //soundImage = view.findViewById(R.id.sound_image);
+        verifiedBtn = view.findViewById(R.id.verified_btn);
         likeLayout = view.findViewById(R.id.like_layout);
         likeImage = view.findViewById(R.id.likebtn);
         likeTxt = view.findViewById(R.id.like_txt);
@@ -187,10 +187,8 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
         commentLayout = view.findViewById(R.id.comment_layout);
         commentImage = view.findViewById(R.id.comment_image);
         commentTxt = view.findViewById(R.id.comment_txt);
-        soundImageLayout = view.findViewById(R.id.sound_image_layout);
         sharedLayout = view.findViewById(R.id.shared_layout);
         pbar = view.findViewById(R.id.p_bar);
-
 
         duetOpenVideo.setOnClickListener(this::onClick);
         userPic.setOnClickListener(this::onClick);
@@ -198,7 +196,6 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
         username.setOnClickListener(this::onClick);
         commentLayout.setOnClickListener(this::onClick);
         sharedLayout.setOnClickListener(this::onClick);
-        soundImageLayout.setOnClickListener(this::onClick);
 
         likeImage.setOnLikeListener(new OnLikeListener() {
             @Override
@@ -213,7 +210,6 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
         });
 
         skipBtn.setOnClickListener(this::onClick);
-
 
         thumb_image.setController(Functions.frescoImageLoad(item.thum,thumb_image,false));
 
@@ -237,7 +233,7 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
 
             userPic.setController(Functions.frescoImageLoad(item.profile_pic,userPic,false));
 
-            if ((item.sound_name == null || item.sound_name.equals("") || item.sound_name.equals("null"))) {
+            /*if ((item.sound_name == null || item.sound_name.equals("") || item.sound_name.equals("null"))) {
                 soundName.setText(context.getString(R.string.orignal_sound_)+" " + item.username);
                 item.sound_pic = item.profile_pic;
             }
@@ -246,8 +242,7 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
             }
             soundName.setSelected(true);
 
-
-            soundImage.setController(Functions.frescoImageLoad(item.sound_pic,soundImage,false));
+            soundImage.setController(Functions.frescoImageLoad(item.sound_pic,soundImage,false));*/
             descTxt.setText(item.video_description);
             FriendsTagHelper.Creator.create(context.getResources().getColor(R.color.colorPrimary),context.getResources().getColor(R.color.white), new FriendsTagHelper.OnFriendsTagClickListener() {
                 @Override
@@ -287,9 +282,9 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
 
 
             if (item.verified != null && item.verified.equalsIgnoreCase("1")) {
-                varifiedBtn.setVisibility(View.VISIBLE);
+                verifiedBtn.setVisibility(View.VISIBLE);
             } else {
-                varifiedBtn.setVisibility(View.GONE);
+                verifiedBtn.setVisibility(View.GONE);
             }
 
 
@@ -694,14 +689,9 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
     boolean  isAddAlreadyShow;
     public void showAd() {
 
-
         playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
-        soundImageLayout.setAnimation(null);
-        sideMenu.setVisibility(View.GONE);videoInfoLayout.setVisibility(View.GONE);soundImageLayout.setVisibility(View.GONE);
-//        sideMenu.animate().alpha(0).setDuration(400).start();
-//        soundImageLayout.setAnimation(null);
-//        soundImageLayout.animate().alpha(0).setDuration(400).start();
-//        videoInfoLayout.animate().alpha(0).setDuration(400).start();
+        sideMenu.setVisibility(View.GONE);
+        videoInfoLayout.setVisibility(View.GONE);
         skipBtn.setVisibility(View.VISIBLE);
 
         Bundle bundle = new Bundle();
@@ -709,10 +699,7 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
         fragmentCallBack.onResponce(bundle);
 
         countdownTimer(true);
-
     }
-
-
 
     CountDownTimer countDownTimer;
     public void countdownTimer(boolean starttimer) {
@@ -746,20 +733,15 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                 };
                 countDownTimer.start();
             }
-
         }
-
     }
 
     // hide the ad of video after some time
     public void hideAd() {
         isAddAlreadyShow = true;
-        sideMenu.setVisibility(View.VISIBLE);videoInfoLayout.setVisibility(View.VISIBLE);soundImageLayout.setVisibility(View.VISIBLE);
-//        sideMenu.animate().alpha(1).setDuration(400).start();
-//        videoInfoLayout.animate().alpha(1).setDuration(400).start();
-//        soundImageLayout.animate().alpha(1).setDuration(400).start();
+        sideMenu.setVisibility(View.VISIBLE);
+        videoInfoLayout.setVisibility(View.VISIBLE);
         Animation aniRotate = AnimationUtils.loadAnimation(context, R.anim.d_clockwise_rotation);
-        soundImageLayout.startAnimation(aniRotate);
 
         skipBtn.setVisibility(View.GONE);
 

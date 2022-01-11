@@ -170,7 +170,7 @@ public class StreamingMain_A extends BaseActivity {
         if (user_role == io.agora.rtc.Constants.CLIENT_ROLE_BROADCASTER && !Functions.getSharedPreference(this).getBoolean(Variables.is_puchase, false)) {
 
             if (com.thecroakers.app.Constants.STREAMING_LIMIT) {
-                    Functions.showAlert(this, getString(R.string.alert), getString(R.string.for_demo_purpose_we_only_allow_to)+" " + com.thecroakers.app.Constants.MAX_STREMING_TIME / 1000 + "s "+getString(R.string.live_streaming), new CallBack() {
+                    Functions.showAlert(this, getString(R.string.alert), getString(R.string.for_demo_purpose_we_only_allow_to)+" " + com.thecroakers.app.Constants.MAX_STREAMING_TIME / 1000 + "s "+getString(R.string.live_streaming), new CallBack() {
                         @Override
                         public void getResponse(String requestType, String response) {
 

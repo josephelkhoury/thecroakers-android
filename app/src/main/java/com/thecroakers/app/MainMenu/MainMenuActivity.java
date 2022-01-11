@@ -102,22 +102,18 @@ public class MainMenuActivity extends AppCompatActivity {
             String userId="";
             String videoId="";
             String profileURL=Variables.http+"://"+getString(R.string.share_profile_domain_second)+getString(R.string.share_profile_endpoint_second);
-            if (linkUri.contains(profileURL))
-            {
+            if (linkUri.contains(profileURL)) {
                 String[] parts = linkUri.split(profileURL);
                 userId = parts[1];
 
                 OpenProfileScreen(userId);
-            }
-            else
-            if (linkUri.contains(Constants.BASE_URL))
-            {
+            } else if (linkUri.contains(Constants.BASE_URL)) {
                 String[] parts = linkUri.split(Constants.BASE_URL);
                 videoId = parts[1].substring(4, (parts[1].length()-3));
                 openWatchVideo(videoId);
             }
         }
-        catch (Exception e){
+        catch (Exception e) {
             Log.d(Constants.tag,"Exception Link : "+e);
         }
     }
@@ -195,7 +191,6 @@ public class MainMenuActivity extends AppCompatActivity {
 
                     }
                 }, 2000);
-
             }
         }
     }
@@ -206,8 +201,7 @@ public class MainMenuActivity extends AppCompatActivity {
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
-                        if (data.getBooleanExtra("isShow",false))
-                        {
+                        if (data.getBooleanExtra("isShow",false)) {
 
                         }
                     }
@@ -238,8 +232,7 @@ public class MainMenuActivity extends AppCompatActivity {
                     String ip = responce.optString("ip");
                     Functions.getSharedPreference(MainMenuActivity.this).edit().putString(Variables.DEVICE_IP, ip).commit();
 
-                    if (Functions.getSharedPreference(MainMenuActivity.this).getString(Variables.DEVICE_TOKEN,"").equalsIgnoreCase(""))
-                    {
+                    if (Functions.getSharedPreference(MainMenuActivity.this).getString(Variables.DEVICE_TOKEN,"").equalsIgnoreCase("")) {
                         addFirebaseToken();
                     }
                 } catch (Exception e) {
@@ -264,8 +257,6 @@ public class MainMenuActivity extends AppCompatActivity {
 
                     }
                 });
-
-
     }
 
     public void checkLicence() {
@@ -299,13 +290,11 @@ public class MainMenuActivity extends AppCompatActivity {
                 } else {
                     Functions.showToast(getBaseContext(), getString(R.string.tap_to_exist));
                     mBackPressed = System.currentTimeMillis();
-
                 }
             } else {
                 super.onBackPressed();
             }
         }
-
     }
 
     @Override
