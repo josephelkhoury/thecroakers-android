@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "77904546117",
+    "firebase_url": "https://the-croakers-dev-default-rtdb.firebaseio.com",
+    "project_id": "the-croakers-dev",
+    "storage_bucket": "the-croakers-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77904546117:android:c71c958cafad160f3f562c",
+        "android_client_info": {
+          "package_name": "com.thecroakers.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "77904546117-0s7q1vqj6sa9o6g5mnk4c7t6kijof99v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.thecroakers.app",
+            "certificate_hash": "7f545827730f7f793a2d5bc4d3d19715c22416f0"
+          }
+        },
+        {
+          "client_id": "77904546117-k0l0rjkril4smslka5qaccd90f5m30f0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPumipKzPXJWUGjStrcMXH-mrZL2f-pzg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "77904546117-k0l0rjkril4smslka5qaccd90f5m30f0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "77904546117-6ofjnhg3u8lk76dcj3h4apavvrciqtu4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.thecroakers.app",
+                "app_store_id": "1597442591"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
