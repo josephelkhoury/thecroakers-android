@@ -246,7 +246,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:padding="@dimen/_4sdp"
-                    android:text="15s"
+                    android:text="24s"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_11sdp"
                     android:textStyle="bold" />

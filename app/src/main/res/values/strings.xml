@@ -540,4 +540,6 @@
     <string name="trending_tab_1">Topics</string>
     <string name="trending_tab_2">Publishers</string>
     <string name="trending_tab_3">Croakers</string>
+    <string name="croak">Croak</string>
+    <string name="croaks">Croaks</string>
 </resources>

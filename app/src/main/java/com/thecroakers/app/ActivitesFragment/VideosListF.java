@@ -310,10 +310,10 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
     public void setLikeData() {
         if (item.liked.equals("1")) {
             likeImage.animate().start();
-            likeImage.setLikeDrawable(context.getResources().getDrawable(R.drawable.ic_heart_gradient));
+            likeImage.setLikeDrawable(context.getResources().getDrawable(R.drawable.ic_like_fill_vector));
             likeImage.setLiked(true);
         } else {
-            likeImage.setLikeDrawable(context.getResources().getDrawable(R.drawable.ic_unliked));
+            likeImage.setLikeDrawable(context.getResources().getDrawable(R.drawable.ic_like_vector));
             likeImage.setLiked(false);
             likeImage.animate().cancel();
         }

@@ -111,10 +111,10 @@ public class WatchVideosAdapter extends RecyclerView.Adapter<WatchVideosAdapter.
 
 
             if (item.liked.equals("1")) {
-                holder.likeImage.setLikeDrawable(context.getResources().getDrawable(R.drawable.ic_heart_gradient));
+                holder.likeImage.setLikeDrawable(context.getResources().getDrawable(R.drawable.ic_like_fill_vector));
                 holder.likeImage.setLiked(true);
             } else {
-                holder.likeImage.setLikeDrawable(context.getResources().getDrawable(R.drawable.ic_unliked));
+                holder.likeImage.setLikeDrawable(context.getResources().getDrawable(R.drawable.ic_like_vector));
                 holder.likeImage.setLiked(false);
             }
 

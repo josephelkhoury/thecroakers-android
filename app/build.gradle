@@ -4,8 +4,8 @@ apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'kotlin-android'
 
 apply plugin: 'com.chrisney.enigma'
-enigma.enabled = true
-enigma.injectFakeKeys = true
+enigma.enabled = false
+enigma.injectFakeKeys = false
 
 android {
 
