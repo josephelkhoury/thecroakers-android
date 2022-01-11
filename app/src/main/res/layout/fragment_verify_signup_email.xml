@@ -8,7 +8,7 @@
     android:clickable="true"
     android:focusable="true"
     android:id="@+id/email_verify_container"
-    tools:context=".ActivitesFragment.Accounts.VerifySignupEmailF">
+    tools:context=".ActivitiesFragment.Accounts.VerifySignupEmailF">
 
     <RelativeLayout
         android:layout_width="match_parent"

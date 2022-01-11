@@ -8,7 +8,7 @@
     android:background="@color/white"
     android:clickable="true"
     android:focusable="true"
-    tools:context=".ActivitesFragment.Accounts.PhoneF">
+    tools:context=".ActivitiesFragment.Accounts.PhoneF">
 
 
     <RelativeLayout

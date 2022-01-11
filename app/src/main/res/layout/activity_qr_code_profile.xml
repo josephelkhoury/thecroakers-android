@@ -7,7 +7,7 @@
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:id="@+id/qrContainerBg"
     android:background="@color/colorPrimary"
-    tools:context=".ActivitesFragment.Profile.Setting.QrCodeProfileA">
+    tools:context=".ActivitiesFragment.Profile.Setting.QrCodeProfileA">
 
 
     <RelativeLayout

@@ -8,7 +8,7 @@
     android:background="@android:color/transparent"
     android:clickable="true"
     android:focusable="true"
-    tools:context=".ActivitesFragment.Profile.ShareAndViewProfileF">
+    tools:context=".ActivitiesFragment.Profile.ShareAndViewProfileF">
 
     <RelativeLayout
         android:background="@drawable/d_round_top_corners_white"

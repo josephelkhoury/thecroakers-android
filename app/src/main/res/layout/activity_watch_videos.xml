@@ -8,7 +8,7 @@
     android:id="@+id/watchVideo_F"
     android:clickable="true"
     android:focusable="true"
-    tools:context=".ActivitesFragment.WatchVideosA">
+    tools:context=".ActivitiesFragment.WatchVideosA">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"

@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:focusable="true"
     android:clickable="true"
-    tools:context=".ActivitesFragment.Profile.Setting.DeleteAccountA">
+    tools:context=".ActivitiesFragment.Profile.Setting.DeleteAccountA">
 
     <RelativeLayout
         android:layout_alignParentTop="true"

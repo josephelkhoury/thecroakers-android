@@ -26,8 +26,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.NotificationCompat;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.thecroakers.app.ActivitesFragment.Chat.ChatA;
-import com.thecroakers.app.ActivitesFragment.LiveStreaming.activities.LiveActivity;
+import com.thecroakers.app.ActivitiesFragment.Chat.ChatA;
+import com.thecroakers.app.ActivitiesFragment.LiveStreaming.activities.LiveActivity;
 import com.thecroakers.app.Constants;
 import com.thecroakers.app.MainMenu.MainMenuActivity;
 import com.thecroakers.app.MainMenu.MainMenuFragment;

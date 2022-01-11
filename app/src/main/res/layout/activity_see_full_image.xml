@@ -8,7 +8,7 @@
     android:clickable="true"
     android:focusable="true"
     android:background="@color/black"
-    tools:context=".ActivitesFragment.Profile.SeeFullImageA">
+    tools:context=".ActivitiesFragment.Profile.SeeFullImageA">
 
     <LinearLayout
         android:padding="@dimen/_12sdp"

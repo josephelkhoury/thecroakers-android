@@ -45,177 +45,177 @@
         android:theme="@style/AppTheme"
         tools:replace="allowBackup,supportsRtl">
 
-        <activity android:name=".ActivitesFragment.Profile.Setting.NoInternetA"
+        <activity android:name=".ActivitiesFragment.Profile.Setting.NoInternetA"
             android:screenOrientation="portrait"
             android:theme="@style/black_status"
             android:launchMode="singleInstance"
             android:windowSoftInputMode="adjustPan"/>
 
-        <activity android:name=".ActivitesFragment.Profile.InviteFriends.InviteFriendsFromContactsA"
+        <activity android:name=".ActivitiesFragment.Profile.InviteFriends.InviteFriendsFromContactsA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
 
         <activity
-            android:name=".ActivitesFragment.Profile.SearchAllUserA"
+            android:name=".ActivitiesFragment.Profile.SearchAllUserA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".ActivitesFragment.Profile.InviteFriendsA"
+            android:name=".ActivitiesFragment.Profile.InviteFriendsA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".ActivitesFragment.Profile.SendDirectMsg"
+            android:name=".ActivitiesFragment.Profile.SendDirectMsg"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".ActivitesFragment.VideoRecording.FriendsA"
+            android:name=".ActivitiesFragment.VideoRecording.FriendsA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".ActivitesFragment.SoundLists.SectionSoundListA"
+            android:name=".ActivitiesFragment.SoundLists.SectionSoundListA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".ActivitesFragment.TagedVideosA"
+            android:name=".ActivitiesFragment.TagedVideosA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".ActivitesFragment.WebviewA"
+            android:name=".ActivitiesFragment.WebviewA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".ActivitesFragment.PrivacyVideoSettingA"
+            android:name=".ActivitiesFragment.PrivacyVideoSettingA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.LiveUsersA"
+            android:name=".ActivitiesFragment.LiveUsersA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.Chat.ChatA"
+            android:name=".ActivitiesFragment.Chat.ChatA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.InboxA"
+            android:name=".ActivitiesFragment.InboxA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.Search.SearchMainA"
+            android:name=".ActivitiesFragment.Search.SearchMainA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.Profile.SubmitReportA"
+            android:name=".ActivitiesFragment.Profile.SubmitReportA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.Profile.ReportTypeA"
+            android:name=".ActivitiesFragment.Profile.ReportTypeA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.Profile.EditProfileA"
+            android:name=".ActivitiesFragment.Profile.EditProfileA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.Profile.Setting.UpdateEmailPhoneNoVerification"
+            android:name=".ActivitiesFragment.Profile.Setting.UpdateEmailPhoneNoVerification"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.Profile.Setting.AddPayoutMethodA"
+            android:name=".ActivitiesFragment.Profile.Setting.AddPayoutMethodA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.Profile.Setting.WalletPaymentA"
+            android:name=".ActivitiesFragment.Profile.Setting.WalletPaymentA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.Profile.Setting.PushNotificationSettingA"
+            android:name=".ActivitiesFragment.Profile.Setting.PushNotificationSettingA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.Profile.Setting.PrivacyPolicySettingA"
+            android:name=".ActivitiesFragment.Profile.Setting.PrivacyPolicySettingA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.Profile.Setting.ProfileVarificationA"
+            android:name=".ActivitiesFragment.Profile.Setting.ProfileVarificationA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.Profile.Setting.QrCodeScannerA"
+            android:name=".ActivitiesFragment.Profile.Setting.QrCodeScannerA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.Profile.Setting.UpdateEmailPhoneA"
+            android:name=".ActivitiesFragment.Profile.Setting.UpdateEmailPhoneA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.Profile.Setting.DeleteAccountA"
+            android:name=".ActivitiesFragment.Profile.Setting.DeleteAccountA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.Profile.Setting.ChangePasswordA"
+            android:name=".ActivitiesFragment.Profile.Setting.ChangePasswordA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.WatchVideosA"
+            android:name=".ActivitiesFragment.WatchVideosA"
             android:screenOrientation="portrait"
             android:theme="@style/black_status"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.Profile.Setting.ManageProfileA"
+            android:name=".ActivitiesFragment.Profile.Setting.ManageProfileA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.Profile.Setting.AppSpaceClearA"
+            android:name=".ActivitiesFragment.Profile.Setting.AppSpaceClearA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.Profile.Setting.AppLanguageChangeA"
+            android:name=".ActivitiesFragment.Profile.Setting.AppLanguageChangeA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.Profile.Setting.QrCodeProfileA"
+            android:name=".ActivitiesFragment.Profile.Setting.QrCodeProfileA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.Profile.SettingAndPrivacyA"
+            android:name=".ActivitiesFragment.Profile.SettingAndPrivacyA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.Profile.SeeFullImageA"
-            android:screenOrientation="portrait"
-            android:theme="@style/black_status"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".ActivitesFragment.VideoRecording.ActVideoTrimmer"
+            android:name=".ActivitiesFragment.Profile.SeeFullImageA"
             android:screenOrientation="portrait"
             android:theme="@style/black_status"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.Profile.FollowsMainTabA"
+            android:name=".ActivitiesFragment.VideoRecording.ActVideoTrimmer"
+            android:screenOrientation="portrait"
+            android:theme="@style/black_status"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ActivitiesFragment.Profile.FollowsMainTabA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustNothing" />
         <activity
-            android:name=".ActivitesFragment.Profile.FavouriteMainA"
+            android:name=".ActivitiesFragment.Profile.FavouriteMainA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.Profile.ProfileA"
+            android:name=".ActivitiesFragment.Profile.ProfileA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.Accounts.ForgotPassA"
+            android:name=".ActivitiesFragment.Accounts.ForgotPassA"
             android:screenOrientation="portrait"
             android:theme="@style/transparent_status"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.VideoRecording.VideoRecoderDuetA"
+            android:name=".ActivitiesFragment.VideoRecording.VideoRecoderDuetA"
             android:screenOrientation="portrait"
             android:theme="@style/black_status"
             android:windowSoftInputMode="adjustPan" />
@@ -232,38 +232,38 @@
             android:windowSoftInputMode="adjustPan"
              />
         <activity
-            android:name=".ActivitesFragment.WalletAndWithdraw.MyWallet"
+            android:name=".ActivitiesFragment.WalletAndWithdraw.MyWallet"
             android:screenOrientation="portrait"
             android:theme="@style/white_status"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.WalletAndWithdraw.WithdrawCoinsA"
+            android:name=".ActivitiesFragment.WalletAndWithdraw.WithdrawCoinsA"
             android:screenOrientation="portrait"
             android:theme="@style/white_status"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.SoundLists.VideoSoundA"
+            android:name=".ActivitiesFragment.SoundLists.VideoSoundA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ActivitesFragment.VideoRecording.DraftVideosA"
+            android:name=".ActivitiesFragment.VideoRecording.DraftVideosA"
             android:screenOrientation="portrait"
             android:theme="@style/white_status"
             android:windowSoftInputMode="adjustPan"
              />
         <activity
-            android:name=".ActivitesFragment.VideoRecording.GallerySelectedVideoA"
+            android:name=".ActivitiesFragment.VideoRecording.GallerySelectedVideoA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"
              />
         <activity
-            android:name=".ActivitesFragment.Accounts.LoginA"
+            android:name=".ActivitiesFragment.Accounts.LoginA"
             android:screenOrientation="portrait"
             android:theme="@style/white_status"
             android:windowSoftInputMode="adjustPan"
              />
         <activity
-            android:name=".ActivitesFragment.SplashA"
+            android:name=".ActivitiesFragment.SplashA"
             android:screenOrientation="portrait"
             android:theme="@style/splashFullScreen"
             android:windowSoftInputMode="adjustPan">
@@ -316,47 +316,47 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ActivitesFragment.VideoRecording.VideoRecoderA"
+            android:name=".ActivitiesFragment.VideoRecording.VideoRecoderA"
             android:screenOrientation="portrait"
             android:theme="@style/black_status"
             android:windowSoftInputMode="adjustPan"
              />
         <activity
-            android:name=".ActivitesFragment.VideoRecording.PreviewVideoA"
+            android:name=".ActivitiesFragment.VideoRecording.PreviewVideoA"
             android:screenOrientation="portrait"
             android:theme="@style/black_status"
             android:windowSoftInputMode="adjustPan"
              />
         <activity
-            android:name=".ActivitesFragment.VideoRecording.PostVideoA"
+            android:name=".ActivitiesFragment.VideoRecording.PostVideoA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing"
              />
         <activity
-            android:name=".ActivitesFragment.SoundLists.SoundListMainA"
+            android:name=".ActivitiesFragment.SoundLists.SoundListMainA"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"
              />
         <activity
-            android:name=".ActivitesFragment.LiveStreaming.activities.StreamingMain_A"
+            android:name=".ActivitiesFragment.LiveStreaming.activities.StreamingMain_A"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/black_status"
             android:windowSoftInputMode="adjustResize"
              />
         <activity
-            android:name=".ActivitesFragment.LiveStreaming.activities.LiveActivity"
+            android:name=".ActivitiesFragment.LiveStreaming.activities.LiveActivity"
             android:screenOrientation="portrait"
             android:theme="@style/black_status"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
              />
         <activity
-            android:name=".ActivitesFragment.LiveStreaming.activities.SettingsActivity"
+            android:name=".ActivitiesFragment.LiveStreaming.activities.SettingsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"
              />
 
-        <activity android:name=".ActivitesFragment.CustomErrorActivity" />
+        <activity android:name=".ActivitiesFragment.CustomErrorActivity" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

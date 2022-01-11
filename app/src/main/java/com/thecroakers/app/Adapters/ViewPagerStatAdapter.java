@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.thecroakers.app.ActivitesFragment.VideosListF;
+import com.thecroakers.app.ActivitiesFragment.VideosListF;
 import com.thecroakers.app.Constants;
 import com.thecroakers.app.Interfaces.FragmentCallBack;
 import com.thecroakers.app.Models.HomeModel;

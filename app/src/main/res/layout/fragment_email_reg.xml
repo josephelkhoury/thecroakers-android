@@ -6,7 +6,7 @@
     android:clickable="true"
     android:focusable="true"
     android:background="@color/white"
-    tools:context=".ActivitesFragment.Accounts.PhoneF">
+    tools:context=".ActivitiesFragment.Accounts.PhoneF">
 
     <RelativeLayout
         android:layout_width="match_parent"

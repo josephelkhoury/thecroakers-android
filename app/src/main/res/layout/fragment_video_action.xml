@@ -6,7 +6,7 @@
     android:background="@android:color/transparent"
     android:clickable="true"
     android:focusable="true"
-    tools:context=".ActivitesFragment.VideoActionF">
+    tools:context=".ActivitiesFragment.VideoActionF">
 
     <RelativeLayout
         android:background="@drawable/d_round_top_corners_white"

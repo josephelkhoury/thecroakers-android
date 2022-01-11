@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.google.gson.Gson;
-import com.thecroakers.app.ActivitesFragment.VideoRecording.ActVideoTrimmer;
+import com.thecroakers.app.ActivitiesFragment.VideoRecording.ActVideoTrimmer;
 
 public class TrimVideo {
 

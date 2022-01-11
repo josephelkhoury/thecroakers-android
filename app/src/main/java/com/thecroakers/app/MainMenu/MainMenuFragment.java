@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
-import com.thecroakers.app.ActivitesFragment.Chat.ChatA;
-import com.thecroakers.app.ActivitesFragment.NotificationF;
+import com.thecroakers.app.ActivitiesFragment.Chat.ChatA;
+import com.thecroakers.app.ActivitiesFragment.NotificationF;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.activity.result.ActivityResult;
@@ -31,17 +31,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.thecroakers.app.ActivitesFragment.HomeF;
-import com.thecroakers.app.ActivitesFragment.TrendingF;
+import com.thecroakers.app.ActivitiesFragment.HomeF;
+import com.thecroakers.app.ActivitiesFragment.TrendingF;
 import com.thecroakers.app.MainMenu.RelateToFragmentOnBack.OnBackPressListener;
 import com.thecroakers.app.MainMenu.RelateToFragmentOnBack.RootFragment;
-import com.thecroakers.app.ActivitesFragment.Profile.ProfileTabF;
+import com.thecroakers.app.ActivitiesFragment.Profile.ProfileTabF;
 import com.thecroakers.app.R;
 import com.thecroakers.app.Services.UploadService;
 import com.thecroakers.app.SimpleClasses.Functions;
 import com.thecroakers.app.SimpleClasses.PermissionUtils;
 import com.thecroakers.app.SimpleClasses.Variables;
-import com.thecroakers.app.ActivitesFragment.VideoRecording.VideoRecoderA;
+import com.thecroakers.app.ActivitiesFragment.VideoRecording.VideoRecoderA;
 
 
 import java.util.ArrayList;

@@ -35,17 +35,17 @@ public class Constants {
 
 
     // maximum time to record the video for now it is 30 sec
-    public static int MAX_RECORDING_DURATION = 24000;
+    public static int MAX_RECORDING_DURATION = 60000;
     public static int RECORDING_DURATION = 24000;
 
     // minimum time of recode a video for now it is 5 sec
-    public static int MIN_TIME_RECORDING = 5000;
+    public static int MIN_TIME_RECORDING = 24000;
 
 
     // minimum trim chunk time span of a video for now it is 5 sec
-    public static int MIN_TRIM_TIME = 5;
+    public static int MIN_TRIM_TIME = 24;
     // maximum trim chunk time span of a video for now it is 30 sec
-    public static int MAX_TRIM_TIME = 24;
+    public static int MAX_TRIM_TIME = 60;
 
 
     //video description char limit during posting the video
@@ -90,5 +90,5 @@ public class Constants {
 
 
     // The tag name you want to print all the log
-    public static String tag = "tictic_";
+    public static String tag = "thecroakers_";
 }

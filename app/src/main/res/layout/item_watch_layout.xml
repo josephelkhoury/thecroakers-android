@@ -65,7 +65,7 @@
                         app:icon_size="@dimen/_32sdp"
                         app:liked="false"
                         app:icon_type=""
-                        app:unlike_drawable="@drawable/ic_like_fill_vector" />
+                        app:unlike_drawable="@drawable/ic_like_vector" />
 
                     <TextView
                         android:id="@+id/like_txt"

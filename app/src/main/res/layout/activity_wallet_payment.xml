@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:id="@+id/payout_method_container"
-    tools:context=".ActivitesFragment.Profile.Setting.WalletPaymentA">
+    tools:context=".ActivitiesFragment.Profile.Setting.WalletPaymentA">
 
     <RelativeLayout
         android:layout_width="match_parent"

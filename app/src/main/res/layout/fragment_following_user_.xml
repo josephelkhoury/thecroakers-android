@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ActivitesFragment.Profile.FollowTab.FollowingUserF">
+    tools:context=".ActivitiesFragment.Profile.FollowTab.FollowingUserF">
 
     <RelativeLayout
         android:layout_width="match_parent"

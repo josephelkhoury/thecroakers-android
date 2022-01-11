@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:keepScreenOn="true"
     android:background="@color/white"
-    tools:context=".ActivitesFragment.VideoRecording.PostVideoA">
+    tools:context=".ActivitiesFragment.VideoRecording.PostVideoA">
 
 
     <RelativeLayout

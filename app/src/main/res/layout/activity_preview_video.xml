@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".ActivitesFragment.VideoRecording.PreviewVideoA">
+    tools:context=".ActivitiesFragment.VideoRecording.PreviewVideoA">
 
 
-<com.thecroakers.app.ActivitesFragment.VideoRecording.MovieWrapperView
+<com.thecroakers.app.ActivitiesFragment.VideoRecording.MovieWrapperView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_centerInParent="true"

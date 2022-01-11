@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".ActivitesFragment.VideoRecording.DraftVideosA">
+    tools:context=".ActivitiesFragment.VideoRecording.DraftVideosA">
 
     <RelativeLayout
         android:layout_width="match_parent"

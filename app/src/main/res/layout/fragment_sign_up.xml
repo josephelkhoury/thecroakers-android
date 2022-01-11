@@ -8,7 +8,7 @@
     android:background="@color/white"
     android:clickable="true"
     android:focusable="true"
-    tools:context=".ActivitesFragment.Accounts.EmailPhoneF">
+    tools:context=".ActivitiesFragment.Accounts.EmailPhoneF">
 
     <RelativeLayout
         android:layout_width="match_parent"

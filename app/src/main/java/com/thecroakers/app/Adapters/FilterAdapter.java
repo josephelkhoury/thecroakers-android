@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.thecroakers.app.SimpleClasses.FilterType;
 import com.thecroakers.app.R;
-import com.thecroakers.app.ActivitesFragment.VideoRecording.PreviewVideoA;
+import com.thecroakers.app.ActivitiesFragment.VideoRecording.PreviewVideoA;
 
 import java.util.List;
 

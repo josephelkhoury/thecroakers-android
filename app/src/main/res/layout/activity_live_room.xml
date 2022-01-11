@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.thecroakers.app.ActivitesFragment.LiveStreaming.ui.VideoGridContainer
+            <com.thecroakers.app.ActivitiesFragment.LiveStreaming.ui.VideoGridContainer
                 android:id="@+id/live_video_grid_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>

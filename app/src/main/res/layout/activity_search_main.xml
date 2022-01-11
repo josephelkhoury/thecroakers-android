@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/searchMain_F"
     android:background="@color/white"
-    tools:context=".ActivitesFragment.Search.SearchMainA">
+    tools:context=".ActivitiesFragment.Search.SearchMainA">
 
 
     <RelativeLayout

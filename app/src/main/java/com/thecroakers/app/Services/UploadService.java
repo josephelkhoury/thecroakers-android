@@ -15,8 +15,8 @@ import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 
-import com.thecroakers.app.ActivitesFragment.HomeF;
-import com.thecroakers.app.ActivitesFragment.WatchVideosA;
+import com.thecroakers.app.ActivitiesFragment.HomeF;
+import com.thecroakers.app.ActivitiesFragment.WatchVideosA;
 import com.thecroakers.app.ApiClasses.FileUploader;
 import com.thecroakers.app.Constants;
 import com.thecroakers.app.MainMenu.MainMenuActivity;

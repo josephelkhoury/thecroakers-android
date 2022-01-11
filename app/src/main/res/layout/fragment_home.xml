@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/black"
     xmlns:swagpoints="http://schemas.android.com/apk/res-auto"
-    tools:context="com.thecroakers.app.ActivitesFragment.HomeF">
+    tools:context="com.thecroakers.app.ActivitiesFragment.HomeF">
 
   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
       android:layout_width="match_parent"

@@ -38,15 +38,13 @@
                 android:id="@+id/thumb_image"
                 fresco:actualImageScaleType="centerCrop"/>
 
-
             <LinearLayout
-
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:id="@+id/side_menu"
                 android:layout_marginEnd="@dimen/_12sdp"
-                android:layout_marginBottom="@dimen/_127sdp"
+                android:layout_marginBottom="@dimen/_60sdp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
                 android:gravity="center_horizontal">
@@ -55,7 +53,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_55sdp"
                     android:layout_marginTop="@dimen/_6sdp">
-
 
                     <com.like.LikeButton
                         android:id="@+id/likebtn"
@@ -71,7 +68,7 @@
                         app:icon_size="@dimen/_32sdp"
                         app:liked="false"
                         app:icon_type="heart"
-                        app:unlike_drawable="@drawable/ic_like_fill_vector" />
+                        app:unlike_drawable="@drawable/ic_like_vector" />
 
                     <TextView
                         android:id="@+id/like_txt"
@@ -89,14 +86,12 @@
                         android:textSize="@dimen/_11sdp"
                         android:textStyle="bold" />
 
-
                     <RelativeLayout
                         android:id="@+id/animate_rlt"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp" />
 
                 </RelativeLayout>
-
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -315,7 +310,6 @@
                     </LinearLayout>
 
                 </RelativeLayout>
-
 
                 <TextView
                     android:layout_marginTop="@dimen/_4sdp"

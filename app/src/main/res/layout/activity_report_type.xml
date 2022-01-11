@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".ActivitesFragment.Profile.ReportTypeA">
+    tools:context=".ActivitiesFragment.Profile.ReportTypeA">
 
     <RelativeLayout
         android:layout_width="match_parent"

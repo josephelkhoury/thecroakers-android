@@ -8,7 +8,7 @@
     android:clickable="true"
     android:focusable="true"
     android:id="@+id/privacyPolicyConatinerId"
-    tools:context=".ActivitesFragment.Profile.SettingAndPrivacyA">
+    tools:context=".ActivitiesFragment.Profile.SettingAndPrivacyA">
 
     <RelativeLayout
         android:id="@+id/toolbar"
