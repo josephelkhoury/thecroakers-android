@@ -33,6 +33,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -70,9 +71,11 @@ import com.like.OnLikeListener;
 import com.thecroakers.app.ActivitiesFragment.Profile.ProfileA;
 import com.thecroakers.app.ActivitiesFragment.Profile.ReportTypeA;
 import com.thecroakers.app.ActivitiesFragment.SoundLists.VideoSoundA;
+import com.thecroakers.app.ActivitiesFragment.VideoRecording.VideoRecoderA;
 import com.thecroakers.app.ActivitiesFragment.VideoRecording.VideoRecoderDuetA;
 import com.thecroakers.app.Adapters.ViewPagerStatAdapter;
 import com.thecroakers.app.ApiClasses.ApiLinks;
+import com.thecroakers.app.Services.UploadService;
 import com.volley.plus.VPackages.VolleyRequest;
 import com.thecroakers.app.Constants;
 import com.volley.plus.interfaces.APICallBack;
@@ -147,10 +150,11 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
 
     TextView username, descTxt, /*soundName,*/ skipBtn;
     SimpleDraweeView userPic, /*soundImage,*/thumb_image;
-    ImageView verifiedBtn;
+    ImageView verifiedBtn, croaksSourceImg;
     RelativeLayout duetLayoutUsername, animateRlt, mainlayout;
     LinearLayout duetOpenVideo;
-    LinearLayout likeLayout, commentLayout, sharedLayout;
+    RelativeLayout likeLayout;
+    LinearLayout commentLayout, sharedLayout, croakLayout, croaksSourceLayout;
     LikeButton likeImage;
     ImageView commentImage;
     TextView likeTxt, commentTxt, duetUsername;
@@ -184,6 +188,9 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
         commentImage = view.findViewById(R.id.comment_image);
         commentTxt = view.findViewById(R.id.comment_txt);
         sharedLayout = view.findViewById(R.id.shared_layout);
+        croakLayout = view.findViewById(R.id.croak_layout);
+        croaksSourceLayout = view.findViewById(R.id.croaks_source_layout);
+        croaksSourceImg = view.findViewById(R.id.croaks_source_img);
         pbar = view.findViewById(R.id.p_bar);
 
         duetOpenVideo.setOnClickListener(this::onClick);
@@ -192,6 +199,8 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
         username.setOnClickListener(this::onClick);
         commentLayout.setOnClickListener(this::onClick);
         sharedLayout.setOnClickListener(this::onClick);
+        croakLayout.setOnClickListener(this::onClick);
+        croaksSourceLayout.setOnClickListener(this::onClick);
 
         likeImage.setOnLikeListener(new OnLikeListener() {
             @Override
@@ -257,6 +266,11 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                 }
             }).handle(descTxt);
 
+            if (item.allow_likes != null && item.allow_likes.equalsIgnoreCase("false")) {
+                likeLayout.setVisibility(View.GONE);
+            } else {
+                likeLayout.setVisibility(View.VISIBLE);
+            }
             setLikeData();
 
             if (item.allow_comments != null && item.allow_comments.equalsIgnoreCase("false")) {
@@ -275,6 +289,13 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
             if (item.duet_video_id != null && !item.duet_video_id.equals("") && !item.duet_video_id.equals("0")) {
                 duetLayoutUsername.setVisibility(View.VISIBLE);
                 duetUsername.setText(item.duet_username);
+            }
+
+            if (item.main_video_id != null && !item.main_video_id.equals("") && !item.main_video_id.equals("0")) {
+                croakLayout.setVisibility(View.GONE);
+                croaksSourceImg.setImageDrawable(getResources().getDrawable(R.drawable.ic_source));
+            } else {
+                croaksSourceImg.setImageDrawable(getResources().getDrawable(R.drawable.ic_replies));
             }
 
             if (Functions.getSharedPreference(context).getBoolean(Variables.IS_LOGIN, false)) {
@@ -332,7 +353,6 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                     public void onResponse(Bundle bundle) {
                         if (bundle.getString("action").equals("save")) {
                             saveVideo(item);
-
                         } else if (bundle.getString("action").equals("duet")) {
                             if (Functions.checkLoginUser(getActivity())) {
                                 duetVideo(item);
@@ -342,7 +362,6 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                             if (Functions.checkLoginUser(getActivity())) {
                                 openVideoSetting(item);
                             }
-
                         } else if (bundle.getString("action").equals("delete")) {
                             if (Functions.checkLoginUser(getActivity())) {
                                 deleteListVideo(item);
@@ -384,13 +403,30 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                 }
                 break;
 
-            case R.id.duet_open_video: {
+            case R.id.duet_open_video:
                 openDuetVideo(item);
                 break;
-            }
 
             case R.id.skip_btn:
                 hideAd();
+                break;
+
+            case R.id.croak_layout:
+                Functions.makeDirectry(Functions.getAppFolder(getActivity())+Variables.APP_HIDED_FOLDER);
+                Functions.makeDirectry(Functions.getAppFolder(getActivity())+Variables.DRAFT_APP_FOLDER);
+                if (Functions.checkLoginUser(getActivity())) {
+                    if (Functions.isMyServiceRunning(getActivity(), new UploadService().getClass())) {
+                        Toast.makeText(getActivity(), context.getString(R.string.video_already_in_progress), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent intent = new Intent(getActivity(), VideoRecoderA.class);
+                        intent.putExtra("main_video_id", item.video_id);
+                        startActivity(intent);
+                        getActivity().overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
+                    }
+                }
+                break;
+
+            case R.id.croaks_source_layout:
                 break;
         }
     }
@@ -669,8 +705,6 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
         fragmentCallBack.onResponse(bundle);
     }
 
-
-
     boolean isVisibleToUser;
     @Override
     public void setMenuVisibility(final boolean visible) {
@@ -688,10 +722,7 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
 
             }
         },200);
-
     }
-
-
 
     public void mainMenuVisibility(boolean isvisible) {
 
@@ -707,10 +738,9 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
 
     }
 
-
     // when we swipe for another video this will relaese the privious player
     SimpleExoPlayer exoplayer;
-    public void releasePriviousPlayer() {
+    public void releasePreviousPlayer() {
         if (exoplayer != null) {
             exoplayer.removeListener(this);
             exoplayer.release();
@@ -718,14 +748,11 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
         }
     }
 
-
     @Override
     public void onDestroy() {
-        releasePriviousPlayer();
+        releasePreviousPlayer();
         super.onDestroy();
-
     }
-
 
     private void openDuetVideo(HomeModel item) {
         Intent intent = new Intent(view.getContext(), WatchVideosA.class);
@@ -888,7 +915,6 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
     private void openProfile(HomeModel item, boolean from_right_to_left) {
 
         if (Variables.sharedPreferences.getString(Variables.U_ID, "0").equals(item.user_id)) {
-
             TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(4);
             profile.select();
         }
@@ -902,24 +928,18 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                 }
             };
 
-            Intent intent=new Intent(view.getContext(), ProfileA.class);
+            Intent intent = new Intent(view.getContext(), ProfileA.class);
             intent.putExtra("user_id", item.user_id);
             intent.putExtra("user_name", item.username);
             intent.putExtra("user_pic", item.profile_pic);
             resultCallback.launch(intent);
-            if (from_right_to_left)
-            {
+            if (from_right_to_left) {
                 getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-            }
-            else
-            {
+            } else {
                 getActivity().overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
             }
-
         }
-
     }
-
 
     ActivityResultLauncher<Intent> resultCallback = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {

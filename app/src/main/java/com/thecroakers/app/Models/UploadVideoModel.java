@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class UploadVideoModel implements Serializable {
     String userId,soundId,description,privacyPolicy,allowComments,allowDuet,hashtagsJson,usersJson
-            ,videoId,duet;
+            ,videoId,duet, mainVideoId;
 
     public UploadVideoModel() {
     }
@@ -79,6 +79,14 @@ public class UploadVideoModel implements Serializable {
 
     public void setVideoId(String videoId) {
         this.videoId = videoId;
+    }
+
+    public String getMainVideoId() {
+        return mainVideoId;
+    }
+
+    public void setMainVideoId(String mainVideoId) {
+        this.mainVideoId = mainVideoId;
     }
 
     public String getDuet() {

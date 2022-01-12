@@ -39,7 +39,6 @@ import java.util.Map;
 // this the background service which will upload the video into database
 public class UploadService extends Service {
 
-
     private final IBinder mBinder = new LocalBinder();
 
     public class LocalBinder extends Binder {
@@ -62,8 +61,7 @@ public class UploadService extends Service {
         return mAllowRebind;
     }
 
-
-    String draft_file, duet_video_id;
+    String draft_file, duet_video_id, main_video_id;
     String videopath;
     String description;
     String privacy_type;
@@ -75,17 +73,13 @@ public class UploadService extends Service {
         super();
     }
 
-
     @Override
     public void onCreate() {
         sharedPreferences = Functions.getSharedPreference(this);
     }
 
-
     @Override
     public int onStartCommand(final Intent intent, int flags, int startId) {
-
-
         // get the all the selected date for send to server during the post video
 
         if (intent != null && intent.getAction().equals("startservice")) {
@@ -94,6 +88,7 @@ public class UploadService extends Service {
             videopath = intent.getStringExtra("uri");
             draft_file = intent.getStringExtra("draft_file");
             duet_video_id = intent.getStringExtra("duet_video_id");
+            main_video_id = intent.getStringExtra("main_video_id");
             description = intent.getStringExtra("desc");
             privacy_type = intent.getStringExtra("privacy_type");
             allow_comment = intent.getStringExtra("allow_comment");
@@ -105,7 +100,7 @@ public class UploadService extends Service {
                 @Override
                 public void run() {
 
-                    UploadVideoModel uploadModel=new UploadVideoModel();
+                    UploadVideoModel uploadModel = new UploadVideoModel();
                     uploadModel.setUserId(sharedPreferences.getString(Variables.U_ID, "0"));
                     uploadModel.setSoundId(Variables.selectedSoundId);
                     uploadModel.setDescription(description);
@@ -119,6 +114,11 @@ public class UploadService extends Service {
                         uploadModel.setDuet("" + intent.getStringExtra("duet_orientation"));
                     } else {
                         uploadModel.setVideoId("0");
+                    }
+                    if (duet_video_id != null) {
+                        uploadModel.setMainVideoId(main_video_id);
+                    } else {
+                        uploadModel.setMainVideoId("0");
                     }
 
                     FileUploader fileUploader = new FileUploader(new File(videopath),getApplicationContext(),uploadModel);
@@ -139,7 +139,6 @@ public class UploadService extends Service {
 
                             if (!Constants.IS_SECURE_INFO)
                                 Functions.printLog(Constants.tag, responses);
-
 
                             try {
                                 JSONObject jsonObject = new JSONObject(responses);
@@ -185,7 +184,6 @@ public class UploadService extends Service {
                         }
                     });
 
-
                     Map<String, String> map = new HashMap<>();
                     map.put("user_id", sharedPreferences.getString(Variables.U_ID, "0"));
                     map.put("sound_id", Variables.selectedSoundId);
@@ -203,22 +201,23 @@ public class UploadService extends Service {
                         map.put("video_id", "0");
                     }
 
+                    if (main_video_id != null) {
+                        map.put("main_video_id", main_video_id);
+                    } else {
+                        map.put("main_video_id", "0");
+                    }
+
                     Functions.printLog(Constants.tag, map.toString());
-
-
                 }
             }).start();
-
 
         } else if (intent != null && intent.getAction().equals("stopservice")) {
             stopForeground(true);
             stopSelf();
         }
 
-
         return Service.START_STICKY;
     }
-
 
     // this will show the sticky notification during uploading video
     private void showNotification() {
@@ -247,13 +246,10 @@ public class UploadService extends Service {
 
         Notification notification = builder.build();
         startForeground(101, notification);
-
     }
-
 
     // delete the video from draft after post video
     public void deleteDraftFile() {
-
         try {
             if (draft_file != null) {
                 File file = new File(draft_file);
@@ -262,9 +258,5 @@ public class UploadService extends Service {
         } catch (Exception e) {
             Functions.printLog(Constants.tag, e.toString());
         }
-
-
     }
-
-
 }

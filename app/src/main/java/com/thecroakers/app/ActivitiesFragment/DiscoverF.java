@@ -85,7 +85,7 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
 
         datalist = new ArrayList<>();
         shimmerFrameLayout = view.findViewById(R.id.shimmer_view_container);
-        dataContainer=view.findViewById(R.id.dataContainer);
+        dataContainer = view.findViewById(R.id.dataContainer);
         loadMoreProgress = view.findViewById(R.id.load_more_progress);
         recyclerViewDiscover = view.findViewById(R.id.recylerview);
         linearLayoutManager = new LinearLayoutManager(context);
@@ -99,7 +99,7 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
                if (view.getId() == R.id.hashtag_layout || home_models.get(child_position).thum == null) {
                     openEntity(datalist.get(parent_position));
                 } else {
-                    openWatchVideo(child_position, home_models,datalist.get(parent_position).title);
+                    openWatchVideo(child_position, home_models, datalist.get(parent_position).title);
                 }
             }
         });
@@ -121,7 +121,7 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                scrollInItem=linearLayoutManager.findFirstVisibleItemPosition();
+                scrollInItem = linearLayoutManager.findFirstVisibleItemPosition();
                 scrollOutitems = linearLayoutManager.findLastVisibleItemPosition();
 
 //                if (scrollInItem == 0)
@@ -193,7 +193,7 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
             @Override
             public void onResponce(String resp) {
                 Functions.checkStatus(getActivity(),resp);
-                isSliderApiCall=false;
+                isSliderApiCall = false;
                 parseSliderData(resp);
             }
         });
@@ -268,20 +268,17 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
         try {
             parameters.put("starting_point", "" + pageCount);
             parameters.put("section", this.section);
-            if(Functions.getSharedPreference(view.getContext()).getBoolean(Variables.IS_LOGIN,false))
-            {
+            if(Functions.getSharedPreference(view.getContext()).getBoolean(Variables.IS_LOGIN,false)) {
                 parameters.put("user_id", Functions.getSharedPreference(view.getContext()).getString(Variables.U_ID,""));
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.d(Constants.tag,"Exception : "+e);
         }
         VolleyRequest.JsonPostRequest(getActivity(), ApiLinks.showDiscoverySections, parameters,Functions.getHeaders(getActivity()), new Callback() {
             @Override
             public void onResponce(String resp) {
                 Functions.checkStatus(getActivity(),resp);
-                isDiscoverAPiCall=false;
+                isDiscoverAPiCall = false;
                 shimmerFrameLayout.stopShimmer();
                 shimmerFrameLayout.setVisibility(View.GONE);
                 dataContainer.setVisibility(View.VISIBLE);
@@ -291,10 +288,10 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
         });
     }
 
-    public void parseData(String responce) {
+    public void parseData(String response) {
 
         try {
-            JSONObject jsonObject = new JSONObject(responce);
+            JSONObject jsonObject = new JSONObject(response);
             String code = jsonObject.optString("code");
             if (code.equals("200")) {
 
@@ -402,8 +399,8 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
         intent.putExtra("arraylist", data_list);
         intent.putExtra("position", postion);
         intent.putExtra("pageCount", 0);
-        intent.putExtra("hashtag",hashtag);
-        intent.putExtra("userId",Functions.getSharedPreference(view.getContext()).getString(Variables.U_ID,""));
+        intent.putExtra("hashtag", hashtag);
+        intent.putExtra("userId", Functions.getSharedPreference(view.getContext()).getString(Variables.U_ID,""));
         intent.putExtra("whereFrom","tagedVideo");
         startActivity(intent);
     }

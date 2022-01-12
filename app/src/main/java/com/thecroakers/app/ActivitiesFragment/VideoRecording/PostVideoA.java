@@ -76,6 +76,8 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
     RelativeLayout duetLayoutUsername;
     ArrayList<UsersModel> tagedUser = new ArrayList<>();
 
+    String main_video_id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,12 +97,11 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
                 duetLayoutUsername.setVisibility(View.VISIBLE);
                 duetUsername.setText(duetVideoUsername);
             }
+            main_video_id = intent.getStringExtra("main_video_id");
         }
-
 
         videoPath = Functions.getAppFolder(this)+Variables.output_filter_file;
         videoThumbnail = findViewById(R.id.video_thumbnail);
-
 
         descriptionEdit = findViewById(R.id.description_edit);
         aditionalDetailsTextCount = findViewById(R.id.aditional_details_text_count);
@@ -136,7 +137,6 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
 
         }
 
-
         privcyTypeTxt = findViewById(R.id.privcy_type_txt);
         commentSwitch = findViewById(R.id.comment_switch);
         duetSwitch = findViewById(R.id.duet_switch);
@@ -150,7 +150,6 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
 
         findViewById(R.id.hashtag_btn).setOnClickListener(this);
         findViewById(R.id.tag_user_btn).setOnClickListener(this);
-
 
         if (duetVideoId != null) {
             findViewById(R.id.duet_layout).setVisibility(View.GONE);
@@ -201,7 +200,6 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
                                 }
                             }
                         }
-
                     } else {
                         findViewById(R.id.hashtag_layout).setVisibility(View.GONE);
                     }
@@ -216,14 +214,10 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
                 aditionalDetailsTextCount.setText(descriptionEdit.getText().length() + "/" + Constants.VIDEO_DESCRIPTION_CHAR_LIMIT);
             }
 
-
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
         });
-
-
     }
 
     public Bitmap combineImages(Bitmap c, Bitmap s) { // can add a 3rd parameter 'String loc' if you want to save the new image - left some code to do that at the bottom
@@ -539,21 +533,19 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
             mServiceIntent.putExtra("hashtags_json", hashTag.toString());
             mServiceIntent.putExtra("mention_users_json", friendsTag.toString());
             mServiceIntent.putExtra("duet_orientation", duetOrientation);
+            mServiceIntent.putExtra("main_video_id", main_video_id);
 
             if (commentSwitch.isChecked())
                 mServiceIntent.putExtra("allow_comment", "true");
             else
                 mServiceIntent.putExtra("allow_comment", "false");
 
-
             if (duetSwitch.isChecked())
                 mServiceIntent.putExtra("allow_duet", "1");
             else
                 mServiceIntent.putExtra("allow_duet", "0");
 
-
             startService(mServiceIntent);
-
 
            PostVideoA.this.runOnUiThread(new Runnable() {
                @Override
@@ -562,8 +554,6 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
                    startActivity(new Intent(PostVideoA.this, MainMenuActivity.class));
                }
            });
-
-
         } else {
             Toast.makeText(PostVideoA.this, getString(R.string.please_wait_video_uploading_is_already_in_progress), Toast.LENGTH_SHORT).show();
         }

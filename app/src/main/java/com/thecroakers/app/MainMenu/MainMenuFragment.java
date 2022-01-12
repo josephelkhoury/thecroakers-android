@@ -359,14 +359,11 @@ public class MainMenuFragment extends RootFragment {
             return 5;
         }
 
-
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-
             Fragment fragment = (Fragment) super.instantiateItem(container, position);
             registeredFragments.put(position, fragment);
             return fragment;
-
         }
 
         @Override
@@ -479,25 +476,18 @@ public class MainMenuFragment extends RootFragment {
         getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
     }
 
-
     ActivityResultLauncher<Intent> resultChatCallback = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
-                        if (data.getBooleanExtra("isShow",false))
-                        {
+                        if (data.getBooleanExtra("isShow",false)) {
 
                         }
                     }
                 }
             });
-
-
-
-
-
 
     private ActivityResultLauncher<String[]> mPermissionResult = registerForActivityResult(
             new ActivityResultContracts.RequestMultiplePermissions(), new ActivityResultCallback<Map<String, Boolean>>() {
@@ -507,33 +497,22 @@ public class MainMenuFragment extends RootFragment {
 
                     boolean allPermissionClear=true;
                     List<String> blockPermissionCheck=new ArrayList<>();
-                    for (String key : result.keySet())
-                    {
-                        if (!(result.get(key)))
-                        {
+                    for (String key : result.keySet()) {
+                        if (!(result.get(key))) {
                             allPermissionClear=false;
                             blockPermissionCheck.add(Functions.getPermissionStatus(getActivity(),key));
                         }
-                    }
-                    if (blockPermissionCheck.contains("blocked"))
-                    {
+                    } if (blockPermissionCheck.contains("blocked")) {
                         Functions.showPermissionSetting(context,context.getString(R.string.we_need_storage_camera_recording_permission_for_make_new_video));
-                    }
-                    else
-                    if (allPermissionClear)
-                    {
+                    } else if (allPermissionClear) {
                         uploadNewVideo();
                     }
-
                 }
             });
-
-
 
     @Override
     public void onDetach() {
         super.onDetach();
         mPermissionResult.unregister();
-
     }
 }

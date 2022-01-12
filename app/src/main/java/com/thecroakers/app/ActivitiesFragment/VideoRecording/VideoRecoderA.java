@@ -58,7 +58,6 @@ import java.util.List;
 
 public class VideoRecoderA extends AppCompatActivity implements View.OnClickListener {
 
-
     CameraView cameraView;
 
     int number = 0;
@@ -75,8 +74,6 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
     LinearLayout cameraOptions;
     ImageButton rotateCamera, cutVideoBtn;
 
-
-
     TextView addSoundTxt;
 
     int secPassed = 0;
@@ -90,6 +87,8 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
 
     private ProgressDialog mProgressDialog;
 
+    String main_video_id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,9 +96,10 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
                 , this, VideoRecoderA.class,false);
         setContentView(R.layout.activity_video_recoder);
 
+        main_video_id = getIntent().getStringExtra("main_video_id");
+
         Variables.selectedSoundId = "null";
         Constants.RECORDING_DURATION = Constants.MAX_RECORDING_DURATION;
-
 
         cameraView = findViewById(R.id.camera);
         cameraOptions = findViewById(R.id.camera_options);
@@ -111,7 +111,6 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
         mProgressDialog.setCancelable(false);
         mProgressDialog.setMessage(getString(R.string.please_wait_));
 
-
         cutVideoBtn = findViewById(R.id.cut_video_btn);
         cutVideoBtn.setVisibility(View.GONE);
         cutVideoBtn.setOnClickListener(this);
@@ -119,7 +118,6 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
         doneBtn = findViewById(R.id.done);
         doneBtn.setEnabled(false);
         doneBtn.setOnClickListener(this);
-
 
         rotateCamera = findViewById(R.id.rotate_camera);
         rotateCamera.setOnClickListener(this);
@@ -142,7 +140,6 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
             preparedAudio();
         }
 
-
         recordImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,16 +148,13 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
         });
         countdownTimerTxt = findViewById(R.id.countdown_timer_txt);
 
-
         shortVideoTimeTxt = findViewById(R.id.short_video_time_txt);
         longVideoTimeTxt = findViewById(R.id.long_video_time_txt);
         shortVideoTimeTxt.setOnClickListener(this);
         longVideoTimeTxt.setOnClickListener(this);
 
-        initlizeVideoProgress();
-
+        initializeVideoProgress();
     }
-
 
     // start trimming activity
     ActivityResultLauncher<Intent> takeOrSelectVideoResultLauncher = registerForActivityResult(
@@ -180,7 +174,6 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
                 }
             });
 
-
     ActivityResultLauncher<Intent> videoTrimResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
                 @Override
@@ -197,10 +190,8 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
                 }
             });
 
-
-
     // initialize the video progress for video recording percentage
-    public void initlizeVideoProgress() {
+    public void initializeVideoProgress() {
 
         secPassed = 0;
         videoProgress = findViewById(R.id.video_progress);
@@ -224,10 +215,8 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
                     isRecordingTimerEnable = false;
                     startOrStopRecording();
                 }
-
             }
         });
-
     }
 
     // if the Recording is stop then it we start the recording
@@ -243,7 +232,6 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
             videopaths.add(Functions.getAppFolder(this)+Variables.APP_HIDED_FOLDER + "myvideo" + (number) + ".mp4");
             cameraView.captureVideo(file);
 
-
             if (audio != null) {
                 audio.start();
             }
@@ -253,11 +241,9 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
 
             videoProgress.resume();
 
-
             recordImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_recoding_yes));
 
             cutVideoBtn.setVisibility(View.GONE);
-
 
             findViewById(R.id.time_layout).setVisibility(View.INVISIBLE);
             findViewById(R.id.upload_layout).setEnabled(false);
@@ -281,7 +267,6 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
 
             cameraView.stopVideo();
 
-
             checkDoneBtnEnable();
 
             cutVideoBtn.setVisibility(View.VISIBLE);
@@ -293,9 +278,7 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
         } else if (secPassed > (Constants.RECORDING_DURATION / 1000)) {
             Functions.showAlert(this, getString(R.string.alert), getString(R.string.video_only_can_be_a)+" " + (int) Constants.RECORDING_DURATION / 1000 + " S");
         }
-
     }
-
 
     public void checkDoneBtnEnable() {
         if (secPassed > (Constants.MIN_TIME_RECORDING / 1000)) {
@@ -307,17 +290,14 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
         }
     }
 
-
     // this will apped all the videos parts in one  fullvideo
     private boolean append() {
         final ProgressDialog progressDialog = new ProgressDialog(VideoRecoderA.this);
         new Thread(new Runnable() {
             @Override
             public void run() {
-
                 runOnUiThread(new Runnable() {
                     public void run() {
-
                         progressDialog.setMessage(getString(R.string.please_wait_));
                         progressDialog.show();
                     }
@@ -345,14 +325,12 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
                 }
 
                 try {
-
                     Movie[] inMovies = new Movie[video_list.size()];
 
                     for (int i = 0; i < video_list.size(); i++) {
 
                         inMovies[i] = MovieCreator.build(video_list.get(i));
                     }
-
 
                     List<Track> videoTracks = new LinkedList<Track>();
                     List<Track> audioTracks = new LinkedList<Track>();
@@ -389,15 +367,13 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
 
                     runOnUiThread(new Runnable() {
                         public void run() {
-
                             progressDialog.dismiss();
 
                             if (cameraView.isFacingFront()) {
-                                changeFlipedVideo(Functions.getAppFolder(VideoRecoderA.this)+Variables.output_frontcamera,Functions.getAppFolder(VideoRecoderA.this)+ Variables.outputfile2);
+                                changeFlippedVideo(Functions.getAppFolder(VideoRecoderA.this)+Variables.output_frontcamera,Functions.getAppFolder(VideoRecoderA.this)+ Variables.outputfile2);
                             } else {
                                 goToPreviewActivity();
                             }
-
                         }
                     });
 
@@ -407,12 +383,11 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
             }
         }).start();
 
-
         return true;
     }
 
 
-    public void changeFlipedVideo(String srcMp4Path, final String destMp4Path) {
+    public void changeFlippedVideo(String srcMp4Path, final String destMp4Path) {
 
         Functions.showDeterminentLoader(this, false, false);
         new GPUMp4Composer(srcMp4Path, destMp4Path)
@@ -429,10 +404,8 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-
                                 Functions.cancelDeterminentLoader();
                                 goToPreviewActivity();
-
                             }
                         });
                     }
@@ -450,22 +423,16 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
                             @Override
                             public void run() {
                                 try {
-
                                     Functions.cancelDeterminentLoader();
-
                                     Functions.showToast(VideoRecoderA.this, getString(R.string.try_again));
                                 } catch (Exception e) {
                                 }
                             }
                         });
-
                     }
                 })
                 .start();
-
-
     }
-
 
     public void rotateCamera() {
         cameraView.toggleFacing();
@@ -475,9 +442,7 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
 
         CameraProperties properties = cameraView.getCameraProperties();
         Functions.printLog(Constants.tag, properties.verticalViewingAngle + "--" + properties.horizontalViewingAngle);
-
     }
-
 
     public void removeLastSection() {
 
@@ -505,7 +470,6 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
                     secPassed = (int) (timeInMilis / 1000);
 
                     checkDoneBtnEnable();
-
                 }
             }
 
@@ -516,18 +480,16 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
                 addSoundTxt.setClickable(true);
                 rotateCamera.setVisibility(View.VISIBLE);
 
-                initlizeVideoProgress();
+                initializeVideoProgress();
 
                 if (audio != null) {
                     preparedAudio();
                 }
-
             }
 
             file.delete();
         }
     }
-
 
     @SuppressLint("WrongConstant")
     @Override
@@ -540,7 +502,6 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
 
             case R.id.upload_layout:
                 pickVideoFromGallery();
-
                 break;
 
             case R.id.done:
@@ -601,10 +562,8 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
                                 new CountDownTimer(4000, 1000) {
                                     @Override
                                     public void onTick(long millisUntilFinished) {
-
                                         countdownTimerTxt.setText("" + (millisUntilFinished / 1000));
                                         countdownTimerTxt.setAnimation(scaleAnimation);
-
                                     }
 
                                     @Override
@@ -614,7 +573,6 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
                                         startOrStopRecording();
                                     }
                                 }.start();
-
                             }
                         }
                     });
@@ -645,7 +603,7 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
 
                 Constants.RECORDING_DURATION = 60000;
 
-                initlizeVideoProgress();
+                initializeVideoProgress();
                 break;
 
 
@@ -663,17 +621,13 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
 
                 Constants.RECORDING_DURATION = 60000;
 
-                initlizeVideoProgress();
+                initializeVideoProgress();
                 break;
 
             default:
                 return;
-
         }
-
-
     }
-
 
     ActivityResultLauncher<Intent> resultCallback = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
@@ -688,12 +642,10 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
                                 Variables.selectedSoundId = data.getStringExtra("sound_id");
                                 preparedAudio();
                             }
-
                         }
                     }
                 }
             });
-
 
     // open the intent for get the video from gallery
     public void pickVideoFromGallery() {
@@ -702,8 +654,6 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
         intent.setAction(Intent.ACTION_GET_CONTENT);
         takeOrSelectVideoResultLauncher.launch(Intent.createChooser(intent, "Select Video"));
     }
-
-
 
     private void openTrimActivity(String data) {
         TrimVideo.activity(data)
@@ -714,12 +664,8 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
                 .start(this,videoTrimResultLauncher);
     }
 
-
-
-
     // change the video size
     public void changeVideoSize(String src_path, String destination_path) {
-
         try {
             Functions.copyFile(new File(src_path),
                     new File(destination_path));
@@ -728,7 +674,6 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
             if (file.exists())
                 file.delete();
 
-
             if (getIntent().hasExtra("sound_name")) {
                 Intent intent = new Intent(VideoRecoderA.this, GallerySelectedVideoA.class);
                 intent.putExtra("video_path", Functions.getAppFolder(this)+Variables.gallery_resize_video);
@@ -736,17 +681,11 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
                 intent.putExtra("isSelected", "yes");
                 intent.putExtra("sound_id", Variables.selectedSoundId);
                 startActivity(intent);
-            }
-            else
-            {
+            } else {
                 Intent intent = new Intent(VideoRecoderA.this, GallerySelectedVideoA.class);
                 intent.putExtra("video_path", Functions.getAppFolder(this)+Variables.gallery_resize_video);
                 startActivity(intent);
             }
-
-
-
-
         } catch (Exception e) {
             e.printStackTrace();
             Functions.printLog(Constants.tag, e.toString());
@@ -777,18 +716,14 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
 
                 if (file_duration < Constants.MAX_RECORDING_DURATION) {
                     Constants.RECORDING_DURATION = file_duration;
-                    initlizeVideoProgress();
+                    initializeVideoProgress();
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Log.d(Constants.tag,"Exception : "+e);
                 Toast.makeText(this, getString(R.string.you_cannot_create_video_using_this_sound), Toast.LENGTH_SHORT).show();
                 finish();
             }
-
         }
-
     }
 
 
@@ -798,14 +733,11 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
         cameraView.start();
     }
 
-
     @Override
     protected void onDestroy() {
         releaseResources();
         super.onDestroy();
-
     }
-
 
     public void releaseResources() {
         try {
@@ -827,7 +759,6 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
     // show a alert before close the activity
     @Override
     public void onBackPressed() {
-
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.alert))
                 .setMessage(getString(R.string.are_you_sure_if_you_back))
@@ -849,20 +780,18 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
 
                     }
                 }).show();
-
-
     }
-
 
     public void goToPreviewActivity() {
 
         Intent intent = new Intent(this, PreviewVideoA.class);
         intent.putExtra("fromWhere", "video_recording");
         intent.putExtra("isSoundSelected", isSelected);
+        intent.putExtra("main_video_id", main_video_id);
+
         startActivity(intent);
         overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
     }
-
 
     // this will delete all the video parts that is create during priviously created video
     public void deleteFile() {
@@ -873,7 +802,6 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
         File gallery_trimed_video = new File(Functions.getAppFolder(VideoRecoderA.this)+Variables.gallery_trimed_video);
         File gallery_resize_video = new File(Functions.getAppFolder(VideoRecoderA.this)+Variables.gallery_resize_video);
 
-
         if (output.exists() && !output.delete()) {
             Functions.printLog(Constants.tag, "output File Not delete");
         }
@@ -881,7 +809,6 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
 
             Functions.printLog(Constants.tag, "output2 File Not delete");
         }
-
 
         if (gallery_trimed_video.exists() && !gallery_trimed_video.delete()) {
             Functions.printLog(Constants.tag, "gallery_trimed_video File Not delete");
@@ -892,16 +819,10 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
         }
 
         for (int i = 0; i <= 12; i++) {
-
             File file = new File(Functions.getAppFolder(this)+Variables.APP_HIDED_FOLDER + "myvideo" + (i) + ".mp4");
             if (file.exists() && !file.delete()) {
                 Functions.printLog(Constants.tag, "File Not delete");
             }
-
         }
-
-
     }
-
-
 }

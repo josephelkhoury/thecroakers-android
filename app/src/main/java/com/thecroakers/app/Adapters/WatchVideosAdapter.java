@@ -118,6 +118,10 @@ public class WatchVideosAdapter extends RecyclerView.Adapter<WatchVideosAdapter.
                 holder.likeImage.setLiked(false);
             }
 
+            if (item.allow_likes != null && item.allow_likes.equalsIgnoreCase("false"))
+                holder.likeLayout.setVisibility(View.GONE);
+            else
+                holder.likeLayout.setVisibility(View.VISIBLE);
 
             if (item.allow_comments != null && item.allow_comments.equalsIgnoreCase("false"))
                 holder.commentLayout.setVisibility(View.GONE);

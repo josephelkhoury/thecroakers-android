@@ -11,11 +11,15 @@
         <entry key="app/src/main/res/layout/activity_video_recoder.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/activity_video_recoder_duet.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/activity_watch_videos.xml" value="0.11614583333333334" />
+        <entry key="app/src/main/res/layout/fragment_discover.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_trending.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_video_action.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/item_home_layout.xml" value="0.335" />
         <entry key="app/src/main/res/layout/item_myvideo_layout.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/item_player_controler.xml" value="0.11614583333333334" />
         <entry key="app/src/main/res/layout/item_watch_layout.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/layout_discover_bottom_tabs.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/shimmer_list_slider_layout.xml" value="0.1" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
       </map>
     </option>

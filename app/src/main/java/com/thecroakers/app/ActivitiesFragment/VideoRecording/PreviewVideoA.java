@@ -47,6 +47,7 @@ public class PreviewVideoA extends AppCompatActivity implements Player.Listener 
     RecyclerView recylerview;
 
     String draftFile;
+    String main_video_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +55,6 @@ public class PreviewVideoA extends AppCompatActivity implements Player.Listener 
         Functions.setLocale(Functions.getSharedPreference(PreviewVideoA.this).getString(Variables.APP_LANGUAGE_CODE,Variables.DEFAULT_LANGUAGE_CODE)
                 , this, PreviewVideoA.class,false);
         setContentView(R.layout.activity_preview_video);
-
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -65,23 +65,19 @@ public class PreviewVideoA extends AppCompatActivity implements Player.Listener 
             } else {
                 draftFile = intent.getStringExtra("draft_file");
             }
+            main_video_id = intent.getStringExtra("main_video_id");
         }
-
 
         selectPostion = 0;
         videoUrl = Functions.getAppFolder(this)+Variables.outputfile2;
         findViewById(R.id.goBack).setOnClickListener(v -> {
-
             finish();
             overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
-
         });
-
 
         findViewById(R.id.next_btn).setOnClickListener(v -> {
 
             if (selectPostion == 0) {
-
                 try {
                     Functions.copyFile(new File(Functions.getAppFolder(this)+Variables.outputfile2), new File(Functions.getAppFolder(this)+Variables.output_filter_file));
                     gotopostScreen();
@@ -90,12 +86,9 @@ public class PreviewVideoA extends AppCompatActivity implements Player.Listener 
                     Functions.printLog(Constants.tag, e.toString());
                     saveVideo(Functions.getAppFolder(this)+Variables.outputfile2, Functions.getAppFolder(this)+Variables.output_filter_file);
                 }
-
             } else
                 saveVideo(Functions.getAppFolder(this)+Variables.outputfile2, Functions.getAppFolder(this)+Variables.output_filter_file);
-
         });
-
 
         setPlayer(videoUrl);
         if (isSoundSelected != null && isSoundSelected.equals("yes")) {
@@ -103,11 +96,9 @@ public class PreviewVideoA extends AppCompatActivity implements Player.Listener 
             preparedAudio();
         }
 
-
         recylerview = findViewById(R.id.recylerview);
 
         adapter = new FilterAdapter(this, filterTypes, (view, postion, item) -> {
-
             selectPostion = postion;
             gpuPlayerView.setGlFilter(FilterType.createGlFilter(filterTypes.get(postion), getApplicationContext()));
             adapter.notifyDataSetChanged();
@@ -115,10 +106,7 @@ public class PreviewVideoA extends AppCompatActivity implements Player.Listener 
         });
         recylerview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recylerview.setAdapter(adapter);
-
-
     }
-
 
     MediaPlayer audio;
 
@@ -133,7 +121,6 @@ public class PreviewVideoA extends AppCompatActivity implements Player.Listener 
                 audio.prepare();
                 audio.setLooping(true);
 
-
                 videoPlayer.seekTo(0);
                 videoPlayer.setPlayWhenReady(true);
                 audio.start();
@@ -144,15 +131,11 @@ public class PreviewVideoA extends AppCompatActivity implements Player.Listener 
         }
     }
 
-
     // this function will set the player to the current video
     SimpleExoPlayer videoPlayer;
 
     public void setPlayer(String path) {
-
         videoPlayer = new SimpleExoPlayer.Builder(PreviewVideoA.this).build();
-
-
 
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this, getString(R.string.app_name));
         MediaSource mediaSource = new ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(MediaItem.fromUri(Uri.parse(path)));
@@ -172,9 +155,7 @@ public class PreviewVideoA extends AppCompatActivity implements Player.Listener 
                         .build();
                 videoPlayer.setAudioAttributes(audioAttributes, true);
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.d(Constants.tag,"Exception audio focus : "+e);
         }
 
@@ -183,7 +164,6 @@ public class PreviewVideoA extends AppCompatActivity implements Player.Listener 
         Log.d(Constants.tag,"PAth : "+path+"   "+new File(path).exists());
 
         try {
-
             MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
             metaRetriever.setDataSource(path);
             String rotation = metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION);
@@ -192,15 +172,11 @@ public class PreviewVideoA extends AppCompatActivity implements Player.Listener 
                 gpuPlayerView.setPlayerScaleType(PlayerScaleType.RESIZE_FIT_WIDTH);
             } else
                 gpuPlayerView.setPlayerScaleType(PlayerScaleType.RESIZE_NONE);
-
-
         }
         catch (Exception e)
         {
             Log.d(Constants.tag,"Exception : "+e);
         }
-
-
 
         gpuPlayerView.setSimpleExoPlayer(videoPlayer);
         gpuPlayerView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -208,9 +184,7 @@ public class PreviewVideoA extends AppCompatActivity implements Player.Listener 
         ((MovieWrapperView) findViewById(R.id.layout_movie_wrapper)).addView(gpuPlayerView);
 
         gpuPlayerView.onResume();
-
     }
-
 
     // this is lifecyle of the Activity which is importent for play,pause video or relaese the player
 
@@ -224,10 +198,7 @@ public class PreviewVideoA extends AppCompatActivity implements Player.Listener 
         if (audio != null) {
             audio.start();
         }
-
     }
-
-
 
     @Override
     protected void onResume() {
@@ -237,7 +208,6 @@ public class PreviewVideoA extends AppCompatActivity implements Player.Listener 
             filterTypes = FilterType.createFilterList();
         }
     }
-
 
     @Override
     public void onStop() {
@@ -253,7 +223,6 @@ public class PreviewVideoA extends AppCompatActivity implements Player.Listener 
 
         }
     }
-
 
     @Override
     public void onDestroy() {
@@ -279,7 +248,6 @@ public class PreviewVideoA extends AppCompatActivity implements Player.Listener 
 
     }
 
-
     // this function will add the filter to video and save that same video for post the video in post video screen
     public void saveVideo(String srcMp4Path, final String destMp4Path) {
 
@@ -289,11 +257,8 @@ public class PreviewVideoA extends AppCompatActivity implements Player.Listener 
                 .listener(new GPUMp4Composer.Listener() {
                     @Override
                     public void onProgress(double progress) {
-
                         Functions.printLog("resp", "" + (int) (progress * 100));
                         Functions.showLoadingProgress((int) (progress * 100));
-
-
                     }
 
                     @Override
@@ -302,16 +267,10 @@ public class PreviewVideoA extends AppCompatActivity implements Player.Listener 
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-
                                 Functions.cancelDeterminentLoader();
-
                                 gotopostScreen();
-
-
                             }
                         });
-
-
                     }
 
                     @Override
@@ -341,8 +300,6 @@ public class PreviewVideoA extends AppCompatActivity implements Player.Listener 
                     }
                 })
                 .start();
-
-
     }
 
 
@@ -351,27 +308,22 @@ public class PreviewVideoA extends AppCompatActivity implements Player.Listener 
 
         Intent intent = new Intent(PreviewVideoA.this, PostVideoA.class);
         intent.putExtra("draft_file", draftFile);
+        intent.putExtra("main_video_id", main_video_id);
         startActivity(intent);
         overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-
     }
-
 
     @Override
     public void onBackPressed() {
-
         finish();
         overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
-
     }
-
 
     // handler that show the video play state
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
 
         if (playbackState == Player.STATE_ENDED) {
-
             videoPlayer.seekTo(0);
             videoPlayer.setPlayWhenReady(true);
 
@@ -380,8 +332,5 @@ public class PreviewVideoA extends AppCompatActivity implements Player.Listener 
                 audio.start();
             }
         }
-
     }
-
-
 }

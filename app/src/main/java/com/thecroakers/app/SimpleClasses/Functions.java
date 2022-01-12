@@ -1045,14 +1045,12 @@ public class Functions {
                 item.sound_url_acc = Constants.BASE_URL + item.sound_url_acc;
             }
         }
-
         if (video != null) {
-
             item.like_count = "0" + video.optInt("like_count");
             item.video_comment_count = video.optString("comment_count");
 
-
             item.privacy_type = video.optString("privacy_type");
+            item.allow_likes = video.optString("allow_likes");
             item.allow_comments = video.optString("allow_comments");
             item.allow_duet = video.optString("allow_duet");
             item.video_id = video.optString("id");
@@ -1073,8 +1071,7 @@ public class Functions {
                 item.video_url = Constants.BASE_URL + item.video_url;
             }
 
-            if (TheCroakers.appLevelContext!=null)
-            {
+            if (TheCroakers.appLevelContext!=null) {
                 HttpProxyCacheServer proxy = TheCroakers.getProxy(TheCroakers.appLevelContext);
                 String proxyUrl = proxy.getProxyUrl(item.video_url);
                 item.video_url=proxyUrl;
@@ -1086,7 +1083,7 @@ public class Functions {
             if (!item.gif.contains(Variables.http))
                 item.gif = Constants.BASE_URL + item.gif;
 
-
+            item.main_video_id = video.optString("main_video_id");
             item.allow_duet = video.optString("allow_duet");
             item.duet_video_id = video.optString("duet_video_id");
             if (video.has("duet")) {
@@ -1138,9 +1135,7 @@ public class Functions {
         }
 
         return item;
-
     }
-
 
     public static Dialog indeterminantDialog;
 
@@ -1151,7 +1146,6 @@ public class Functions {
         indeterminantDialog.setContentView(R.layout.item_indeterminant_progress_layout);
         indeterminantDialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.d_round_white_background));
 
-
         if (!outside_touch)
             indeterminantDialog.setCanceledOnTouchOutside(false);
 
@@ -1159,16 +1153,13 @@ public class Functions {
             indeterminantDialog.setCancelable(false);
 
         indeterminantDialog.show();
-
     }
-
 
     public static void cancelIndeterminentLoader() {
         if (indeterminantDialog != null) {
             indeterminantDialog.cancel();
         }
     }
-
 
     public static Dialog determinant_dialog;
     public static ProgressBar determinant_progress;
@@ -1189,7 +1180,6 @@ public class Functions {
             determinant_dialog.setCancelable(false);
 
         determinant_dialog.show();
-
     }
 
     public static void showLoadingProgress(int progress) {
@@ -1205,7 +1195,6 @@ public class Functions {
             determinant_dialog.cancel();
         }
     }
-
 
     //store single account record
     public static void setUpMultipleAccount(Context context) {
@@ -1231,13 +1220,10 @@ public class Functions {
         Paper.book(Variables.MultiAccountKey).write(accountModel.getId(),accountModel);
     }
 
-
     //remove account signout
     public static void removeMultipleAccount(Context context) {
         Paper.book(Variables.MultiAccountKey).delete(Functions.getSharedPreference(context).getString(Variables.U_ID, "0"));
     }
-
-
 
     //store single account record
     public static void setUpNewSelectedAccount(Context context,MultipleAccountModel item) {
@@ -1262,19 +1248,15 @@ public class Functions {
         editor.putBoolean(Variables.IS_LOGIN, true);
         editor.commit();
 
-
         Intent intent=new Intent(context, SplashA.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(intent);
     }
 
     // use this method for lod muliple account in case one one account logout and other one can logout
-    public static void setUpExistingAccountLogin(Context context)
-    {
-        if (!(Functions.getSharedPreference(context).getBoolean(Variables.IS_LOGIN, false)))
-        {
-            if (Paper.book(Variables.MultiAccountKey).getAllKeys().size()>0)
-            {
+    public static void setUpExistingAccountLogin(Context context) {
+        if (!(Functions.getSharedPreference(context).getBoolean(Variables.IS_LOGIN, false))) {
+            if (Paper.book(Variables.MultiAccountKey).getAllKeys().size()>0) {
                 MultipleAccountModel account=Paper.book(Variables.MultiAccountKey).read(Paper.book(Variables.MultiAccountKey).getAllKeys().get(0));
                 setUpNewSelectedAccount(context,account);
             }
@@ -1282,13 +1264,10 @@ public class Functions {
     }
 
 
-    public static void setUpSwitchOtherAccount(Context context,String userId)
-    {
-        for(String key:Paper.book(Variables.MultiAccountKey).getAllKeys())
-        {
+    public static void setUpSwitchOtherAccount(Context context,String userId) {
+        for(String key:Paper.book(Variables.MultiAccountKey).getAllKeys()) {
             MultipleAccountModel account=Paper.book(Variables.MultiAccountKey).read(key);
-            if (userId.equalsIgnoreCase(account.getId()))
-            {
+            if (userId.equalsIgnoreCase(account.getId())) {
                 setUpNewSelectedAccount(context,account);
                 return;
             }
@@ -1311,19 +1290,14 @@ public class Functions {
         }
     }
 
-
     // these function are remove the cache memory which is very helpfull in memmory managmet
     public static void deleteCache(Context context) {
-
-
         try {
             File dir = context.getCacheDir();
             deleteDir(dir);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
     public static boolean deleteDir(File dir) {
@@ -1369,11 +1343,6 @@ public class Functions {
         }
     }
 
-
-
-
-
-
     public static void showToast(Context context, String msg) {
         if (Constants.IS_TOAST_ENABLE) {
             Toast.makeText(context, "" + msg, Toast.LENGTH_SHORT).show();
@@ -1381,8 +1350,7 @@ public class Functions {
     }
 
     // use for image loader and return controller for image load
-    public static DraweeController frescoImageLoad(String url, SimpleDraweeView simpleDrawee, boolean isGif)
-    {
+    public static DraweeController frescoImageLoad(String url, SimpleDraweeView simpleDrawee, boolean isGif) {
         if (!url.contains(Variables.http)) {
             url = Constants.BASE_URL + url;
         }
@@ -1390,48 +1358,37 @@ public class Functions {
         ImageRequest request = ImageRequestBuilder.newBuilderWithSource(Uri.parse(url))
                 .build();
         DraweeController controller;
-        if (isGif)
-        {
+        if (isGif) {
             controller = Fresco.newDraweeControllerBuilder()
                     .setImageRequest(request)
                     .setOldController(simpleDrawee.getController())
                     .setAutoPlayAnimations(true)
                     .build();
-        }
-        else
-        {
+        } else {
             controller = Fresco.newDraweeControllerBuilder()
                     .setImageRequest(request)
                     .setOldController(simpleDrawee.getController())
                     .build();
         }
-
-
 
         return controller;
     }
 
     // use for image loader and return controller for image load
-    public static DraweeController frescoImageLoad(Uri resourceUri, boolean isGif)
-    {
+    public static DraweeController frescoImageLoad(Uri resourceUri, boolean isGif) {
         ImageRequest request = ImageRequestBuilder.newBuilderWithSource(resourceUri)
                 .build();
         DraweeController controller;
-        if (isGif)
-        {
+        if (isGif) {
             controller = Fresco.newDraweeControllerBuilder()
                     .setImageRequest(request)
                     .setAutoPlayAnimations(true)
                     .build();
-        }
-        else
-        {
+        } else {
             controller = Fresco.newDraweeControllerBuilder()
                     .setImageRequest(request)
                     .build();
         }
-
-
 
         return controller;
     }
@@ -1439,48 +1396,33 @@ public class Functions {
 
     public static String getFollowButtonStatus(String button,Context context) {
         String userStatus=button;
-        if (userStatus.equalsIgnoreCase("following"))
-        {
+        if (userStatus.equalsIgnoreCase("following")) {
             return  context.getString(R.string.following);
         }
         else
-        if (userStatus.equalsIgnoreCase("friends"))
-        {
+        if (userStatus.equalsIgnoreCase("friends")) {
             return  context.getString(R.string.friends_);
         }
-        else
-        if (userStatus.equalsIgnoreCase("follow back"))
-        {
+        else if (userStatus.equalsIgnoreCase("follow back")) {
             return  context.getString(R.string.follow_back);
-        }
-        else
-        {
+        } else {
             return  context.getString(R.string.follow);
         }
     }
 
-
     public static boolean isNotificaitonShow(String userStatus) {
-        if (userStatus.equalsIgnoreCase("following"))
-        {
+        if (userStatus.equalsIgnoreCase("following")) {
             return true;
         }
-        else
-        if (userStatus.equalsIgnoreCase("friends"))
-        {
+        else if (userStatus.equalsIgnoreCase("friends")) {
             return  true;
         }
-        else
-        if (userStatus.equalsIgnoreCase("follow back"))
-        {
+        else if (userStatus.equalsIgnoreCase("follow back")) {
             return true;
-        }
-        else
-        {
+        } else {
             return  false;
         }
     }
-
 
     //    app language change
     public static void setLocale(String lang, Activity context, Class<?> className,boolean isRefresh) {
@@ -1491,8 +1433,7 @@ public class Functions {
         conf.locale = myLocale;
         res.updateConfiguration(conf, dm);
         context.onConfigurationChanged(conf);
-        if (isRefresh)
-        {
+        if (isRefresh) {
             updateActivity(context,className);
         }
 
@@ -1501,7 +1442,6 @@ public class Functions {
         Intent intent = new Intent(context,className);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
-
     }
 
 
@@ -1528,13 +1468,12 @@ public class Functions {
         editor.commit();
     }
 
-
     //use to get Directory Storage Used Capacity
     public static String getDirectorySize(String path) {
 
         File dir = new File(path);
 
-        if(dir.exists()) {
+        if (dir.exists()) {
             long bytes = getFolderSize(dir);
             if (bytes < 1024) return bytes + " B";
             int exp = (int) (Math.log(bytes) / Math.log(1024));
@@ -1563,8 +1502,6 @@ public class Functions {
         }
         return 0;
     }
-
-
 
     public static BroadcastReceiver broadcastReceiver;
     public static IntentFilter intentFilter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");

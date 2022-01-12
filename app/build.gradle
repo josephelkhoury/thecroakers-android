@@ -8,7 +8,6 @@ enigma.enabled = false
 enigma.injectFakeKeys = false
 
 android {
-
     compileSdkVersion 30
 
     defaultConfig {
@@ -16,9 +15,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 39
-        versionName "4.8"
+        versionName "1.27"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
     }
 
     compileOptions {
@@ -27,9 +25,7 @@ android {
     }
 
     buildTypes {
-
         release {
-
             lintOptions {
                 checkReleaseBuilds false
                 abortOnError false

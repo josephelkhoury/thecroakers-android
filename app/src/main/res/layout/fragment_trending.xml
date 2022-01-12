@@ -44,8 +44,8 @@
             app:tabIndicatorFullWidth="false"
             app:tabIndicatorHeight="@dimen/_2sdp"
             app:tabMode="fixed"
-            app:tabPaddingEnd="@dimen/_32sdp"
-            app:tabPaddingStart="@dimen/_32sdp"
+            app:tabPaddingEnd="@dimen/_20sdp"
+            app:tabPaddingStart="@dimen/_20sdp"
             app:tabSelectedTextColor="@color/black"
             app:tabTextColor="@color/dimgray" />
 
