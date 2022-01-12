@@ -161,7 +161,7 @@ public class NotificationPriorityF extends BottomSheetDialogFragment implements 
                                             Bundle bundle=new Bundle();
                                             bundle.putBoolean("isShow",false);
                                             bundle.putString("type",notificationType);
-                                            callback.onResponce(bundle);
+                                            callback.onResponse(bundle);
 
                                             tabshowNotification.animate().alpha(1).setDuration(400).start();
                                             tabshowProfile.animate().alpha(0).setDuration(400).start();
@@ -216,7 +216,7 @@ public class NotificationPriorityF extends BottomSheetDialogFragment implements 
                           Bundle bundle=new Bundle();
                           bundle.putBoolean("isShow",true);
                           bundle.putString("type",type);
-                          callback.onResponce(bundle);
+                          callback.onResponse(bundle);
                           dismiss();
 
                       }

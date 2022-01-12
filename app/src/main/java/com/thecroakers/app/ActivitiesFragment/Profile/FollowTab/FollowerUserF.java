@@ -180,7 +180,7 @@ public class FollowerUserF extends Fragment {
                         view.getContext().getString(R.string.remove),false,
                         new FragmentCallBack() {
                             @Override
-                            public void onResponce(Bundle bundle) {
+                            public void onResponse(Bundle bundle) {
                                 if (bundle.getBoolean("isShow",false))
                                 {
                                     hitRemoveFollowerAPI(position);

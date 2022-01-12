@@ -280,7 +280,7 @@ public class FollowingUserF extends Fragment {
         NotificationPriorityF f = new NotificationPriorityF(datalist.get(position).notificationType,isFriend,
                 datalist.get(position).username,datalist.get(position).fb_id,new FragmentCallBack() {
             @Override
-            public void onResponce(Bundle bundle) {
+            public void onResponse(Bundle bundle) {
                 if (bundle.getBoolean("isShow",false))
                 {
                     FollowingModel itemUpdate=datalist.get(position);

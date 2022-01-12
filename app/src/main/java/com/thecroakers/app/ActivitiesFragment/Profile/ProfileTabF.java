@@ -191,7 +191,7 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
         final ShareAndViewProfileF fragment = new ShareAndViewProfileF(Functions.getSharedPreference(view.getContext()).getString(Variables.U_ID,"")
                 ,true,picUrl, new FragmentCallBack() {
             @Override
-            public void onResponce(Bundle bundle) {
+            public void onResponse(Bundle bundle) {
                 if (bundle.getString("action").equals("profileShareMessage")) {
                     if (Functions.checkLoginUser(getActivity()))
                     {
@@ -235,7 +235,7 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
     private void openManageMultipleAccounts() {
         ManageAccountsF f = new ManageAccountsF(new FragmentCallBack() {
             @Override
-            public void onResponce(Bundle bundle) {
+            public void onResponse(Bundle bundle) {
                 if (bundle.getBoolean("isShow",false))
                 {
                     Functions.hideSoftKeyboard(getActivity());

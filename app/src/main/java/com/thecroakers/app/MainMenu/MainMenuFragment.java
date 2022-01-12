@@ -57,13 +57,10 @@ public class MainMenuFragment extends RootFragment {
     private ViewPagerAdapter adapter;
     Context context;
 
-
     PermissionUtils takePermissionUtils;
 
     public MainMenuFragment() {
-
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
@@ -82,8 +79,8 @@ public class MainMenuFragment extends RootFragment {
 
                 int count = getActivity().getSupportFragmentManager().getBackStackEntryCount();
                 if (count == 0) {
-                    int selected_postion = tabLayout.getSelectedTabPosition();
-                    if (selected_postion == 0) {
+                    int selected_position = tabLayout.getSelectedTabPosition();
+                    if (selected_position == 0) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             Functions.blackStatusBar(getActivity());
                         }
@@ -156,7 +153,7 @@ public class MainMenuFragment extends RootFragment {
         TextView title4 = view4.findViewById(R.id.text);
         imageView4.setImageDrawable(getResources().getDrawable(R.drawable.ic_notification_white));
         imageView4.setColorFilter(ContextCompat.getColor(context, R.color.colorwhite_50), android.graphics.PorterDuff.Mode.SRC_IN);
-        title4.setText(context.getString(R.string.inbox));
+        title4.setText(context.getString(R.string.notifications));
         title4.setTextColor(context.getResources().getColor(R.color.colorwhite_50));
         tabLayout.getTabAt(3).setCustomView(view4);
 
@@ -192,7 +189,6 @@ public class MainMenuFragment extends RootFragment {
                         image.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary), android.graphics.PorterDuff.Mode.SRC_IN);
                         title.setTextColor(context.getResources().getColor(R.color.colorPrimary));
                         break;
-
 
                     case 3:
                         Functions.whiteStatusBar(getActivity());
@@ -257,9 +253,7 @@ public class MainMenuFragment extends RootFragment {
             takePermissionUtils=new PermissionUtils(getActivity(),mPermissionResult);
             if (takePermissionUtils.isStorageCameraRecordingPermissionGranted()) {
                 uploadNewVideo();
-            }
-            else
-            {
+            } else {
                 takePermissionUtils.showStorageCameraRecordingPermissionDailog(context.getString(R.string.we_need_storage_camera_recording_permission_for_make_new_video));
             }
         });
@@ -309,8 +303,7 @@ public class MainMenuFragment extends RootFragment {
     private void uploadNewVideo() {
         Functions.makeDirectry(Functions.getAppFolder(getActivity())+Variables.APP_HIDED_FOLDER);
         Functions.makeDirectry(Functions.getAppFolder(getActivity())+Variables.DRAFT_APP_FOLDER);
-        if (Functions.checkLoginUser(getActivity()))
-        {
+        if (Functions.checkLoginUser(getActivity())) {
             if (Functions.isMyServiceRunning(getActivity(), new UploadService().getClass())) {
                 Toast.makeText(getActivity(), context.getString(R.string.video_already_in_progress), Toast.LENGTH_SHORT).show();
             } else {
@@ -378,23 +371,15 @@ public class MainMenuFragment extends RootFragment {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-
             registeredFragments.remove(position);
 
             super.destroyItem(container, position, object);
-
         }
-
 
         public Fragment getRegisteredFragment(int position) {
-
             return registeredFragments.get(position);
-
         }
-
-
     }
-
 
     // add the listener of home bth which will open the recording screen
     public void onHomeClick() {
@@ -438,6 +423,14 @@ public class MainMenuFragment extends RootFragment {
 
     // profile and notification tab click listener handler when user is not login into app
     public void onotherTabClick() {
+        TabLayout.Tab tab0 = tabLayout.getTabAt(0);
+        View view0 = tab0.getCustomView();
+        ImageView imageView0 = view0.findViewById(R.id.image);
+        imageView0.setColorFilter(ContextCompat.getColor(context, R.color.darkgray), android.graphics.PorterDuff.Mode.SRC_IN);
+        TextView tex0 = view0.findViewById(R.id.text);
+        tex0.setTextColor(context.getResources().getColor(R.color.darkgray));
+        tab0.setCustomView(view0);
+
         TabLayout.Tab tab1 = tabLayout.getTabAt(1);
         View view1 = tab1.getCustomView();
         TextView tex1 = view1.findViewById(R.id.text);
@@ -459,7 +452,6 @@ public class MainMenuFragment extends RootFragment {
         TextView tex3 = view3.findViewById(R.id.text);
         tex3.setTextColor(context.getResources().getColor(R.color.darkgray));
         tab3.setCustomView(view3);
-
 
         TabLayout.Tab tab4 = tabLayout.getTabAt(4);
         View view4 = tab4.getCustomView();

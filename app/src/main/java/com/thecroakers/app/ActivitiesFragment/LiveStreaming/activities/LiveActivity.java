@@ -684,7 +684,7 @@ public class LiveActivity extends RtcBaseActivity implements View.OnClickListene
     private void ShowGiftSheet() {
         StickerGiftF giftFragment = new StickerGiftF(userId, userName, userPicture, new FragmentCallBack() {
             @Override
-            public void onResponce(Bundle bundle) {
+            public void onResponse(Bundle bundle) {
                 if (bundle.getBoolean("isShow",false))
                 {
                     StickerModel model= (StickerModel) bundle.getSerializable("Data");

@@ -112,7 +112,7 @@ public class StickerGiftF extends BottomSheetDialogFragment {
                 bundle.putBoolean("showCount",true);
                 bundle.putString("count",""+giftCounter);
                 bundle.putSerializable("Data",selectedModel);
-                callBack.onResponce(bundle);
+                callBack.onResponse(bundle);
 
                 handler.removeCallbacks(runnable);
                 runnable=new Runnable() {
@@ -232,7 +232,7 @@ public class StickerGiftF extends BottomSheetDialogFragment {
         sliderList.addAll(Functions.createChunksOfList(data_list,6));
         giftSliderAdapter=new SendGiftVHAdapter(sliderList,tab_send_gift, new FragmentCallBack() {
             @Override
-            public void onResponce(Bundle bundle) {
+            public void onResponse(Bundle bundle) {
                 if (bundle.getBoolean("isShow",false))
                 {
                     selectedModel= (StickerModel) bundle.getSerializable("Data");
@@ -276,7 +276,7 @@ public class StickerGiftF extends BottomSheetDialogFragment {
                         bundle.putBoolean("isShow",true);
                         bundle.putString("count",""+giftCount);
                         bundle.putSerializable("Data",model);
-                        callBack.onResponce(bundle);
+                        callBack.onResponse(bundle);
                         dismiss();
                     }
                     else

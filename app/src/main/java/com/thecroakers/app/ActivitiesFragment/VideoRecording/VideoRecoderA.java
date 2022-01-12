@@ -589,7 +589,7 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
                 if (secPassed + 1 < Constants.RECORDING_DURATION / 1000) {
                     RecordingTimeRangF recordingTimeRang_f = new RecordingTimeRangF(new FragmentCallBack() {
                         @Override
-                        public void onResponce(Bundle bundle) {
+                        public void onResponse(Bundle bundle) {
                             if (bundle != null) {
                                 isRecordingTimerEnable = true;
                                 recordingTime = bundle.getInt("end_time");

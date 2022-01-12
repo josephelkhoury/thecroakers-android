@@ -324,7 +324,7 @@ public class Functions {
                 dialog.dismiss();
                 Bundle bundle=new Bundle();
                 bundle.putBoolean("isShow",false);
-                callBack.onResponce(bundle);
+                callBack.onResponse(bundle);
             }
         });
         tvPositive.setOnClickListener(new View.OnClickListener() {
@@ -333,7 +333,7 @@ public class Functions {
                 dialog.dismiss();
                 Bundle bundle=new Bundle();
                 bundle.putBoolean("isShow",true);
-                callBack.onResponce(bundle);
+                callBack.onResponse(bundle);
             }
         });
         dialog.show();
@@ -1627,7 +1627,7 @@ public class Functions {
         showDoubleButtonAlert(context, context.getString(R.string.permission_alert),message,
                 context.getString(R.string.cancel_), context.getString(R.string.settings), false, new FragmentCallBack() {
                     @Override
-                    public void onResponce(Bundle bundle) {
+                    public void onResponse(Bundle bundle) {
                         if (bundle.getBoolean("isShow",false))
                         {
                             Intent intent = new Intent();

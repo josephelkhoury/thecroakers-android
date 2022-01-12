@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.thecroakers.musictok", appContext.getPackageName());
+        assertEquals("com.thecroakers.app", appContext.getPackageName());
     }
 }

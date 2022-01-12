@@ -7,5 +7,5 @@ import android.os.Bundle;
  */
 
 public interface FragmentCallBack {
-    void onResponce(Bundle bundle);
+    void onResponse(Bundle bundle);
 }

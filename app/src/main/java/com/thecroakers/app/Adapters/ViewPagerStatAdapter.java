@@ -34,31 +34,23 @@ public class ViewPagerStatAdapter extends FragmentStatePagerAdapter {
         this.menuPager=menuPager;
         this.callBack=callBack;
 
-        if (isFirstTime)
-        {
+        if (isFirstTime) {
             Log.d(Constants.tag,"Check : init ");
-            if (Paper.book(Variables.PromoAds).contains(Variables.PromoAdsModel))
-            {
+            if (Paper.book(Variables.PromoAds).contains(Variables.PromoAdsModel)) {
                 HomeModel initItem=Paper.book(Variables.PromoAds).read(Variables.PromoAdsModel);
                 if (initItem!=null)
                     addFragment(new VideosListF(true,initItem,menuPager,callBack, R.id.mainMenuFragment), "");
             }
         }
-
-
     }
 
     public void refreshStateSet(boolean isRefresh) {
-       if (isRefresh)
-       {
+       if (isRefresh) {
            PAGE_REFRESH_STATE=PagerAdapter.POSITION_NONE;
-       }
-       else
-       {
+       } else {
            PAGE_REFRESH_STATE=PagerAdapter.POSITION_UNCHANGED;
        }
     }
-
 
     public void addFragment(Fragment fragment, String title) {
         mFragmentList.add(fragment);
@@ -70,7 +62,6 @@ public class ViewPagerStatAdapter extends FragmentStatePagerAdapter {
         mFragmentTitleList.remove(position);
         notifyDataSetChanged();
     }
-
 
     @Override
     public int getItemPosition(Object object) {

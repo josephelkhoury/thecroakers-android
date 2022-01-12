@@ -244,7 +244,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
         final ShareAndViewProfileF fragment = new ShareAndViewProfileF(userId,fromSetting
                 ,picUrl, new FragmentCallBack() {
             @Override
-            public void onResponce(Bundle bundle) {
+            public void onResponse(Bundle bundle) {
                 if (bundle.getString("action").equals("profileShareMessage")) {
                     if (Functions.checkLoginUser(ProfileA.this))
                     {
@@ -335,7 +335,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
 
         NotificationPriorityF f = new NotificationPriorityF(notificationType,isFriend,userName,userId,new FragmentCallBack() {
             @Override
-            public void onResponce(Bundle bundle) {
+            public void onResponse(Bundle bundle) {
                 if (bundle.getBoolean("isShow",false))
                 {
                     notificationType=bundle.getString("type");
@@ -933,7 +933,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
 
         final ShareUserProfileF fragment = new ShareUserProfileF(userId,userName,fullName,userPic,buttonStatus,isDirectMessage,fromSetting, new FragmentCallBack() {
             @Override
-            public void onResponce(Bundle bundle) {
+            public void onResponse(Bundle bundle) {
                 if (bundle.getBoolean("isShow",false))
                 {
                     callApiForGetAllvideos();
@@ -1018,7 +1018,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
     private void openManageMultipleAccounts() {
         ManageAccountsF f = new ManageAccountsF(new FragmentCallBack() {
             @Override
-            public void onResponce(Bundle bundle) {
+            public void onResponse(Bundle bundle) {
                 if (bundle.getBoolean("isShow",false))
                 {
                     Functions.hideSoftKeyboard(ProfileA.this);

@@ -175,11 +175,11 @@ public class UploadService extends Service {
                                 bundle.putInt("totalpercent",totalpercent);
                                 if (HomeF.uploadingCallback!=null)
                                 {
-                                    HomeF.uploadingCallback.onResponce(bundle);
+                                    HomeF.uploadingCallback.onResponse(bundle);
                                 }
                                 if (WatchVideosA.uploadingCallback!=null)
                                 {
-                                    WatchVideosA.uploadingCallback.onResponce(bundle);
+                                    WatchVideosA.uploadingCallback.onResponse(bundle);
                                 }
                             }
                         }

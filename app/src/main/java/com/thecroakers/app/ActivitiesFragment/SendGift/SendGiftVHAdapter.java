@@ -71,7 +71,7 @@ public class SendGiftVHAdapter  extends
                             Bundle bundle=new Bundle();
                             bundle.putBoolean("isShow",true);
                             bundle.putSerializable("Data",model);
-                            callBack.onResponce(bundle);
+                            callBack.onResponse(bundle);
                         }
 
                     }

@@ -76,7 +76,7 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
     SwipeRefreshLayout swiperefresh;
     TextView followingBtn, relatedBtn, liveUsers;
     String type = "related";
-    DiscreteScrollView rvSugesstion;
+    DiscreteScrollView rvSuggestion;
     HomeSuggestionAdapter adapterSuggestion;
 
     public HomeF() {
@@ -93,7 +93,7 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
     UploadingVideoBroadCast mReceiver;
 
     @Override
-    public void onResponce(Bundle bundle) {
+    public void onResponse(Bundle bundle) {
         if (bundle != null && bundle.get("action").equals("showad")) {
             showCustomAd();
         } else if (bundle != null && bundle.get("action").equals("hidead")) {
@@ -125,18 +125,16 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
 
     public static FragmentCallBack uploadingCallback=new FragmentCallBack() {
         @Override
-        public void onResponce(Bundle bundle) {
+        public void onResponse(Bundle bundle) {
             if (bundle.getBoolean("isShow")) {
                 int currentProgress=bundle.getInt("currentpercent",0);
                 if (progressBar!=null && tvProgressCount!=null) {
-
                     progressBar.setProgress(currentProgress);
                     tvProgressCount.setText(currentProgress+"%");
                 }
             }
         }
     };
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -170,7 +168,7 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
         });
 
         if (!Constants.IS_REMOVE_ADS)
-            loadAdd();
+            loadAd();
 
         uploadVideoLayout = view.findViewById(R.id.upload_video_layout);
         uploadingThumb = view.findViewById(R.id.uploading_thumb);
@@ -205,14 +203,13 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
             dataList.add(item);
         }
 
-        pagerSatetAdapter = new ViewPagerStatAdapter(getChildFragmentManager(),menuPager,isFirstTime,this::onResponce);
+        pagerSatetAdapter = new ViewPagerStatAdapter(getChildFragmentManager(),menuPager,isFirstTime,this::onResponse);
         menuPager =  view.findViewById(R.id.viewpager);
         menuPager.setAdapter(pagerSatetAdapter);
         menuPager.setOffscreenPageLimit(1);
         menuPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
@@ -231,7 +228,6 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
                             fragment.setPlayer(is_visible_to_user);
                         }
                     }, 200);
-
                 }
 
                 Log.d(Constants.tag,"Check : check "+(position+1)+"    "+(dataList.size()-1)+"      "+(dataList.size() > 2 && (dataList.size() - 1) == position));
@@ -244,7 +240,6 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
                 }
 
                 if ((position+1)==oldSwipeValue) {
-
                     oldSwipeValue=(position+1)+Constants.SHOW_AD_ON_EVERY;
                     showAdd();
                 }
@@ -252,7 +247,6 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
     }
@@ -302,23 +296,18 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
     ArrayList<FollowingModel> suggestionList=new ArrayList<>();
     private InfiniteScrollAdapter<?> infiniteAdapter;
     private void setUpSuggestionRecyclerview() {
-        rvSugesstion=view.findViewById(R.id.rvSugesstion);
-        rvSugesstion.setOrientation(DSVOrientation.HORIZONTAL);
+        rvSuggestion=view.findViewById(R.id.rvSugesstion);
+        rvSuggestion.setOrientation(DSVOrientation.HORIZONTAL);
         adapterSuggestion=new HomeSuggestionAdapter(suggestionList, new AdapterClickListener() {
             @Override
             public void onItemClick(View view, int postion, Object object) {
                 FollowingModel item= (FollowingModel) object;
-                if (view.getId()==R.id.tvFollowBtn)
-                {
-                    if (Functions.checkLoginUser(getActivity()))
-                    {
+                if (view.getId()==R.id.tvFollowBtn) {
+                    if (Functions.checkLoginUser(getActivity())) {
                         followSuggestedUser(item.fb_id,postion);
                     }
-
                 }
-                else
-                if (view.getId()==R.id.user_image)
-                {
+                else if (view.getId()==R.id.user_image) {
                     Intent intent=new Intent(view.getContext(), ProfileA.class);
                     intent.putExtra("user_id", item.fb_id);
                     intent.putExtra("user_name", item.username);
@@ -326,26 +315,22 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
                     startActivity(intent);
                     getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
                 }
-                else
-                if (view.getId()==R.id.ivCross)
-                {
+                else if (view.getId()==R.id.ivCross) {
                     suggestionList.remove(postion);
                     adapterSuggestion.notifyDataSetChanged();
                 }
             }
         });
         infiniteAdapter = InfiniteScrollAdapter.wrap(adapterSuggestion);
-        rvSugesstion.setAdapter(infiniteAdapter);
-        rvSugesstion.setItemTransitionTimeMillis(150);
-        rvSugesstion.setItemTransformer(new ScaleTransformer.Builder()
+        rvSuggestion.setAdapter(infiniteAdapter);
+        rvSuggestion.setItemTransitionTimeMillis(150);
+        rvSuggestion.setItemTransformer(new ScaleTransformer.Builder()
                 .setMinScale(0.8f)
                 .build());
 
-        if (suggestionList.isEmpty())
-        {
+        if (suggestionList.isEmpty()) {
             getSuggestionUserList();
         }
-
     }
 
     private void getSuggestionUserList() {
@@ -356,7 +341,6 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
         VolleyRequest.JsonPostRequest(getActivity(), ApiLinks.showSuggestedUsers, parameters,Functions.getHeaders(getActivity()), new Callback() {
             @Override
@@ -387,36 +371,24 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
 
                             item.follow_status_button = "follow";
 
-                            if (videoArray.length()>0)
-                            {
+                            if (videoArray.length()>0) {
                                 item.gifLink=videoArray.getJSONObject(0).optString("gif");
-                            }
-                            else
-                            {
+                            } else {
                                 item.gifLink="";
                             }
-
 
                             suggestionList.add(item);
                             adapterSuggestion.notifyDataSetChanged();
                         }
 
-                        if (suggestionList.isEmpty())
-                        {
+                        if (suggestionList.isEmpty()) {
                             view.findViewById(R.id.tvNoSuggestionFound).setVisibility(View.VISIBLE);
-                        }
-                        else
-                        {
+                        } else {
                             view.findViewById(R.id.tvNoSuggestionFound).setVisibility(View.GONE);
                         }
-
                     } else {
                         view.findViewById(R.id.tvNoSuggestionFound).setVisibility(View.VISIBLE);
                     }
-
-
-
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -435,7 +407,6 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
 
                     @Override
                     public void onSuccess(String responce) {
-
                         suggestionList.remove(position);
                         adapterSuggestion.notifyDataSetChanged();
                         callVideoApi();
@@ -443,51 +414,40 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
 
                     @Override
                     public void onFail(String responce) {
-
                     }
-
                 });
-
     }
-
 
     @Override
     public void onPause() {
         super.onPause();
 
-        if(pagerSatetAdapter !=null && pagerSatetAdapter.getCount()>0) {
-
+        if (pagerSatetAdapter !=null && pagerSatetAdapter.getCount()>0) {
             VideosListF fragment = (VideosListF) pagerSatetAdapter.getItem(menuPager.getCurrentItem());
             fragment.mainMenuVisibility(false);
         }
-
     }
 
     public void callVideoApi() {
         isApiRuning = true;
 
         if (type.equalsIgnoreCase("following")) {
-
-            callApiForGetFollowingvideos();
+            callApiForGetFollowingVideos();
         }
         else {
-
-            callApiForGetAllvideos();
+            callApiForGetAllVideos();
         }
     }
 
-
     // api for get the videos list from server
-    private void callApiForGetAllvideos() {
+    private void callApiForGetAllVideos() {
         JSONObject parameters = new JSONObject();
         try {
-
             if (Functions.getSharedPreference(context).getString(Variables.U_ID, null) != null) {
                 parameters.put("user_id", Functions.getSharedPreference(context).getString(Variables.U_ID, "0"));
             }
             parameters.put("device_id", Functions.getSharedPreference(context).getString(Variables.DEVICE_ID, "0"));
             parameters.put("starting_point", "" + page_count);
-
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -504,7 +464,7 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
     }
 
     // call the api for get the api list of the follower user list
-    private void callApiForGetFollowingvideos() {
+    private void callApiForGetFollowingVideos() {
 
         JSONObject parameters = new JSONObject();
         try {
@@ -527,15 +487,13 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
                 parseData(resp);
             }
         });
-
-
     }
 
 
     // parse the list of the videos
-    public void parseData(String responce) {
+    public void parseData(String response) {
         try {
-            JSONObject jsonObject = new JSONObject(responce);
+            JSONObject jsonObject = new JSONObject(response);
             String code = jsonObject.optString("code");
 
             if (code.equals("200")) {
@@ -555,7 +513,6 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
 
                     HomeModel item = Functions.parseVideoData(user, sound, video, topic, country, userPrivacy, pushNotification);
 
-
                     if (Constants.IS_DEMO_APP) {
                         if (i < Constants.DEMO_APP_VIDEOS_COUNT)
                             temp_list.add(item);
@@ -563,29 +520,26 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
                     else {
                         temp_list.add(item);
                     }
-
-
                 }
 
                 Collections.shuffle(temp_list);
 
-
-                if(dataList.isEmpty()){
+                if(dataList.isEmpty()) {
                     setTabs(false);
                 }
                 dataList.addAll(temp_list);
 
                 for (HomeModel item : temp_list) {
-                    pagerSatetAdapter.addFragment(new VideosListF(false,item,menuPager, this::onResponce,R.id.mainMenuFragment), "");
+                    pagerSatetAdapter.addFragment(new VideosListF(false,item,menuPager, this::onResponse,R.id.mainMenuFragment), "");
                 }
                 pagerSatetAdapter.refreshStateSet(false);
                 pagerSatetAdapter.notifyDataSetChanged();
-                if (!(swiperefresh.isEnabled()))
-                {swiperefresh.setEnabled(false);}
+                if (!(swiperefresh.isEnabled())) {
+                    swiperefresh.setEnabled(false);
+                }
 
                 tabNoFollower.setVisibility(View.GONE);
                 menuPager.setVisibility(View.VISIBLE);
-
             } else {
                 hideCustomad();
                 if (dataList.isEmpty() && type.equalsIgnoreCase("following")) {
@@ -600,13 +554,12 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
         } catch (Exception e) {
             e.printStackTrace();
 
-            if(page_count>0)
+            if (page_count>0)
                 page_count--;
 
         } finally {
             isApiRuning = false;
         }
-
     }
 
     private static int callbackVideoLisCode=3292;
@@ -614,11 +567,10 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(Constants.tag,"Callback check : "+requestCode);
-        if (requestCode==callbackVideoLisCode)
-        {
+        if (requestCode==callbackVideoLisCode) {
             Bundle bundle=new Bundle();
             bundle.putBoolean("isShow",true);
-            VideosListF.videoListCallback.onResponce(bundle);
+            VideosListF.videoListCallback.onResponse(bundle);
         }
     }
 
@@ -648,7 +600,7 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
 
     // loader the ad and make it ready for show when 4 videos watched
     InterstitialAd mInterstitialAd;
-    public void loadAdd() {
+    public void loadAd() {
 
         mInterstitialAd = new InterstitialAd(context);
         mInterstitialAd.setAdUnitId(context.getResources().getString(R.string.my_Interstitial_Add));

@@ -126,14 +126,11 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
         this.menuPager=menuPager;
         this.fragmentCallBack = fragmentCallBack;
         this.fragmentContainerId=fragmentContainerId;
-
     }
-
 
     public VideosListF() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -147,7 +144,6 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
 
         return view;
     }
-
 
     TextView username, descTxt, /*soundName,*/ skipBtn;
     SimpleDraweeView userPic, /*soundImage,*/thumb_image;
@@ -165,8 +161,8 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
     ProgressBar pbar;
 
     public void initalize_views() {
-        sideMenu=view.findViewById(R.id.side_menu);
-        videoInfoLayout=view.findViewById(R.id.video_info_layout);
+        sideMenu = view.findViewById(R.id.side_menu);
+        videoInfoLayout = view.findViewById(R.id.video_info_layout);
         mainlayout = view.findViewById(R.id.mainlayout);
         playerView = view.findViewById(R.id.playerview);
         duetLayoutUsername = view.findViewById(R.id.duet_layout_username);
@@ -174,7 +170,7 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
         duetOpenVideo = view.findViewById(R.id.duet_open_video);
         username = view.findViewById(R.id.username);
         userPic = view.findViewById(R.id.user_pic);
-        thumb_image=view.findViewById(R.id.thumb_image);
+        thumb_image = view.findViewById(R.id.thumb_image);
         //soundName = view.findViewById(R.id.sound_name);
         //soundImage = view.findViewById(R.id.sound_image);
         verifiedBtn = view.findViewById(R.id.verified_btn);
@@ -219,16 +215,12 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                 setData();
             }
         },200);
-
     }
 
     public void setData() {
-
-        if(view==null && item!=null)
+        if (view==null && item!=null)
             return;
         else {
-
-
             username.setText(""+Functions.showUsername(""+item.username));
 
             userPic.setController(Functions.frescoImageLoad(item.profile_pic,userPic,false));
@@ -248,26 +240,20 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                 @Override
                 public void onFriendsTagClicked(String friendsTag) {
                     onPause();
-                    if (friendsTag.contains("#"))
-                    {
+                    if (friendsTag.contains("#")) {
                         Log.d(Constants.tag,"Hash "+friendsTag);
-                        if (friendsTag.charAt(0)=='#')
-                        {
+                        if (friendsTag.charAt(0)=='#') {
                             friendsTag=friendsTag.substring(1);
                             openHashtag(friendsTag);
                         }
                     }
-                    else
-                    if (friendsTag.contains("@"))
-                    {
+                    else if (friendsTag.contains("@")) {
                         Log.d(Constants.tag,"Friends "+friendsTag);
-                        if (friendsTag.charAt(0)=='@')
-                        {
+                        if (friendsTag.charAt(0)=='@') {
                             friendsTag=friendsTag.substring(1);
                             openUserProfile(friendsTag);
                         }
                     }
-
                 }
             }).handle(descTxt);
 
@@ -280,19 +266,16 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
             }
             commentTxt.setText(Functions.getSuffix(item.video_comment_count));
 
-
             if (item.verified != null && item.verified.equalsIgnoreCase("1")) {
                 verifiedBtn.setVisibility(View.VISIBLE);
             } else {
                 verifiedBtn.setVisibility(View.GONE);
             }
 
-
             if (item.duet_video_id != null && !item.duet_video_id.equals("") && !item.duet_video_id.equals("0")) {
                 duetLayoutUsername.setVisibility(View.VISIBLE);
                 duetUsername.setText(item.duet_username);
             }
-
 
             if (Functions.getSharedPreference(context).getBoolean(Variables.IS_LOGIN, false)) {
                 animateRlt.setVisibility(View.GONE);
@@ -314,12 +297,10 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
         }
 
         likeTxt.setText(Functions.getSuffix(item.like_count));
-
     }
 
     @Override
     public void onClick(View v) {
-
         switch (v.getId()) {
             case R.id.user_pic:
                 onPause();
@@ -332,8 +313,7 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                 break;
 
             case R.id.comment_layout:
-                if (Functions.checkLoginUser(getActivity()))
-                {
+                if (Functions.checkLoginUser(getActivity())) {
                     openComment(item);
                 }
                 break;
@@ -349,45 +329,37 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
 
                 final VideoActionF fragment = new VideoActionF(item.video_id, new FragmentCallBack() {
                     @Override
-                    public void onResponce(Bundle bundle) {
+                    public void onResponse(Bundle bundle) {
                         if (bundle.getString("action").equals("save")) {
                             saveVideo(item);
 
                         } else if (bundle.getString("action").equals("duet")) {
-                            if (Functions.checkLoginUser(getActivity()))
-                            {
+                            if (Functions.checkLoginUser(getActivity())) {
                                 duetVideo(item);
                             }
                         } else if (bundle.getString("action").equals("privacy")) {
                             onPause();
-                            if (Functions.checkLoginUser(getActivity()))
-                            {
+                            if (Functions.checkLoginUser(getActivity())) {
                                 openVideoSetting(item);
                             }
 
                         } else if (bundle.getString("action").equals("delete")) {
-                            if (Functions.checkLoginUser(getActivity()))
-                            {
+                            if (Functions.checkLoginUser(getActivity())) {
                                 deleteListVideo(item);
                             }
                         } else if (bundle.getString("action").equals("favourite")) {
-                            if (Functions.checkLoginUser(getActivity()))
-                            {
+                            if (Functions.checkLoginUser(getActivity())) {
                                 favouriteVideo(item);
                             }
                         } else if (bundle.getString("action").equals("not_intrested")) {
-                            if (Functions.checkLoginUser(getActivity()))
-                            {
+                            if (Functions.checkLoginUser(getActivity())) {
                                 notInterestVideo(item);
                             }
                         } else if (bundle.getString("action").equals("report")) {
-                            if (Functions.checkLoginUser(getActivity()))
-                            {
+                            if (Functions.checkLoginUser(getActivity())) {
                                 openVideoReport(item);
                             }
                         }
-
-
                     }
                 });
 
@@ -401,33 +373,26 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                 fragment.setArguments(bundle);
                 fragment.show(getChildFragmentManager(), "");
 
-
                 break;
-
 
             case R.id.sound_image_layout:
                 takePermissionUtils=new PermissionUtils(getActivity(),mPermissionResult);
                 if (takePermissionUtils.isCameraRecordingPermissionGranted()) {
                    openSoundByScreen();
-                }
-                else
-                {
+                } else {
                     takePermissionUtils.showCameraRecordingPermissionDailog(view.getContext().getString(R.string.we_need_camera_and_recording_permission_for_make_video_on_sound));
                 }
                 break;
 
-            case R.id.duet_open_video:
-            {
-
-            }
+            case R.id.duet_open_video: {
                 openDuetVideo(item);
                 break;
+            }
 
             case R.id.skip_btn:
                 hideAd();
                 break;
         }
-
     }
 
     private void openSoundByScreen() {
@@ -445,19 +410,19 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
             }
 
             @Override
-            public void onSuccess(String responce) {
+            public void onSuccess(String response) {
                 ViewPagerStatAdapter pagerAdapter= (ViewPagerStatAdapter) menuPager.getAdapter();
                 Bundle bundle = new Bundle();
                 bundle.putString("action", "deleteVideo");
                 bundle.putInt("position", menuPager.getCurrentItem());
-                fragmentCallBack.onResponce(bundle);
+                fragmentCallBack.onResponse(bundle);
                 pagerAdapter.refreshStateSet(true);
                 pagerAdapter.removeFragment(menuPager.getCurrentItem());
                 pagerAdapter.refreshStateSet(false);
             }
 
             @Override
-            public void onFail(String responce) {
+            public void onFail(String response) {
             }
         });
     }
@@ -473,27 +438,22 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
         getActivity().overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
     }
 
-
     ActivityResultLauncher<Intent> resultVideoSettingCallback = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK ) {
                         Intent data = result.getData();
-                        if (data.getBooleanExtra("isShow",false))
-                        {
-                            callApiForSinglevideos();
+                        if (data.getBooleanExtra("isShow",false)) {
+                            callApiForSingleVideos();
                         }
-
                     }
                 }
             });
 
-
     // initlize the player for play video
     private void initializePlayer() {
-        if(exoplayer==null && item!=null){
-
+        if (exoplayer==null && item!=null) {
             ExecutorService executorService= Executors.newSingleThreadExecutor();
             executorService.execute(new Runnable() {
                 @Override
@@ -505,15 +465,12 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                             .setPrioritizeTimeOverSizeThresholds(true)
                             .build();
 
-
-
                     DefaultTrackSelector trackSelector = new DefaultTrackSelector(context);
                     try {
                     exoplayer = new SimpleExoPlayer.Builder(context).
                             setTrackSelector(trackSelector)
                             .setLoadControl(loadControl)
                             .build();
-
 
                         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(view.getContext(), context.getString(R.string.app_name));
                         MediaSource videoSource = new ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(MediaItem.fromUri(item.video_url));
@@ -523,7 +480,6 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                         exoplayer.addListener(VideosListF.this);
                         exoplayer.setRepeatMode(Player.REPEAT_MODE_ALL);
 
-
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             AudioAttributes audioAttributes = new AudioAttributes.Builder()
                                     .setUsage(C.USAGE_MEDIA)
@@ -531,9 +487,7 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                                     .build();
                             exoplayer.setAudioAttributes(audioAttributes, true);
                         }
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         Log.d(Constants.tag,"Exception audio focus : "+e);
                     }
 
@@ -542,38 +496,26 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                         public void run() {
                             playerView = view.findViewById(R.id.playerview);
                             playerView.findViewById(R.id.exo_play).setVisibility(View.GONE);
-                            if(exoplayer!=null) {
+                            if (exoplayer!=null) {
                                 playerView.setPlayer(exoplayer);
                             }
                         }
                     });
-
                 }
             });
-
         }
-
     }
 
-
     public void setPlayer(boolean isVisibleToUser) {
-
         if (exoplayer != null) {
-
-            if(exoplayer!=null) {
-                if (isVisibleToUser)
-                {
+            if (exoplayer!=null) {
+                if (isVisibleToUser) {
                     exoplayer.setPlayWhenReady(true);
-                }
-                else
-                {
+                } else {
                     exoplayer.setPlayWhenReady(false);
                     playerView.findViewById(R.id.exo_play).setAlpha(1);
                 }
             }
-
-
-
 
             playerView.setOnTouchListener(new View.OnTouchListener() {
                 private GestureDetector gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
@@ -589,7 +531,6 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                                 openProfile(item, true);
                             }
                         }
-
 
                         return true;
                     }
@@ -607,7 +548,6 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                             playerView.findViewById(R.id.exo_play).setAlpha(1);
                         }
 
-
                         return true;
                     }
 
@@ -615,11 +555,9 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                     public void onLongPress(MotionEvent e) {
                         super.onLongPress(e);
 
-                        if(isVisibleToUser)
-                        {
+                        if(isVisibleToUser) {
                             showVideoOption(item);
                         }
-
                     }
 
                     @Override
@@ -627,33 +565,24 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                         if (!exoplayer.getPlayWhenReady()) {
                             exoplayer.setPlayWhenReady(true);
                         }
-                        if (Functions.checkLoginUser(getActivity()))
-                        {
+                        if (Functions.checkLoginUser(getActivity())) {
                             if (!animationRunning) {
-
                                 if (handler != null && runnable != null) {
                                     handler.removeCallbacks(runnable);
-
                                 }
                                 handler = new Handler(Looper.getMainLooper());
                                 runnable = new Runnable() {
                                     public void run() {
-                                        if (!(item.liked.equalsIgnoreCase("1")))
-                                        {
+                                        if (!(item.liked.equalsIgnoreCase("1"))) {
                                             likeVideo(item);
                                         }
                                         showHeartOnDoubleTap(item, mainlayout, e);
-
                                     }
                                 };
                                 handler.postDelayed(runnable, 200);
-
-
                             }
                         }
-
                         return super.onDoubleTap(e);
-
                     }
                 });
 
@@ -664,26 +593,20 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                 }
             });
 
-            if ((item.promote != null && item.promote.equals("1")) && showad)
-            {
+            if ((item.promote != null && item.promote.equals("1")) && showad) {
                 item.promote="0";
                 showAd();
-            }
-            else
-            {
+            } else {
                 hideAd();
             }
-
         }
-
     }
 
-    public void updateVideoView(){
-        if (Functions.getSharedPreference(context).getBoolean(Variables.IS_LOGIN, false))
-        {
+    public void updateVideoView() {
+        if (Functions.getSharedPreference(context).getBoolean(Variables.IS_LOGIN, false)) {
             Functions.callApiForUpdateView(getActivity(), item.video_id);
         }
-//        callApiForSinglevideos();
+//        callApiForSingleVideos();
     }
     // show a video as a ad
     boolean  isAddAlreadyShow;
@@ -696,7 +619,7 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
 
         Bundle bundle = new Bundle();
         bundle.putString("action", "showad");
-        fragmentCallBack.onResponce(bundle);
+        fragmentCallBack.onResponse(bundle);
 
         countdownTimer(true);
     }
@@ -714,16 +637,12 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                     @Override
                     public void onTick(long millisUntilFinished) {
 
-                        if (exoplayer!=null)
-                        {
+                        if (exoplayer!=null) {
                             if (exoplayer.getCurrentPosition() > 7000) {
-
                                 hideAd();
                                 countdownTimer(false);
-
                             }
                         }
-
                     }
 
                     @Override
@@ -747,7 +666,7 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
 
         Bundle bundle = new Bundle();
         bundle.putString("action", "hidead");
-        fragmentCallBack.onResponce(bundle);
+        fragmentCallBack.onResponse(bundle);
     }
 
 
@@ -962,10 +881,7 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
         comment_f.setArguments(args);
         transaction.addToBackStack(null);
         transaction.replace(fragmentContainerId, comment_f).commit();
-
     }
-
-
 
     public static FragmentCallBack videoListCallback;
     // this will open the profile of user which have uploaded the currenlty running video
@@ -975,18 +891,13 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
 
             TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(4);
             profile.select();
-
         }
-
         else {
-
-
             videoListCallback=new FragmentCallBack() {
                 @Override
-                public void onResponce(Bundle bundle) {
-                    if (bundle.getBoolean("isShow"))
-                    {
-                        callApiForSinglevideos();
+                public void onResponse(Bundle bundle) {
+                    if (bundle.getBoolean("isShow")) {
+                        callApiForSingleVideos();
                     }
                 }
             };
@@ -1016,9 +927,8 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK ) {
                         Intent data = result.getData();
-                        if (data.getBooleanExtra("isShow",false))
-                        {
-                            callApiForSinglevideos();
+                        if (data.getBooleanExtra("isShow",false)) {
+                            callApiForSingleVideos();
                         }
                     }
                 }
@@ -1027,8 +937,6 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
 
     // show the diolge of video options
    private void showVideoOption(final HomeModel homeModel) {
-
-
         final Dialog alertDialog = new Dialog(context);
         alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         alertDialog.setContentView(R.layout.alert_label_editor);
@@ -1040,7 +948,6 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
         RelativeLayout btnDelete=alertDialog.findViewById(R.id.btnDelete);
 
         TextView fav_unfav_txt = alertDialog.findViewById(R.id.fav_unfav_txt);
-
 
         if (homeModel.favourite != null && homeModel.favourite.equals("1"))
             fav_unfav_txt.setText(context.getString(R.string.added_to_favourite));
@@ -1054,7 +961,6 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
             btnDelete.setVisibility(View.VISIBLE);
         }
 
-
         btn_add_to_fav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1065,14 +971,11 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
             }
         });
 
-
         btn_not_insterested.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 alertDialog.dismiss();
-                if (Functions.checkLoginUser(getActivity()))
-                {
+                if (Functions.checkLoginUser(getActivity())) {
                     notInterestVideo(item);
                 }
             }
@@ -1083,8 +986,7 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
             @Override
             public void onClick(View v) {
                 alertDialog.dismiss();
-                if (Functions.checkLoginUser(getActivity()))
-                {
+                if (Functions.checkLoginUser(getActivity())) {
                     openVideoReport(item);
                 }
             }
@@ -1162,7 +1064,6 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
             e.printStackTrace();
         }
 
-
         Functions.showLoader(context, false, false);
         VolleyRequest.JsonPostRequest(getActivity(), ApiLinks.notInterestedVideo, params,Functions.getHeaders(getActivity()), new Callback() {
             @Override
@@ -1176,7 +1077,7 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                         ViewPagerStatAdapter pagerAdapter= (ViewPagerStatAdapter) menuPager.getAdapter();
                         Bundle bundle = new Bundle();
                         bundle.putString("action", "removeList");
-                        fragmentCallBack.onResponce(bundle);
+                        fragmentCallBack.onResponse(bundle);
                         pagerAdapter.refreshStateSet(true);
                         pagerAdapter.removeFragment(menuPager.getCurrentItem());
                         pagerAdapter.refreshStateSet(false);
@@ -1184,12 +1085,8 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-
             }
         });
-
-
     }
 
     public void openVideoReport(HomeModel home_model) {
@@ -1200,7 +1097,6 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
     }
-
 
     // save the video in to local directory
     public void saveVideo(final HomeModel item) {
@@ -1226,18 +1122,14 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                         if (download_url != null) {
 
                             String downloadDirectory="";
-                            if (Build.VERSION.SDK_INT==Build.VERSION_CODES.R || Build.VERSION.SDK_INT==Build.VERSION_CODES.Q)
-                            {
+                            if (Build.VERSION.SDK_INT==Build.VERSION_CODES.R || Build.VERSION.SDK_INT==Build.VERSION_CODES.Q) {
                                 downloadDirectory=Functions.getAppFolder(view.getContext());
-                            }
-                            else
-                            {
+                            } else {
                                 downloadDirectory=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getPath()+"/Camera/";
                             }
 
                             File file=new File(downloadDirectory);
-                            if (!(file.exists()))
-                            {
+                            if (!(file.exists())) {
                                 Log.d(Constants.tag,"Camera directory created again");
                                 file.mkdirs();
                             }
@@ -1253,22 +1145,17 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
 
                                             int prog = (int) ((progress.currentBytes * 100) / progress.totalBytes);
                                             Functions.showLoadingProgress(prog);
-
                                         }
                                     });
-
 
                             String finalDownloadDirectory = downloadDirectory;
                             prDownloader.start(new OnDownloadListener() {
                                 @Override
                                 public void onDownloadComplete() {
                                     Functions.cancelDeterminentLoader();
-                                    if (Build.VERSION.SDK_INT==Build.VERSION_CODES.R || Build.VERSION.SDK_INT==Build.VERSION_CODES.Q)
-                                    {
+                                    if (Build.VERSION.SDK_INT==Build.VERSION_CODES.R || Build.VERSION.SDK_INT==Build.VERSION_CODES.Q) {
                                         downloadAEVideo(finalDownloadDirectory,item.video_id + ".mp4");
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         deleteWaterMarkeVideo(download_url);
                                         scanFile(finalDownloadDirectory);
                                     }
@@ -1276,31 +1163,21 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
 
                                 @Override
                                 public void onError(Error error) {
-
                                     Functions.printLog(Constants.tag, "Error : "+error.getConnectionException());
                                     Functions.cancelDeterminentLoader();
                                 }
-
-
                             });
-
-
-
                         }
                     }
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-
             }
         });
     }
 
-
     public void downloadAEVideo(String path, String videoName) {
-
         ContentValues valuesvideos;
         valuesvideos = new ContentValues();
         valuesvideos.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DCIM+File.separator+"Camera");
@@ -1318,40 +1195,27 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
 
         try {
             pfd = getActivity().getContentResolver().openFileDescriptor(uriSavedVideo, "w");
-
             FileOutputStream out = new FileOutputStream(pfd.getFileDescriptor());
-
             File imageFile = new File(path+videoName);
-
             FileInputStream in = new FileInputStream(imageFile);
-
 
             byte[] buf = new byte[1024];
             int len;
             while ((len = in.read(buf)) > 0) {
-
                 out.write(buf, 0, len);
             }
-
 
             out.close();
             in.close();
             pfd.close();
-
-
-
         } catch (Exception e) {
 
             e.printStackTrace();
         }
-
-
         valuesvideos.clear();
         valuesvideos.put(MediaStore.MediaColumns.IS_PENDING, 0);
         getActivity().getContentResolver().update(uriSavedVideo, valuesvideos, null, null);
     }
-
-
 
     public void deleteWaterMarkeVideo(String video_url) {
 
@@ -1363,8 +1227,6 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
         }
 
         VolleyRequest.JsonPostRequest(getActivity(), ApiLinks.deleteWaterMarkVideo, params, Functions.getHeaders(getActivity()),null);
-
-
     }
 
 
@@ -1379,8 +1241,6 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                     }
                 });
     }
-
-
 
     // download the video for duet with
     public void duetVideo(final HomeModel item) {
@@ -1407,37 +1267,26 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                 @Override
                 public void onDownloadComplete() {
                     Functions.cancelDeterminentLoader();
-
                     openDuetRecording(item);
-
                 }
 
                 @Override
                 public void onError(Error error) {
-
                     Functions.printLog(Constants.tag, "Error : "+error.getConnectionException());
                     Functions.cancelDeterminentLoader();
                 }
-
-
             });
-
         }
-
     }
 
-
     public void openDuetRecording(HomeModel item) {
-
         Intent intent = new Intent(getActivity(), VideoRecoderDuetA.class);
         intent.putExtra("data", item);
         startActivity(intent);
-
     }
 
-
-    // call api for refersh the video details
-    private void callApiForSinglevideos() {
+    // call api for refresh the video details
+    private void callApiForSingleVideos() {
 
         JSONObject parameters = new JSONObject();
         try {

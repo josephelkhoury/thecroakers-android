@@ -63,7 +63,7 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
     ShimmerFrameLayout shimmerFrameLayout;
     CoordinatorLayout dataContainer;
     int pageCount = 0;
-    boolean ispostFinsh;
+    boolean ispostFinish;
     ProgressBar loadMoreProgress;
     LinearLayoutManager linearLayoutManager;
 
@@ -95,11 +95,11 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
 
         adapter = new DiscoverAdapter(context, datalist, new DiscoverAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, ArrayList<HomeModel> home_models, int parent_postion, int child_position) {
+            public void onItemClick(View view, ArrayList<HomeModel> home_models, int parent_position, int child_position) {
                if (view.getId() == R.id.hashtag_layout || home_models.get(child_position).thum == null) {
-                    openEntity(datalist.get(parent_postion));
+                    openEntity(datalist.get(parent_position));
                 } else {
-                    openWatchVideo(child_position, home_models,datalist.get(parent_postion).title);
+                    openWatchVideo(child_position, home_models,datalist.get(parent_position).title);
                 }
             }
         });
@@ -135,10 +135,10 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
                 if (userScrolled && (scrollOutitems == datalist.size() - 1)) {
                     userScrolled = false;
 
-                    if (loadMoreProgress.getVisibility() != View.VISIBLE && !ispostFinsh) {
+                    if (loadMoreProgress.getVisibility() != View.VISIBLE && !ispostFinish) {
                         loadMoreProgress.setVisibility(View.VISIBLE);
                         pageCount = pageCount + 1;
-                        callApiForAllvideos();
+                        callApiForAllVideos();
                     }
                 }
             }
@@ -151,15 +151,14 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
         swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (datalist.size()<1)
-                {
+                if (datalist.size()<1) {
                     dataContainer.setVisibility(View.GONE);
                     shimmerFrameLayout.setVisibility(View.VISIBLE);
                     shimmerFrameLayout.startShimmer();
                 }
                 //callApiSlider();
                 pageCount=0;
-                callApiForAllvideos();
+                callApiForAllVideos();
             }
         });
 
@@ -172,13 +171,12 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
     @Override
     public void setMenuVisibility(boolean menuVisible) {
         super.setMenuVisibility(menuVisible);
-        if (menuVisible && datalist.size()<1)
-        {
+        if (menuVisible && datalist.size()<1) {
             new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     shimmerFrameLayout.startShimmer();
-                    callApiForAllvideos();
+                    callApiForAllVideos();
                     //callApiSlider();
                 }
             }, 200);
@@ -187,8 +185,7 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
 
     // get the image of the upper slider in the discover screen
     private void callApiSlider() {
-        if (isSliderApiCall)
-        {
+        if (isSliderApiCall) {
             return;
         }
         isSliderApiCall=true;
@@ -244,7 +241,6 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
             public void onItemClick(View view, int pos, Object object) {
                 String slider_url = slider_list.get(pos).url;
                 if (slider_url != null && !slider_url.equals("")) {
-
                     Intent intent=new Intent(view.getContext(),WebviewA.class);
                     intent.putExtra("url", slider_url);
                     intent.putExtra("title", "Link");
@@ -260,7 +256,7 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
     // Bottom two function will get the Discover videos
     // from api and parse the json data which is shown in Discover tab
 
-    private void callApiForAllvideos() {
+    private void callApiForAllVideos() {
         if (isDiscoverAPiCall) {
             return;
         }

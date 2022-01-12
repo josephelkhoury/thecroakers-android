@@ -714,7 +714,7 @@ public class VideoActionF extends BottomSheetDialogFragment implements View.OnCl
                     dismiss();
 
                     if (fragmentCallback != null)
-                        fragmentCallback.onResponce(bundle);
+                        fragmentCallback.onResponse(bundle);
                 }
                 break;
 
@@ -728,7 +728,7 @@ public class VideoActionF extends BottomSheetDialogFragment implements View.OnCl
                     dismiss();
 
                     if (fragmentCallback != null)
-                        fragmentCallback.onResponce(bundle);
+                        fragmentCallback.onResponse(bundle);
                 }
                 break;
 
@@ -738,7 +738,7 @@ public class VideoActionF extends BottomSheetDialogFragment implements View.OnCl
                 dismiss();
 
                 if (fragmentCallback != null)
-                    fragmentCallback.onResponce(bundle);
+                    fragmentCallback.onResponse(bundle);
 
                 break;
 
@@ -748,7 +748,7 @@ public class VideoActionF extends BottomSheetDialogFragment implements View.OnCl
                 dismiss();
 
                 if (fragmentCallback != null)
-                    fragmentCallback.onResponce(not_interested_bundle);
+                    fragmentCallback.onResponse(not_interested_bundle);
                 break;
 
             case R.id.report_layout:
@@ -757,7 +757,7 @@ public class VideoActionF extends BottomSheetDialogFragment implements View.OnCl
                 dismiss();
 
                 if (fragmentCallback != null)
-                    fragmentCallback.onResponce(report_bundle);
+                    fragmentCallback.onResponse(report_bundle);
                 break;
 
 
@@ -804,7 +804,7 @@ public class VideoActionF extends BottomSheetDialogFragment implements View.OnCl
         dismiss();
 
         if (fragmentCallback != null)
-            fragmentCallback.onResponce(duet_bundle);
+            fragmentCallback.onResponse(duet_bundle);
     }
 
     private void saveVideoAction() {
@@ -813,7 +813,7 @@ public class VideoActionF extends BottomSheetDialogFragment implements View.OnCl
         dismiss();
 
         if (fragmentCallback != null)
-            fragmentCallback.onResponce(bundle);
+            fragmentCallback.onResponse(bundle);
     }
 
 

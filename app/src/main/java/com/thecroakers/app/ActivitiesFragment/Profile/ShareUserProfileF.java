@@ -644,7 +644,7 @@ public class ShareUserProfileF extends BottomSheetDialogFragment implements View
                     if (code.equals("200")) {
                         Bundle bundle=new Bundle();
                         bundle.putBoolean("isShow",true);
-                        callback.onResponce(bundle);
+                        callback.onResponse(bundle);
                     }
                 }catch (Exception e)
                 {

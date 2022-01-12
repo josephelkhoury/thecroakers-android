@@ -113,7 +113,7 @@ public class PermissionUtils {
             Functions.showDoubleButtonAlert(activity, activity.getString(R.string.permission_alert),message,
                     activity.getString(R.string.cancel_), activity.getString(R.string.permission), false, new FragmentCallBack() {
                         @Override
-                        public void onResponce(Bundle bundle) {
+                        public void onResponse(Bundle bundle) {
                             if (bundle.getBoolean("isShow",false))
                             {
                                 takeCameraPermission();
@@ -155,7 +155,7 @@ public class PermissionUtils {
             Functions.showDoubleButtonAlert(activity, activity.getString(R.string.permission_alert),message,
                     activity.getString(R.string.cancel_), activity.getString(R.string.permission), false, new FragmentCallBack() {
                         @Override
-                        public void onResponce(Bundle bundle) {
+                        public void onResponse(Bundle bundle) {
                             if (bundle.getBoolean("isShow",false))
                             {
                                 takeStorageCameraPermission();
@@ -207,7 +207,7 @@ public class PermissionUtils {
             Functions.showDoubleButtonAlert(activity, activity.getString(R.string.permission_alert),message,
                     activity.getString(R.string.cancel_), activity.getString(R.string.permission), false, new FragmentCallBack() {
                         @Override
-                        public void onResponce(Bundle bundle) {
+                        public void onResponse(Bundle bundle) {
                             if (bundle.getBoolean("isShow",false))
                             {
                                 takeStoragePermission();
@@ -249,7 +249,7 @@ public class PermissionUtils {
             Functions.showDoubleButtonAlert(activity, activity.getString(R.string.permission_alert),message,
                     activity.getString(R.string.cancel_), activity.getString(R.string.permission), false, new FragmentCallBack() {
                         @Override
-                        public void onResponce(Bundle bundle) {
+                        public void onResponse(Bundle bundle) {
                             if (bundle.getBoolean("isShow",false))
                             {
                                 takeCameraRecordingPermission();
@@ -283,7 +283,7 @@ public class PermissionUtils {
             Functions.showDoubleButtonAlert(activity, activity.getString(R.string.permission_alert),message,
                     activity.getString(R.string.cancel_), activity.getString(R.string.permission), false, new FragmentCallBack() {
                         @Override
-                        public void onResponce(Bundle bundle) {
+                        public void onResponse(Bundle bundle) {
                             if (bundle.getBoolean("isShow",false))
                             {
                                 takeContactPermission();
@@ -325,7 +325,7 @@ public class PermissionUtils {
             Functions.showDoubleButtonAlert(activity, activity.getString(R.string.permission_alert),message,
                     activity.getString(R.string.cancel_), activity.getString(R.string.permission), false, new FragmentCallBack() {
                         @Override
-                        public void onResponce(Bundle bundle) {
+                        public void onResponse(Bundle bundle) {
                             if (bundle.getBoolean("isShow",false))
                             {
                                 takeStorageRecordingPermission();
@@ -378,7 +378,7 @@ public class PermissionUtils {
             Functions.showDoubleButtonAlert(activity, activity.getString(R.string.permission_alert),message,
                     activity.getString(R.string.cancel_), activity.getString(R.string.permission), false, new FragmentCallBack() {
                         @Override
-                        public void onResponce(Bundle bundle) {
+                        public void onResponse(Bundle bundle) {
                             if (bundle.getBoolean("isShow",false))
                             {
                                 takeStorageCameraRecordingPermission();

@@ -129,7 +129,7 @@ public class ManageAccountsF extends BottomSheetDialogFragment implements View.O
     private void openAddNewAccount() {
         Bundle bundle=new Bundle();
         bundle.putBoolean("isShow",true);
-        callback.onResponce(bundle);
+        callback.onResponse(bundle);
         dismiss();
     }
 

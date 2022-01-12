@@ -265,7 +265,7 @@ public class ShareAndViewProfileF extends BottomSheetDialogFragment implements V
                 dismiss();
 
                 if (callback != null)
-                    callback.onResponce(bundle);
+                    callback.onResponse(bundle);
             }
             break;
             case R.id.user_image:

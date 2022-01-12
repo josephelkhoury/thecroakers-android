@@ -44,9 +44,7 @@ android {
             renderscriptDebuggable false
             pseudoLocalesEnabled false
             zipAlignEnabled true
-
         }
-
     }
     packagingOptions {
         jniLibs {
@@ -56,16 +54,11 @@ android {
             excludes += ['META-INF/library_release.kotlin_module']
         }
     }
-
-
     bundle {
         language {
             enableSplit = false
         }
     }
-
-
-
 }
 
 configurations.all {

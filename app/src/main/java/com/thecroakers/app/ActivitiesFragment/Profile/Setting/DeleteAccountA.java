@@ -115,7 +115,7 @@ public class DeleteAccountA extends AppCompatActivity implements View.OnClickLis
                     getString(R.string.switch_account),true,
                     new FragmentCallBack() {
                         @Override
-                        public void onResponce(Bundle bundle) {
+                        public void onResponse(Bundle bundle) {
                             if (bundle.getBoolean("isShow",false))
                             {
                                 openManageMultipleAccounts();
@@ -200,7 +200,7 @@ public class DeleteAccountA extends AppCompatActivity implements View.OnClickLis
     private void openManageMultipleAccounts() {
         ManageAccountsF f = new ManageAccountsF(new FragmentCallBack() {
             @Override
-            public void onResponce(Bundle bundle) {
+            public void onResponse(Bundle bundle) {
                 if (bundle.getBoolean("isShow",false))
                 {
                     Functions.hideSoftKeyboard(DeleteAccountA.this);

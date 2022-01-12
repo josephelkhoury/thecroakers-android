@@ -204,7 +204,7 @@ public class SettingAndPrivacyA extends AppCompatActivity implements View.OnClic
 
         final ShareUserProfileF fragment = new ShareUserProfileF(userId,userName,fullName,userPic,"",false,true, new FragmentCallBack() {
             @Override
-            public void onResponce(Bundle bundle) {
+            public void onResponse(Bundle bundle) {
                 if (bundle.getBoolean("isShow",false))
                 {
 
@@ -240,7 +240,7 @@ public class SettingAndPrivacyA extends AppCompatActivity implements View.OnClic
                     getString(R.string.switch_account),true,
                     new FragmentCallBack() {
                         @Override
-                        public void onResponce(Bundle bundle) {
+                        public void onResponse(Bundle bundle) {
                             if (bundle.getBoolean("isShow",false))
                             {
                                 openManageMultipleAccounts();
@@ -334,7 +334,7 @@ public class SettingAndPrivacyA extends AppCompatActivity implements View.OnClic
     private void openManageMultipleAccounts() {
         ManageAccountsF f = new ManageAccountsF(new FragmentCallBack() {
             @Override
-            public void onResponce(Bundle bundle) {
+            public void onResponse(Bundle bundle) {
                 if (bundle.getBoolean("isShow",false))
                 {
                     Functions.hideSoftKeyboard(SettingAndPrivacyA.this);

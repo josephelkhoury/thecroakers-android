@@ -65,7 +65,7 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
     int fragmentConainerId;
 
     @Override
-    public void onResponce(Bundle bundle) {
+    public void onResponse(Bundle bundle) {
         if (bundle.getString("action").equalsIgnoreCase("deleteVideo"))
         {
             dataList.remove(bundle.getInt("position"));
@@ -170,7 +170,7 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
 
     public static FragmentCallBack uploadingCallback=new FragmentCallBack() {
         @Override
-        public void onResponce(Bundle bundle) {
+        public void onResponse(Bundle bundle) {
             if (bundle.getBoolean("isShow"))
             {
                 int currentProgress=bundle.getInt("currentpercent",0);
@@ -769,7 +769,7 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
         {
             Bundle bundle=new Bundle();
             bundle.putBoolean("isShow",true);
-            VideosListF.videoListCallback.onResponce(bundle);
+            VideosListF.videoListCallback.onResponse(bundle);
         }
     }
 
