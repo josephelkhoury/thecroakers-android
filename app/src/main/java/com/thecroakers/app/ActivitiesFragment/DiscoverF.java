@@ -55,7 +55,7 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
     RecyclerView recyclerViewDiscover;
     SwipeRefreshLayout swiperefresh;
 
-    ArrayList<DiscoverModel> datalist=new ArrayList<>();
+    ArrayList<DiscoverModel> datalist = new ArrayList<>();
     DiscoverAdapter adapter;
     PageIndicatorView pageIndicatorView;
     ViewPager viewPager;
@@ -67,8 +67,8 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
     ProgressBar loadMoreProgress;
     LinearLayoutManager linearLayoutManager;
 
-    boolean isDiscoverAPiCall=false;
-    boolean isSliderApiCall=false;
+    boolean isDiscoverAPiCall = false;
+    boolean isSliderApiCall = false;
 
     int section = 0;
 
@@ -222,7 +222,6 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
 
                     slider_list.add(sliderModel);
                 }
-
                 setSliderAdapter();
             }
 
@@ -232,7 +231,6 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
     }
 
     public void setSliderAdapter() {
-
         pageIndicatorView.setCount(slider_list.size());
         pageIndicatorView.setSelection(0);
 
@@ -349,8 +347,6 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
                         if (section != 0)
                             entity_img = user.optString("profile_pic");
 
-                        discover_model.image = entity_img;
-
                         JSONObject userPrivacy = user.optJSONObject("PrivacySetting");
                         JSONObject userPushNotification = user.optJSONObject("PushNotification");
 
@@ -362,6 +358,7 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
                     if (video_list.size() >= 5)
                         video_list.add(new HomeModel());
 
+                    discover_model.image = entity_img;
                     discover_model.arrayList = video_list;
 
                     temp_list.add(discover_model);

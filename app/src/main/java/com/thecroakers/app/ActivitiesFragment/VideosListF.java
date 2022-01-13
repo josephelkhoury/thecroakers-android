@@ -143,7 +143,7 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
         context = getContext();
 
         initializePlayer();
-        initalize_views();
+        initialize_views();
 
         return view;
     }
@@ -157,14 +157,14 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
     LinearLayout commentLayout, sharedLayout, croakLayout, croaksSourceLayout;
     LikeButton likeImage;
     ImageView commentImage;
-    TextView likeTxt, commentTxt, duetUsername;
+    TextView likeTxt, commentTxt, croaksSourceTxt, duetUsername;
     PlayerView playerView;
     Handler handler;
     Runnable runnable;
     Boolean animationRunning = false;
     ProgressBar pbar;
 
-    public void initalize_views() {
+    public void initialize_views() {
         sideMenu = view.findViewById(R.id.side_menu);
         videoInfoLayout = view.findViewById(R.id.video_info_layout);
         mainlayout = view.findViewById(R.id.mainlayout);
@@ -191,6 +191,7 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
         croakLayout = view.findViewById(R.id.croak_layout);
         croaksSourceLayout = view.findViewById(R.id.croaks_source_layout);
         croaksSourceImg = view.findViewById(R.id.croaks_source_img);
+        croaksSourceTxt = view.findViewById(R.id.croaks_source_txt);
         pbar = view.findViewById(R.id.p_bar);
 
         duetOpenVideo.setOnClickListener(this::onClick);
@@ -227,7 +228,7 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
     }
 
     public void setData() {
-        if (view==null && item!=null)
+        if (view == null && item != null)
             return;
         else {
             username.setText(""+Functions.showUsername(""+item.username));
@@ -291,11 +292,13 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                 duetUsername.setText(item.duet_username);
             }
 
-            if (item.main_video_id != null && !item.main_video_id.equals("") && !item.main_video_id.equals("0")) {
+            if (item.main_video_id != null && !item.main_video_id.equals("") && !item.main_video_id.equals("0") && !item.main_video_id.equals("null")) {
                 croakLayout.setVisibility(View.GONE);
                 croaksSourceImg.setImageDrawable(getResources().getDrawable(R.drawable.ic_source));
+                croaksSourceTxt.setText(R.string.original);
             } else {
                 croaksSourceImg.setImageDrawable(getResources().getDrawable(R.drawable.ic_replies));
+                croaksSourceTxt.setText(R.string.croaks);
             }
 
             if (Functions.getSharedPreference(context).getBoolean(Variables.IS_LOGIN, false)) {
@@ -427,6 +430,13 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                 break;
 
             case R.id.croaks_source_layout:
+                if (item.main_video_id != null && !item.main_video_id.equals("") && !item.main_video_id.equals("0") && !item.main_video_id.equals("null")) {
+                } else {
+                    Intent intent = new Intent(view.getContext(), TagedVideosA.class);
+                    intent.putExtra("main_video_id", item.video_id);
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
+                }
                 break;
         }
     }
@@ -714,7 +724,6 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-
                 if (exoplayer != null && visible) {
                     setPlayer(isVisibleToUser);
                     updateVideoView();
@@ -725,17 +734,12 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
     }
 
     public void mainMenuVisibility(boolean isvisible) {
-
         if (exoplayer != null && isvisible) {
             exoplayer.setPlayWhenReady(true);
-        }
-
-        else if (exoplayer != null && !isvisible) {
+        } else if (exoplayer != null && !isvisible) {
             exoplayer.setPlayWhenReady(false);
             playerView.findViewById(R.id.exo_play).setAlpha(1);
         }
-
-
     }
 
     // when we swipe for another video this will relaese the privious player
@@ -803,8 +807,6 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
         }
     }
 
-
-
     // handle that call on the player state change
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
@@ -817,15 +819,11 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
 
             pbar.setVisibility(View.GONE);
         }
-
-
     }
-
 
     // show a heart animation on double tap
     public boolean showHeartOnDoubleTap(HomeModel item, final RelativeLayout mainlayout, MotionEvent e) {
         try {
-
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -869,7 +867,6 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
         return true;
     }
 
-
     // this function will call for like the video and Call an Api for like the video
     public void likeVideo(final HomeModel home_model) {
         String action = home_model.liked;
@@ -887,18 +884,17 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
         setLikeData();
 
         Functions.callApiForLikeVideo(getActivity(), home_model.video_id, action, null);
-
     }
 
 
     // this will open the comment screen
     private void openComment(HomeModel item) {
 
-        int comment_counnt = Functions.parseInterger(item.video_comment_count);
+        int comment_count = Functions.parseInterger(item.video_comment_count);
 
         FragmentDataSend fragment_data_send = this;
 
-        CommentF comment_f = new CommentF(comment_counnt, fragment_data_send);
+        CommentF comment_f = new CommentF(comment_count, fragment_data_send);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
         Bundle args = new Bundle();

@@ -18,6 +18,7 @@ import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import androidx.appcompat.widget.Toolbar;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.thecroakers.app.Adapters.MyVideosAdapter;
@@ -46,13 +47,15 @@ public class TagedVideosA extends AppCompatActivity implements View.OnClickListe
     SimpleDraweeView image;
     TextView tagTxtView, tagTitleTxt, videoCountTxt;
     ProgressBar progressBar;
+    Toolbar toolbarLayout;
 
     TextView favTxt;
     ImageView favBtn;
     SwipeRefreshLayout refreshLayout;
 
+    String main_video_id = "0";
     int pageCount = 0;
-    boolean ispostFinsh;
+    boolean ispostFinish;
     ProgressBar loadMoreProgress;
     GridLayoutManager linearLayoutManager;
 
@@ -65,17 +68,25 @@ public class TagedVideosA extends AppCompatActivity implements View.OnClickListe
         context = TagedVideosA.this;
 
         tagTxt = getIntent().getStringExtra("title");
-        refreshLayout=findViewById(R.id.refreshLayout);
+        main_video_id = getIntent().getStringExtra("main_video_id");
+        refreshLayout = findViewById(R.id.refreshLayout);
         tagTxtView = findViewById(R.id.tag_txt_view);
         tagTitleTxt = findViewById(R.id.tag_title_txt);
-        tagTxtView.setText(tagTxt);
-        tagTitleTxt.setText(tagTxt);
-        videoCountTxt = findViewById(R.id.video_count_txt);
-        image = findViewById(R.id.hashtag_icon);
-        image.setController(Functions.frescoImageLoad(getIntent().getStringExtra("image"), image,false));
-        favBtn = findViewById(R.id.fav_btn);
-        favTxt = findViewById(R.id.fav_txt);
-        findViewById(R.id.fav_layout).setOnClickListener(this::onClick);
+
+        if (main_video_id != null) {
+            tagTitleTxt.setText(R.string.croaks);
+            toolbarLayout = findViewById(R.id.toolbar_layout);
+            toolbarLayout.setVisibility(View.GONE);
+        } else {
+            tagTitleTxt.setText(tagTxt);
+            tagTxtView.setText(tagTxt);
+            videoCountTxt = findViewById(R.id.video_count_txt);
+            image = findViewById(R.id.hashtag_icon);
+            image.setController(Functions.frescoImageLoad(getIntent().getStringExtra("image"), image,false));
+            favBtn = findViewById(R.id.fav_btn);
+            favTxt = findViewById(R.id.fav_txt);
+            findViewById(R.id.fav_layout).setOnClickListener(this::onClick);
+        }
 
         loadMoreProgress = findViewById(R.id.load_more_progress);
         recyclerView = findViewById(R.id.recylerview);
@@ -114,14 +125,12 @@ public class TagedVideosA extends AppCompatActivity implements View.OnClickListe
                 if (userScrolled && (scrollOutitems == dataList.size() - 1)) {
                     userScrolled = false;
 
-                    if (loadMoreProgress.getVisibility() != View.VISIBLE && !ispostFinsh) {
+                    if (loadMoreProgress.getVisibility() != View.VISIBLE && !ispostFinish) {
                         loadMoreProgress.setVisibility(View.VISIBLE);
                         pageCount = pageCount + 1;
-                        callApiForGetAllvideos(false);
+                        callApiForGetAllVideos(false);
                     }
                 }
-
-
             }
         });
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -129,7 +138,7 @@ public class TagedVideosA extends AppCompatActivity implements View.OnClickListe
             public void onRefresh() {
                 refreshLayout.setRefreshing(false);
                 pageCount=0;
-                callApiForGetAllvideos(false);
+                callApiForGetAllVideos(false);
             }
         });
 
@@ -143,15 +152,13 @@ public class TagedVideosA extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        callApiForGetAllvideos(true);
-
+        callApiForGetAllVideos(true);
     }
 
 
     //this will get the all videos data of user and then parse the data
-    private void callApiForGetAllvideos(boolean isProgressShow) {
-        if (isProgressShow)
-        {
+    private void callApiForGetAllVideos(boolean isProgressShow) {
+        if (isProgressShow) {
             progressBar.setVisibility(View.VISIBLE);
         }
 
@@ -161,35 +168,40 @@ public class TagedVideosA extends AppCompatActivity implements View.OnClickListe
         JSONObject parameters = new JSONObject();
         try {
             parameters.put("user_id", Functions.getSharedPreference(context).getString(Variables.U_ID, ""));
-            parameters.put("hashtag", tagTxt);
             parameters.put("starting_point", "" + pageCount);
-
-
+            if (main_video_id != null) {
+                parameters.put("video_id", main_video_id);
+            } else {
+                parameters.put("hashtag", tagTxt);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        VolleyRequest.JsonPostRequest(TagedVideosA.this, ApiLinks.showVideosAgainstHashtag, parameters,Functions.getHeaders(this), new Callback() {
+        String apiStr;
+        if (main_video_id != null) {
+            apiStr = ApiLinks.showVideoReplies;
+        } else {
+            apiStr = ApiLinks.showVideosAgainstHashtag;
+        }
+
+        VolleyRequest.JsonPostRequest(TagedVideosA.this, apiStr, parameters,Functions.getHeaders(this), new Callback() {
             @Override
             public void onResponce(String resp) {
-                Functions.checkStatus(TagedVideosA.this,resp);
-                if (isProgressShow)
-                {
+                Functions.checkStatus(TagedVideosA.this, resp);
+                if (isProgressShow) {
                     progressBar.setVisibility(View.GONE);
                 }
 
                 parseData(resp);
             }
         });
-
-
     }
 
     // parse the data of video list
-    public void parseData(String responce) {
-
+    public void parseData(String response) {
         try {
-            JSONObject jsonObject = new JSONObject(responce);
+            JSONObject jsonObject = new JSONObject(response);
             String code = jsonObject.optString("code");
             if (code.equals("200")) {
                 JSONArray msgArray = jsonObject.getJSONArray("msg");
@@ -198,14 +210,23 @@ public class TagedVideosA extends AppCompatActivity implements View.OnClickListe
                 for (int i = 0; i < msgArray.length(); i++) {
                     JSONObject itemdata = msgArray.optJSONObject(i);
 
-                    JSONObject hashtag = itemdata.optJSONObject("Hashtag");
-                    tagId = hashtag.optString("id");
-                    favourite = hashtag.optString("favourite");
-
+                    if (main_video_id == null) {
+                        JSONObject hashtag = itemdata.optJSONObject("Hashtag");
+                        tagId = hashtag.optString("id");
+                        favourite = hashtag.optString("favourite");
+                    }
 
                     JSONObject video = itemdata.optJSONObject("Video");
-                    JSONObject user = video.optJSONObject("User");
-                    JSONObject sound = video.optJSONObject("Sound");
+                    JSONObject user;
+                    JSONObject sound;
+
+                    if (main_video_id == null) {
+                        user = video.optJSONObject("User");
+                        sound = video.optJSONObject("Sound");
+                    } else {
+                        user = itemdata.optJSONObject("User");
+                        sound = itemdata.optJSONObject("Sound");
+                    }
                     JSONObject topic = itemdata.optJSONObject("Topic");
                     JSONObject country = itemdata.optJSONObject("Country");
                     JSONObject userPrivacy = user.optJSONObject("PrivacySetting");
@@ -214,19 +235,18 @@ public class TagedVideosA extends AppCompatActivity implements View.OnClickListe
                     HomeModel item = Functions.parseVideoData(user, sound, video, topic, country, userPrivacy, userPushNotification);
 
                     temp_list.add(item);
-
-
                 }
 
-                if (favourite != null && favourite.equalsIgnoreCase("1")) {
-                    favBtn.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_fav_fill));
-                    favTxt.setText(getString(R.string.added_to_favourite));
-                } else {
-                    favBtn.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_fav));
-                    favTxt.setText(getString(R.string.add_to_favourite));
+                if (main_video_id == null) {
+                    if (favourite != null && favourite.equalsIgnoreCase("1")) {
+                        favBtn.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_fav_fill));
+                        favTxt.setText(getString(R.string.added_to_favourite));
+                    } else {
+                        favBtn.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_fav));
+                        favTxt.setText(getString(R.string.add_to_favourite));
+                    }
+                    videoCountTxt.setText(jsonObject.optString("videos_count") + " "+getString(R.string.videos));
                 }
-
-                videoCountTxt.setText(jsonObject.optString("videos_count") + " "+getString(R.string.videos));
 
                 if (pageCount == 0) {
                     dataList.clear();
@@ -251,14 +271,13 @@ public class TagedVideosA extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
-    private void openWatchVideo(int postion) {
+    private void openWatchVideo(int position) {
         Intent intent = new Intent(TagedVideosA.this, WatchVideosA.class);
         intent.putExtra("arraylist", dataList);
-        intent.putExtra("position", postion);
+        intent.putExtra("position", position);
         intent.putExtra("pageCount", pageCount);
-        intent.putExtra("hashtag",tagTxt);
-        intent.putExtra("userId",Functions.getSharedPreference(TagedVideosA.this).getString(Variables.U_ID,""));
+        intent.putExtra("hashtag", tagTxt);
+        intent.putExtra("userId", Functions.getSharedPreference(TagedVideosA.this).getString(Variables.U_ID,""));
         intent.putExtra("whereFrom","tagedVideo");
         resultCallback.launch(intent);
     }
@@ -269,8 +288,7 @@ public class TagedVideosA extends AppCompatActivity implements View.OnClickListe
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
-                        if (data.getBooleanExtra("isShow",false))
-                        {
+                        if (data.getBooleanExtra("isShow",false)) {
                             dataList= (ArrayList<HomeModel>) data.getSerializableExtra("arraylist");
                             pageCount=data.getIntExtra("pageCount",0);
                             adapter.notifyDataSetChanged();
@@ -279,10 +297,7 @@ public class TagedVideosA extends AppCompatActivity implements View.OnClickListe
                 }
             });
 
-
-
     public void callApiFavHashtag() {
-
         JSONObject params = new JSONObject();
         try {
             params.put("user_id", Functions.getSharedPreference(context).getString(Variables.U_ID, ""));
@@ -307,26 +322,18 @@ public class TagedVideosA extends AppCompatActivity implements View.OnClickListe
                     favBtn.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_fav));
                     favTxt.setText(getString(R.string.add_to_favourite));
                 }
-
-
             }
         });
-
     }
-
 
     @Override
     public void onClick(View v) {
-
         switch (v.getId()) {
-
             case R.id.fav_layout:
-                if (Functions.checkLoginUser(TagedVideosA.this))
-                {
+                if (Functions.checkLoginUser(TagedVideosA.this)) {
                     callApiFavHashtag();
                 }
                 break;
         }
-
     }
 }

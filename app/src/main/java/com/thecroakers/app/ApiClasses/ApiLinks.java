@@ -150,7 +150,7 @@ public class ApiLinks {
 
     public static final String deleteFollower= API_BASE_URL+"deleteFollower";
 
-    public static final String deleteUserAccount = API_BASE_URL+"deleteUserAccount ";
+    public static final String deleteUserAccount = API_BASE_URL+"deleteUserAccount";
 
-
+    public static final String showVideoReplies = API_BASE_URL+"showVideoReplies";
 }
