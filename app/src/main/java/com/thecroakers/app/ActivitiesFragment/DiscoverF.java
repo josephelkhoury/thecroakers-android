@@ -2,9 +2,11 @@ package com.thecroakers.app.ActivitiesFragment;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -19,11 +21,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.thecroakers.app.ActivitiesFragment.Profile.ProfileA;
 import com.thecroakers.app.ActivitiesFragment.Search.SearchMainA;
+import com.thecroakers.app.ActivitiesFragment.VideoRecording.PostVideoA;
 import com.thecroakers.app.Adapters.DiscoverAdapter;
 import com.thecroakers.app.Adapters.SlidingAdapter;
 import com.thecroakers.app.Constants;
@@ -56,6 +60,8 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
     SwipeRefreshLayout swiperefresh;
 
     ArrayList<DiscoverModel> datalist = new ArrayList<>();
+    ArrayList<JSONObject> countries = new ArrayList<>();
+    ArrayList<String> countriesStr = new ArrayList<String>();
     DiscoverAdapter adapter;
     PageIndicatorView pageIndicatorView;
     ViewPager viewPager;
@@ -66,11 +72,13 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
     boolean ispostFinish;
     ProgressBar loadMoreProgress;
     LinearLayoutManager linearLayoutManager;
+    Button countryBtn;
 
     boolean isDiscoverAPiCall = false;
     boolean isSliderApiCall = false;
 
     int section = 0;
+    String country_id = "0";
 
     public DiscoverF(int section) {
         this.section = section;
@@ -92,6 +100,9 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerViewDiscover.setLayoutManager(linearLayoutManager);
         recyclerViewDiscover.setHasFixedSize(true);
+        countryBtn = view.findViewById(R.id.country_btn);
+
+        getCountries();
 
         adapter = new DiscoverAdapter(context, datalist, new DiscoverAdapter.OnItemClickListener() {
             @Override
@@ -157,13 +168,14 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
                     shimmerFrameLayout.startShimmer();
                 }
                 //callApiSlider();
-                pageCount=0;
+                pageCount = 0;
                 callApiForAllVideos();
             }
         });
 
         view.findViewById(R.id.search_layout).setOnClickListener(this);
         view.findViewById(R.id.search_edit).setOnClickListener(this);
+        countryBtn.setOnClickListener(this);
 
         return view;
     }
@@ -258,7 +270,7 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
         if (isDiscoverAPiCall) {
             return;
         }
-        isDiscoverAPiCall=true;
+        isDiscoverAPiCall = true;
         if (datalist == null)
             datalist = new ArrayList<>();
 
@@ -266,7 +278,8 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
         try {
             parameters.put("starting_point", "" + pageCount);
             parameters.put("section", this.section);
-            if(Functions.getSharedPreference(view.getContext()).getBoolean(Variables.IS_LOGIN,false)) {
+            parameters.put("country_id", country_id);
+            if (Functions.getSharedPreference(view.getContext()).getBoolean(Variables.IS_LOGIN,false)) {
                 parameters.put("user_id", Functions.getSharedPreference(view.getContext()).getString(Variables.U_ID,""));
             }
         } catch (Exception e) {
@@ -372,6 +385,8 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
                 }
 
                 adapter.notifyDataSetChanged();
+            } else if (code.equals("201") && pageCount == 0) {
+                datalist.clear();
             }
 
             if (datalist.isEmpty()) {
@@ -385,6 +400,39 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
         } finally {
             loadMoreProgress.setVisibility(View.GONE);
         }
+    }
+
+    private void getCountries() {
+        JSONObject parameters = new JSONObject();
+        try {
+            parameters.put("worldwide", "1");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        VolleyRequest.JsonPostRequest(DiscoverF.this.getActivity(), ApiLinks.showCountries, parameters, Functions.getHeaders(this.getContext()), new Callback() {
+            @Override
+            public void onResponce(String resp) {
+                Functions.checkStatus(DiscoverF.this.getActivity(), resp);
+                try {
+                    JSONObject jsonObject = new JSONObject(resp);
+                    String code = jsonObject.optString("code");
+                    if (code.equals("200")) {
+                        JSONArray msgArray = jsonObject.getJSONArray("msg");
+                        for (int i = 0; i < msgArray.length(); i++) {
+                            JSONObject countryObj = msgArray.optJSONObject(i);
+                            JSONObject country = countryObj.optJSONObject("Country");
+                            countries.add(country);
+                            countriesStr.add(country.optString("emoji")+" "+country.optString("name"));
+                        }
+                    } else {
+                        Functions.showToast(context, jsonObject.optString("msg"));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     // When you click on any Video a new activity is open which will play the Clicked video
@@ -417,10 +465,33 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
             case R.id.search_edit:
                 openSearch();
                 break;
+            case R.id.country_btn:
+                countryDialog();
+                break;
             default:
                 return;
 
         }
+    }
+
+    private void countryDialog() {
+        final CharSequence[] options = countriesStr.toArray(new CharSequence[countriesStr.size()]);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext(), R.style.AlertDialogCustom);
+
+        builder.setTitle(getString(R.string.country));
+
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                JSONObject country = countries.get(i);
+                country_id = country.optString("id");
+                countryBtn.setText(country.optString("emoji"));
+                pageCount = 0;
+                callApiForAllVideos();
+            }
+        });
+
+        builder.show();
     }
 
     private void openEntity(DiscoverModel entity) {

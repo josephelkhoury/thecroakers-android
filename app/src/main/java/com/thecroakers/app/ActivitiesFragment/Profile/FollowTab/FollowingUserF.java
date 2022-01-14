@@ -48,7 +48,6 @@ import java.util.TimerTask;
 
 public class FollowingUserF extends Fragment {
 
-
     View view;
     Context context;
     ShimmerFrameLayout shimmerFrameLayout;
@@ -68,16 +67,14 @@ public class FollowingUserF extends Fragment {
     ProgressBar loadMoreProgress;
     LinearLayoutManager linearLayoutManager;
 
-    public FollowingUserF()
-    {
+    public FollowingUserF() {
 
     }
 
-    public FollowingUserF(String userId, String userName, boolean isSelf)
-    {
-        this.userId=userId;
-        this.userName=userName;
-        this.isSelf=isSelf;
+    public FollowingUserF(String userId, String userName, boolean isSelf) {
+        this.userId = userId;
+        this.userName = userName;
+        this.isSelf = isSelf;
     }
 
     @Override
@@ -126,9 +123,7 @@ public class FollowingUserF extends Fragment {
                     case R.id.ivCross:
                         selectNotificationPriority(postion);
                         break;
-
                 }
-
             }
         }
         );
@@ -253,7 +248,6 @@ public class FollowingUserF extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
         VolleyRequest.JsonPostRequest(getActivity(), ApiLinks.search, parameters,Functions.getHeaders(getActivity()), new Callback() {
             @Override
@@ -382,26 +376,17 @@ public class FollowingUserF extends Fragment {
 
     // get the list of videos that you favourite
     public void callFollowingApi() {
-
         if (datalist == null)
             datalist = new ArrayList<>();
 
         JSONObject parameters = new JSONObject();
         try {
-
-            if (Functions.getSharedPreference(context).getString(Variables.U_ID, "0").equals(userId))
-            {
-                parameters.put("user_id", Functions.getSharedPreference(context).getString(Variables.U_ID, ""));
-            }
-            else {
-                parameters.put("user_id", Functions.getSharedPreference(context).getString(Variables.U_ID, ""));
-                parameters.put("other_user_id", userId);
-            }
+            parameters.put("user_id", Functions.getSharedPreference(context).getString(Variables.U_ID, ""));
+            parameters.put("other_user_id", userId);
             parameters.put("starting_point", "" + pageCount);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
         VolleyRequest.JsonPostRequest(getActivity(), ApiLinks.showFollowing, parameters, Functions.getHeaders(getActivity()),new Callback() {
             @Override

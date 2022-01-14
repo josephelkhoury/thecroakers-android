@@ -46,15 +46,28 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_toEndOf="@+id/search"
+                    android:layout_toStartOf="@+id/country_btn"
                     android:backgroundTint="@color/transparent"
                     android:gravity="center_vertical"
                     android:paddingStart="@dimen/_6sdp"
                     android:paddingTop="@dimen/_4sdp"
-                    android:paddingEnd="@dimen/_2sdp"
+                    android:paddingEnd="@dimen/_6sdp"
                     android:paddingBottom="@dimen/_4sdp"
                     android:text="@string/search_"
                     android:textColor="@color/darkgray"
                     android:textSize="@dimen/_11sdp" />
+
+                <Button
+                    android:id="@+id/country_btn"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
+                    android:layout_centerVertical="true"
+                    android:padding="@dimen/_2sdp"
+                    android:scaleType="fitCenter"
+                    android:background="@color/transparent"
+                    android:text="🌐"
+                    android:textSize="@dimen/_14sdp" />
 
             </RelativeLayout>
 
@@ -104,6 +117,40 @@
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
             <include layout="@layout/shimmer_list_slider_layout" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/no_data_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/search_layout"
+            android:background="@color/white"
+            android:paddingStart="@dimen/_11sdp"
+            android:paddingEnd="@dimen/_11sdp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/whoops"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="@string/whoops"
+                android:layout_centerInParent="true"
+                android:textColor="@color/dimgray"
+                android:textSize="@dimen/_15sdp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/whoops"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="@dimen/_22sdp"
+                android:layout_marginEnd="@dimen/_22sdp"
+                android:text="@string/no_trending"
+                android:textAlignment="center"
+                android:textColor="@color/dimgray"
+                android:textSize="@dimen/_11sdp" />
 
         </RelativeLayout>
 

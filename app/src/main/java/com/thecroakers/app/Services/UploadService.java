@@ -62,6 +62,7 @@ public class UploadService extends Service {
     }
 
     String draft_file, duet_video_id, main_video_id;
+    String topic_id, country_id;
     String videopath;
     String description;
     String privacy_type;
@@ -95,6 +96,8 @@ public class UploadService extends Service {
             allow_duet = intent.getStringExtra("allow_duet");
             hashtags_json = intent.getStringExtra("hashtags_json");
             users_json = intent.getStringExtra("mention_users_json");
+            topic_id = intent.getStringExtra("topic_id");
+            country_id = intent.getStringExtra("country_id");
 
             new Thread(new Runnable() {
                 @Override
@@ -115,11 +118,14 @@ public class UploadService extends Service {
                     } else {
                         uploadModel.setVideoId("0");
                     }
-                    if (duet_video_id != null) {
+                    if (main_video_id != null) {
                         uploadModel.setMainVideoId(main_video_id);
                     } else {
                         uploadModel.setMainVideoId("0");
                     }
+
+                    uploadModel.setTopicId(topic_id);
+                    uploadModel.setCountryId(country_id);
 
                     FileUploader fileUploader = new FileUploader(new File(videopath),getApplicationContext(),uploadModel);
                     fileUploader.SetCallBack(new FileUploader.FileUploaderCallback() {

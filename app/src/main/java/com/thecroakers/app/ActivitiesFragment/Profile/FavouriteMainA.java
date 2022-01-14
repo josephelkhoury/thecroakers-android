@@ -23,9 +23,6 @@ public class FavouriteMainA extends AppCompatActivity {
 
     Context context;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,30 +41,24 @@ public class FavouriteMainA extends AppCompatActivity {
         Set_tabs();
     }
 
-
     // set up the favourite video sound and hastage fragment
     protected TabLayout tabLayout;
     protected ViewPager menuPager;
     ViewPagerAdapter adapter;
 
     public void Set_tabs() {
-
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         menuPager = (ViewPager) findViewById(R.id.viewpager);
         menuPager.setOffscreenPageLimit(3);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
 
-
         adapter.addFrag(new FavouriteVideosF(), getString(R.string.videos));
         adapter.addFrag(new FavouriteSoundF(), getString(R.string.sounds));
         adapter.addFrag(new SearchHashTagsF("favourite"), getString(R.string.hashtag));
 
-
         menuPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(menuPager);
-
     }
-
 
     @Override
     protected void onResume() {

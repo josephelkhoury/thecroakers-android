@@ -54,7 +54,6 @@ public class SearchHashTagsF extends RootFragment {
     }
 
     public SearchHashTagsF() {
-
     }
 
     @Override
@@ -63,7 +62,6 @@ public class SearchHashTagsF extends RootFragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_search, container, false);
         context = getContext();
-
 
         shimmerFrameLayout = view.findViewById(R.id.shimmer_view_container);
         shimmerFrameLayout.startShimmer();
@@ -79,7 +77,7 @@ public class SearchHashTagsF extends RootFragment {
                 switch (view.getId()) {
                     default:
                         HashTagModel item = (HashTagModel) object;
-                        openHashtag(item.name);
+                        openHashtag(item);
                         break;
                 }
 
@@ -119,8 +117,6 @@ public class SearchHashTagsF extends RootFragment {
                                 callApiSearch();
                     }
                 }
-
-
             }
         });
 
@@ -205,10 +201,10 @@ public class SearchHashTagsF extends RootFragment {
     }
 
     // parse the data of hashtag list
-    public void parseData(String responce) {
+    public void parseData(String response) {
 
         try {
-            JSONObject jsonObject = new JSONObject(responce);
+            JSONObject jsonObject = new JSONObject(response);
             String code = jsonObject.optString("code");
             if (code.equals("200")) {
 
@@ -223,12 +219,11 @@ public class SearchHashTagsF extends RootFragment {
 
                     item.id = hashtag.optString("id");
                     item.name = hashtag.optString("name");
+                    item.image = hashtag.optString("image");
                     item.views = hashtag.optString("views");
                     item.videos_count = hashtag.optString("videos_count");
-
                     item.fav = hashtag.optString("favourite", "1");
                     temp_list.add(item);
-
                 }
 
                 if (pageCount == 0) {
@@ -258,10 +253,12 @@ public class SearchHashTagsF extends RootFragment {
     }
 
     // open the video list against the hashtags
-    private void openHashtag(String tag) {
+    private void openHashtag(HashTagModel model) {
 
-        Intent intent=new Intent(view.getContext(), TagedVideosA.class);
-        intent.putExtra("tag", tag);
+        Intent intent = new Intent(view.getContext(), TagedVideosA.class);
+        intent.putExtra("id", model.id);
+        intent.putExtra("title", model.name);
+        intent.putExtra("image", model.image);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
 

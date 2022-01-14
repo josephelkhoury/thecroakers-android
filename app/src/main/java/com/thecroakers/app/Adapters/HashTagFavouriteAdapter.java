@@ -4,10 +4,12 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.thecroakers.app.Interfaces.AdapterClickListener;
 import com.thecroakers.app.Models.HashTagModel;
 import com.thecroakers.app.R;
@@ -46,37 +48,31 @@ public class HashTagFavouriteAdapter extends RecyclerView.Adapter<HashTagFavouri
         holder.setIsRecyclable(false);
         HashTagModel item = datalist.get(i);
         holder.nameTxt.setText(item.name);
-
         holder.viewsTxt.setText(Functions.getSuffix(item.videos_count)+" "+(holder.itemView.getContext().getString(R.string.views)).toLowerCase());
+        holder.hashtagImg.setController(Functions.frescoImageLoad(item.image, holder.hashtagImg,false));
 
         holder.bind(i, item, adapterClickListener);
-
     }
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
 
         TextView nameTxt, viewsTxt;
+        SimpleDraweeView hashtagImg;
 
         public CustomViewHolder(View view) {
             super(view);
 
             nameTxt = view.findViewById(R.id.name_txt);
             viewsTxt = view.findViewById(R.id.views_txt);
+            hashtagImg = view.findViewById(R.id.hashtag_icon);
         }
 
         public void bind(final int pos, final Object item, final AdapterClickListener listener) {
 
-
             itemView.setOnClickListener(v -> {
-
                 listener.onItemClick(v, pos, item);
-
             });
         }
-
-
     }
-
-
 }
 

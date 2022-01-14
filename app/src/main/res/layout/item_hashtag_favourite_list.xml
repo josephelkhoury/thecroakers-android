@@ -10,13 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_90sdp">
 
-        <ImageView
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/hashtag_icon"
             android:layout_width="@dimen/_75sdp"
             android:layout_height="@dimen/_75sdp"
-            android:id="@+id/hashtag_icon"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_hashtag_fav"/>
+            android:src="@drawable/ic_hashtag_fav" />
 
 
 

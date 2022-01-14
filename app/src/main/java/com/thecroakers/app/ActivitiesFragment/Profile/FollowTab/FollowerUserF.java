@@ -61,15 +61,13 @@ public class FollowerUserF extends Fragment {
     LinearLayoutManager linearLayoutManager;
 
 
-    public FollowerUserF()
-    {
+    public FollowerUserF() {
 
     }
 
-    public FollowerUserF(String userId, boolean isSelf)
-    {
-        this.userId=userId;
-        this.isSelf=isSelf;
+    public FollowerUserF(String userId, boolean isSelf) {
+        this.userId = userId;
+        this.isSelf = isSelf;
     }
 
     @Override
@@ -105,9 +103,7 @@ public class FollowerUserF extends Fragment {
                     case R.id.ivCross:
                         removeFollower(postion);
                         break;
-
                 }
-
             }
         }
         );
@@ -140,8 +136,6 @@ public class FollowerUserF extends Fragment {
                         callFollowerApi();
                     }
                 }
-
-
             }
         });
 
@@ -311,21 +305,13 @@ public class FollowerUserF extends Fragment {
 
         JSONObject parameters = new JSONObject();
         try {
-            if (Functions.getSharedPreference(context).getString(Variables.U_ID, "0").equals(userId))
-            {
-                parameters.put("user_id", Functions.getSharedPreference(context).getString(Variables.U_ID, ""));
-            }
-            else {
-
-                parameters.put("user_id", Functions.getSharedPreference(context).getString(Variables.U_ID, ""));
-                parameters.put("other_user_id", userId);
-            }
+            parameters.put("user_id", Functions.getSharedPreference(context).getString(Variables.U_ID, ""));
+            parameters.put("other_user_id", userId);
             parameters.put("starting_point", "" + pageCount);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
         VolleyRequest.JsonPostRequest(getActivity(), ApiLinks.showFollowers, parameters,Functions.getHeaders(getActivity()), new Callback() {
             @Override
@@ -336,14 +322,12 @@ public class FollowerUserF extends Fragment {
                 parseFansData(resp);
             }
         });
-
     }
 
-
     // parse the list of all the follower list
-    public void parseFansData(String responce) {
+    public void parseFansData(String response) {
         try {
-            JSONObject jsonObject = new JSONObject(responce);
+            JSONObject jsonObject = new JSONObject(response);
             String code = jsonObject.optString("code");
             if (code.equals("200")) {
                 JSONArray msgArray = jsonObject.getJSONArray("msg");
@@ -352,7 +336,6 @@ public class FollowerUserF extends Fragment {
                 for (int i = 0; i < msgArray.length(); i++) {
                     JSONObject object = msgArray.optJSONObject(i);
                     JSONObject FollowingList = object.optJSONObject("FollowerList");
-
 
                     FollowingModel item = new FollowingModel();
                     item.fb_id = FollowingList.optString("id");
@@ -366,23 +349,18 @@ public class FollowerUserF extends Fragment {
                         item.profile_pic = Constants.BASE_URL + item.profile_pic;
                     }
 
-                    if (isSelf)
-                    {
-                        item.isFollow=false;
-                    }
-                    else
-                    {
-                        item.isFollow=true;
+                    if (isSelf) {
+                        item.isFollow = false;
+                    } else {
+                        item.isFollow = true;
                     }
 
                     String userStatus=FollowingList.optString("button").toLowerCase();
-                    item.follow_status_button=Functions.getFollowButtonStatus(userStatus,view.getContext());
+                    item.follow_status_button = Functions.getFollowButtonStatus(userStatus,view.getContext());
 
-                    item.notificationType="normal";
+                    item.notificationType = "normal";
 
                     temp_list.add(item);
-
-
                 }
 
                 if (pageCount == 0) {
@@ -407,6 +385,4 @@ public class FollowerUserF extends Fragment {
             loadMoreProgress.setVisibility(View.GONE);
         }
     }
-
-
 }

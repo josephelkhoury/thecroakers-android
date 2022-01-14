@@ -77,8 +77,8 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
 
     String draftFile, duetVideoId, duetVideoUsername, duetOrientation;
 
-    String topic_id = "0";
-    String country_id = "0";
+    String topic_id = "";
+    String country_id = "";
     String privacyType = "Public";
     TextView topicTxt, countryTxt, privacyTypeTxt, duetUsername, additionalDetailsTextCount;
     Switch commentSwitch, duetSwitch;
@@ -296,14 +296,14 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
                 break;
 
             case R.id.post_btn:
-                if (topic_id == "0") {
+                if (topic_id.equals("")) {
                     Functions.showToast(context, getString(R.string.please_choose_a_topic));
-                    break;
+                    return;
                 }
 
-                if (country_id == "0") {
+                if (country_id.equals("")) {
                     Functions.showToast(context, getString(R.string.please_choose_a_country));
-                    break;
+                    return;
                 }
                 makeMentionArrays();
                 startService();
@@ -508,6 +508,11 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
 
     private void getCountries() {
         JSONObject parameters = new JSONObject();
+        try {
+            parameters.put("worldwide", "1");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         VolleyRequest.JsonPostRequest(PostVideoA.this, ApiLinks.showCountries, parameters, Functions.getHeaders(this), new Callback() {
             @Override
@@ -538,7 +543,7 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
         final CharSequence[] options = topicsStr.toArray(new CharSequence[topicsStr.size()]);
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogCustom);
 
-        builder.setTitle(null);
+        builder.setTitle(getString(R.string.topic_of_this_video));
 
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
@@ -556,7 +561,7 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
         final CharSequence[] options = countriesStr.toArray(new CharSequence[countriesStr.size()]);
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogCustom);
 
-        builder.setTitle(null);
+        builder.setTitle(getString(R.string.country));
 
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
@@ -650,6 +655,8 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
             mServiceIntent.putExtra("mention_users_json", friendsTag.toString());
             mServiceIntent.putExtra("duet_orientation", duetOrientation);
             mServiceIntent.putExtra("main_video_id", main_video_id);
+            mServiceIntent.putExtra("topic_id", topic_id);
+            mServiceIntent.putExtra("country_id", country_id);
 
             if (commentSwitch.isChecked())
                 mServiceIntent.putExtra("allow_comment", "true");

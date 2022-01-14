@@ -21,7 +21,7 @@ public class Constants {
     public static final boolean IS_SHOW_GIF = true;
 
     // if you want to disable all the toasts in the app
-    public static final boolean IS_TOAST_ENABLE = false;
+    public static final boolean IS_TOAST_ENABLE = true;
 
     // if you want to add a limit that a user can watch only 6 video then change the below value to true
     // if you want to change the demo videos limit count then set the count as you want

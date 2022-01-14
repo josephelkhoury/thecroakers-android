@@ -31,7 +31,7 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.Cust
     String fromFrag;
 
     public interface OnItemClickListener {
-        void onItemClick(View view, int postion, FollowingModel item);
+        void onItemClick(View view, int position, FollowingModel item);
     }
 
     public FollowingAdapter.OnItemClickListener listener;
@@ -68,7 +68,7 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.Cust
 
         public CustomViewHolder(View view) {
             super(view);
-            ivCross=view.findViewById(R.id.ivCross);
+            ivCross = view.findViewById(R.id.ivCross);
             userImage = view.findViewById(R.id.user_image);
             userName = view.findViewById(R.id.user_name);
             userId = view.findViewById(R.id.user_id);
@@ -77,31 +77,19 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.Cust
         }
 
         public void bind(final int pos, final FollowingModel item, final FollowingAdapter.OnItemClickListener listener) {
-
-
             mainlayout.setOnClickListener(v -> {
                 listener.onItemClick(v, pos, item);
-
             });
 
             actionTxt.setOnClickListener(v -> {
                 listener.onItemClick(v, pos, item);
-
             });
 
             ivCross.setOnClickListener(v -> {
                 listener.onItemClick(v, pos, item);
-
             });
-
-
-
         }
-
-
     }
-
-
 
     @Override
     public void onBindViewHolder(final FollowingAdapter.CustomViewHolder holder, final int i) {
@@ -111,47 +99,30 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.Cust
 
         holder.userName.setText(item.username);
 
-
         if (item.profile_pic != null && !item.profile_pic.equals("")) {
-
             holder.userImage.setController(Functions.frescoImageLoad(item.profile_pic,holder.userImage,false));
-
         }
 
-        if (isSelf)
-        {
-            if (fromFrag.equalsIgnoreCase("following"))
-            {
-                if (item.notificationType.equalsIgnoreCase("1"))
-                {
+        if (isSelf) {
+            if (fromFrag.equalsIgnoreCase("following")) {
+                if (item.notificationType.equalsIgnoreCase("1")) {
                     holder.ivCross.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_live_notification));
                 }
-                else
-                if (item.notificationType.equalsIgnoreCase("0"))
-                {
+                else if (item.notificationType.equalsIgnoreCase("0")) {
                     holder.ivCross.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_mute_notification));
                 }
-
-            }else
-            if (fromFrag.equalsIgnoreCase("fan"))
-            {
+            } else if (fromFrag.equalsIgnoreCase("fan")) {
                 holder.ivCross.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_option));
-            }else
-            {
+            } else {
                 holder.ivCross.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_cross));
             }
-
         }
 
-        if (item.isFollow)
-        {
+        if (item.isFollow) {
             holder.ivCross.setVisibility(View.GONE);
-        }
-        else
-        {
+        } else {
             holder.ivCross.setVisibility(View.VISIBLE);
         }
-
 
         holder.userId.setText(item.first_name + " " + item.last_name);
         holder.actionTxt.setText(item.follow_status_button);
@@ -170,10 +141,6 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.Cust
             holder.actionTxt.setVisibility(View.GONE);
         }
 
-
         holder.bind(i, datalist.get(i), listener);
-
     }
-
-
 }

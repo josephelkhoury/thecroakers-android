@@ -59,7 +59,7 @@
                 android:textColor="@color/dimgray"
                 android:layout_marginStart="@dimen/_22sdp"
                 android:layout_marginEnd="@dimen/_22sdp"
-                android:text="@string/no_fav_video"
+                android:text="@string/no_followers"
                 android:textSize="@dimen/_11sdp"/>
 
         </RelativeLayout>
