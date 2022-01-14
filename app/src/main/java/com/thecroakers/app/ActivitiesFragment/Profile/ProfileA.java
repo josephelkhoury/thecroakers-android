@@ -136,10 +136,8 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
                 openFavouriteVideos();
                 break;
 
-            case R.id.suggestionBtn:
-            {
-                if (isSuggestion)
-                {
+            case R.id.suggestionBtn: {
+                if (isSuggestion) {
                     suggestionBtn.animate().rotation(180).setDuration(300).setListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
@@ -153,9 +151,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
                         }
                     }).start();
                     isSuggestion=false;
-                }
-                else
-                {
+                } else {
                     suggestionBtn.animate().rotation(0).setDuration(300).setListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
@@ -173,12 +169,9 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
                 break;
 
             case R.id.tvFollowBtn:
-                if (tvFollowBtn.getText().toString().equalsIgnoreCase("Message"))
-                {
+                if (tvFollowBtn.getText().toString().equalsIgnoreCase("Message")) {
                     openChatF();
-                }
-                else
-                {
+                } else {
                     if (Functions.checkLoginUser(ProfileA.this))
                         followUnFollowUser();
                 }
@@ -232,12 +225,9 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
 
     private void openProfileShareTab() {
         boolean fromSetting=false;
-        if (userId.equalsIgnoreCase(Functions.getSharedPreference(ProfileA.this).getString(Variables.U_ID,"")))
-        {
+        if (userId.equalsIgnoreCase(Functions.getSharedPreference(ProfileA.this).getString(Variables.U_ID,""))) {
             fromSetting=true;
-        }
-        else
-        {
+        } else {
             fromSetting=false;
         }
 
@@ -246,8 +236,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
             @Override
             public void onResponse(Bundle bundle) {
                 if (bundle.getString("action").equals("profileShareMessage")) {
-                    if (Functions.checkLoginUser(ProfileA.this))
-                    {
+                    if (Functions.checkLoginUser(ProfileA.this)) {
                         // firebase sharing
                     }
                 }
@@ -264,22 +253,18 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
-
     ActivityResultLauncher<Intent> resultCallback = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
-                        if (data.getBooleanExtra("isShow",false))
-                        {
+                        if (data.getBooleanExtra("isShow",false)) {
                             updateProfile();
                         }
-
                     }
                 }
             });
-
 
     private void openEditProfile() {
         Intent intent=new Intent(ProfileA.this,EditProfileA.class);
@@ -297,68 +282,49 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
         } else {
             username.setText(firstName + " " + lastName);
         }
-        if (TextUtils.isEmpty(Functions.getSharedPreference(context).getString(Variables.U_BIO, "")))
-        {
+        if (TextUtils.isEmpty(Functions.getSharedPreference(context).getString(Variables.U_BIO, ""))) {
             tvBio.setVisibility(View.GONE);
         }
-        else
-        {
+        else {
             tvBio.setVisibility(View.VISIBLE);
             tvBio.setText(Functions.getSharedPreference(context).getString(Variables.U_BIO, ""));
         }
-        if (TextUtils.isEmpty(Functions.getSharedPreference(context).getString(Variables.U_LINK, "")))
-        {
+        if (TextUtils.isEmpty(Functions.getSharedPreference(context).getString(Variables.U_LINK, ""))) {
             tabLink.setVisibility(View.GONE);
-        }
-        else
-        {
+        } else {
             tabLink.setVisibility(View.VISIBLE);
             tvLink.setText(Functions.getSharedPreference(context).getString(Variables.U_LINK, ""));
         }
         picUrl = Functions.getSharedPreference(context).getString(Variables.U_PIC, "null");
-        imageView.setController(Functions.frescoImageLoad(picUrl,imageView,false));
-
+        imageView.setController(Functions.frescoImageLoad(picUrl, imageView,false));
     }
-
-
 
     private void selectNotificationPriority() {
         boolean isFriend=false;
-        if (tvFollowBtn.getText().toString().equalsIgnoreCase("Message"))
-        {
+        if (tvFollowBtn.getText().toString().equalsIgnoreCase("Message")) {
             isFriend=true;
-        }
-        else
-        {
+        } else {
           isFriend=false;
         }
 
         NotificationPriorityF f = new NotificationPriorityF(notificationType,isFriend,userName,userId,new FragmentCallBack() {
             @Override
             public void onResponse(Bundle bundle) {
-                if (bundle.getBoolean("isShow",false))
-                {
+                if (bundle.getBoolean("isShow",false)) {
                     notificationType=bundle.getString("type");
                     setUpNotificationIcon(notificationType);
-                }
-                else
-                {
-                    callApiForGetAllvideos();
+                } else {
+                    callApiForGetAllVideos();
                 }
             }
         });
         f.show(getSupportFragmentManager(), "");
-
     }
 
     private void setUpNotificationIcon(String type) {
-        if (type.equalsIgnoreCase("1"))
-        {
+        if (type.equalsIgnoreCase("1")) {
             notificationBtn.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_live_notification));
-        }
-        else
-        if (type.equalsIgnoreCase("0"))
-        {
+        } else if (type.equalsIgnoreCase("0")) {
             notificationBtn.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_mute_notification));
         }
     }
@@ -403,7 +369,6 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
             e.printStackTrace();
         }
 
-
         VolleyRequest.JsonPostRequest(ProfileA.this, ApiLinks.showSuggestedUsers, parameters,Functions.getHeaders(this), new Callback() {
             @Override
             public void onResponce(String resp) {
@@ -438,22 +403,15 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
                             adapterSuggestion.notifyDataSetChanged();
                         }
 
-                        if (suggestionList.isEmpty())
-                        {
+                        if (suggestionList.isEmpty()) {
                             findViewById(R.id.tvNoSuggestionFound).setVisibility(View.VISIBLE);
-                        }
-                        else
-                        {
+                        } else {
                             findViewById(R.id.tvNoSuggestionFound).setVisibility(View.GONE);
                         }
 
                     } else {
                         findViewById(R.id.tvNoSuggestionFound).setVisibility(View.VISIBLE);
                     }
-
-
-
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -477,32 +435,32 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
         username2Txt = findViewById(R.id.username2_txt);
         imageView = findViewById(R.id.user_image);
         imageView.setOnClickListener(this);
-        tabSuggestion=findViewById(R.id.tabSuggestion);
+        tabSuggestion = findViewById(R.id.tabSuggestion);
         followCountTxt = findViewById(R.id.follow_count_txt);
         fansCountTxt = findViewById(R.id.fan_count_txt);
         heartCountTxt = findViewById(R.id.heart_count_txt);
-        viewTabLikes=findViewById(R.id.viewTabLikes);
-        tabPrivacyLikes=findViewById(R.id.tabPrivacyLikes);
+        viewTabLikes = findViewById(R.id.viewTabLikes);
+        tabPrivacyLikes = findViewById(R.id.tabPrivacyLikes);
         tabPrivacyLikes.setOnClickListener(this);
 
-        tabAllSuggestion=findViewById(R.id.tabAllSuggestion);
+        tabAllSuggestion = findViewById(R.id.tabAllSuggestion);
         tabAllSuggestion.setOnClickListener(this);
 
-        tvBio=findViewById(R.id.tvBio);
-        tvLink=findViewById(R.id.tvLink);
+        tvBio = findViewById(R.id.tvBio);
+        tvLink = findViewById(R.id.tvLink);
 
-        tabLink=findViewById(R.id.tabLink);
+        tabLink = findViewById(R.id.tabLink);
         tabLink.setOnClickListener(this);
 
-        favBtn=findViewById(R.id.favBtn);
+        favBtn = findViewById(R.id.favBtn);
         favBtn.setOnClickListener(this);
 
-        ivMultipleAccount=findViewById(R.id.ivMultipleAccount);
+        ivMultipleAccount = findViewById(R.id.ivMultipleAccount);
 
-        tvEditProfile=findViewById(R.id.edit_profile_btn);
+        tvEditProfile = findViewById(R.id.edit_profile_btn);
         tvEditProfile.setOnClickListener(this);
 
-        suggestionBtn=findViewById(R.id.suggestionBtn);
+        suggestionBtn = findViewById(R.id.suggestionBtn);
         suggestionBtn.setOnClickListener(this);
 
         messageBtn = findViewById(R.id.message_btn);
@@ -511,7 +469,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
         tabFollowOtherUser = findViewById(R.id.tabFollowOtherUser);
         tabFollowSelfUser = findViewById(R.id.tabFollowSelfUser);
 
-        notificationBtn=findViewById(R.id.notification_btn);
+        notificationBtn = findViewById(R.id.notification_btn);
         notificationBtn.setOnClickListener(this);
 
         backBtn = findViewById(R.id.back_btn);
@@ -520,7 +478,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
         unFriendBtn = findViewById(R.id.unFriendBtn);
         unFriendBtn.setOnClickListener(this);
 
-        tvFollowBtn=findViewById(R.id.tvFollowBtn);
+        tvFollowBtn = findViewById(R.id.tvFollowBtn);
         tvFollowBtn.setOnClickListener(this);
 
         setUpSuggestionRecyclerview();
@@ -538,8 +496,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
             setupTabIcons();
             setupProfileIcon();
         }
-
-        callApiForGetAllvideos();
+        callApiForGetAllVideos();
     }
 
     private void setupProfileIcon() {
@@ -592,15 +549,10 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
     @Override
     public void onResume() {
         super.onResume();
-
         if (isRunFirstTime) {
-
-            callApiForGetAllvideos();
-
+            callApiForGetAllVideos();
         }
-
     }
-
 
     private void setupTabIcons() {
 
@@ -620,7 +572,6 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
-
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 View v = tab.getCustomView();
@@ -628,10 +579,8 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
 
                 switch (tab.getPosition()) {
                     case 0:
-
                         image.setImageDrawable(getResources().getDrawable(R.drawable.ic_my_video_color));
                         break;
-
                     case 1:
                         image.setImageDrawable(getResources().getDrawable(R.drawable.ic_liked_video_color));
                         break;
@@ -660,18 +609,11 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
             public void onTabReselected(TabLayout.Tab tab) {
 
             }
-
         });
-
-
     }
 
-
     class ViewPagerAdapter extends FragmentPagerAdapter {
-
-
         SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
-
 
         private ViewPagerAdapter(FragmentManager fm) {
             super(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
@@ -702,12 +644,10 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
             return 2;
         }
 
-
         @Override
         public CharSequence getPageTitle(final int position) {
             return null;
         }
-
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
@@ -721,23 +661,19 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
             registeredFragments.remove(position);
             super.destroyItem(container, position, object);
         }
-
-
     }
 
 
     // get the profile details of user
     boolean isRunFirstTime = false;
 
-    private void callApiForGetAllvideos() {
-
+    private void callApiForGetAllVideos() {
         if (getIntent() == null) {
             userId = Functions.getSharedPreference(context).getString(Variables.U_ID, "0");
         }
 
         JSONObject parameters = new JSONObject();
         try {
-
             if (Functions.getSharedPreference(context).getBoolean(Variables.IS_LOGIN, false) && userId != null) {
                 parameters.put("user_id", Functions.getSharedPreference(context).getString(Variables.U_ID, ""));
                 parameters.put("other_user_id", userId);
@@ -755,7 +691,6 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
             e.printStackTrace();
         }
 
-
         VolleyRequest.JsonPostRequest(ProfileA.this, ApiLinks.showUserDetail, parameters,Functions.getHeaders(this), new Callback() {
             @Override
             public void onResponce(String resp) {
@@ -764,14 +699,11 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
                 parseData(resp);
             }
         });
-
     }
 
-
-    public void parseData(String responce) {
-
+    public void parseData(String response) {
         try {
-            JSONObject jsonObject = new JSONObject(responce);
+            JSONObject jsonObject = new JSONObject(response);
             String code = jsonObject.optString("code");
             if (code.equals("200")) {
                 JSONObject msg = jsonObject.optJSONObject("msg");
@@ -797,40 +729,33 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
                 username2Txt.setText(Functions.showUsername(userDetailModel.getUsername()));
 
                 picUrl = userDetailModel.getProfilePic();
-                userPic= userDetailModel.getProfilePic();
-                fullName=first_name + " " + last_name;
-                buttonStatus =userDetailModel.getButton().toLowerCase();
-                imageView.setController(Functions.frescoImageLoad(picUrl,imageView,false));
+                userPic = userDetailModel.getProfilePic();
+                fullName = first_name + " " + last_name;
+                buttonStatus = userDetailModel.getButton().toLowerCase();
+                imageView.setController(Functions.frescoImageLoad(picUrl, imageView,false));
 
-                if (TextUtils.isEmpty(userDetailModel.getBio()))
-                {
+                if (TextUtils.isEmpty(userDetailModel.getBio())) {
                     tvBio.setVisibility(View.GONE);
-                }
-                else
-                {
+                } else {
                     tvBio.setVisibility(View.VISIBLE);
                     tvBio.setText(userDetailModel.getBio());
                 }
 
-                if (TextUtils.isEmpty(userDetailModel.getWebsite()))
-                {
+                if (TextUtils.isEmpty(userDetailModel.getWebsite())) {
                     tabLink.setVisibility(View.GONE);
-                }
-                else
-                {
+                } else {
                     tabLink.setVisibility(View.VISIBLE);
                     tvLink.setText(userDetailModel.getWebsite());
                 }
 
-
-                followingCount=userDetailModel.getFollowingCount();
-                followerCount=userDetailModel.getFollowersCount();
+                followingCount = userDetailModel.getFollowingCount();
+                followerCount = userDetailModel.getFollowersCount();
                 followCountTxt.setText(followingCount);
                 fansCountTxt.setText(followerCount);
-                totalLikes=userDetailModel.getLikesCount();
+                totalLikes = userDetailModel.getLikesCount();
                 heartCountTxt.setText(totalLikes);
 
-                notificationType=userDetailModel.getNotification();
+                notificationType = userDetailModel.getNotification();
                 setUpNotificationIcon(notificationType);
 
                 PushNotificationSettingModel pushNotificationSetting_model = new PushNotificationSettingModel();
@@ -841,14 +766,12 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
                 pushNotificationSetting_model.setDirectmessage("" + push_notification_setting.optString("direct_messages"));
                 pushNotificationSetting_model.setVideoupdates("" + push_notification_setting.optString("video_updates"));
 
-
                 PrivacyPolicySettingModel privacyPolicySetting_model = new PrivacyPolicySettingModel();
                 privacyPolicySetting_model.setVideos_download("" + privacy_policy_setting.optString("videos_download"));
                 privacyPolicySetting_model.setDirect_message("" + privacy_policy_setting.optString("direct_message"));
                 privacyPolicySetting_model.setDuet("" + privacy_policy_setting.optString("duet"));
                 privacyPolicySetting_model.setLiked_videos("" + privacy_policy_setting.optString("liked_videos"));
                 privacyPolicySetting_model.setVideo_comment("" + privacy_policy_setting.optString("video_comment"));
-
 
                 if (privacyPolicySetting_model.getLiked_videos().toLowerCase().equalsIgnoreCase("only_me")) {
                     isLikeVideoShow=false;
@@ -857,15 +780,12 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
                 }
                 likedFragment.updateLikeVideoState(isLikeVideoShow);
 
-
-
                 if (Functions.isShowContentPrivacy(context, privacyPolicySetting_model.getDirect_message(),
                         userDetailModel.getButton().toLowerCase().equalsIgnoreCase("friends"))) {
                     isDirectMessage=true;
                 } else {
                     isDirectMessage=false;
                 }
-
 
                 String follow_status = userDetailModel.getButton().toLowerCase();
                 if (!userDetailModel.getId().
@@ -897,63 +817,39 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
                         tvFollowBtn.setText(getString(R.string.follow));
                         tvFollowBtn.setTextColor(ContextCompat.getColor(context,R.color.white));
                         tvFollowBtn.setBackground(ContextCompat.getDrawable(context,R.drawable.button_rounded_solid_primary));
-
                     }
-
-
                 }
 
                 String verified = userDetailModel.getVerified();
                 if (verified != null && verified.equalsIgnoreCase("1")) {
                     findViewById(R.id.varified_btn).setVisibility(View.VISIBLE);
                 }
-
-
             } else {
                 Functions.showToast(context, jsonObject.optString("msg"));
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
-
 
     private void shareProfile() {
         boolean fromSetting=false;
-        if (userId.equalsIgnoreCase(Functions.getSharedPreference(ProfileA.this).getString(Variables.U_ID,"")))
-        {
+        if (userId.equalsIgnoreCase(Functions.getSharedPreference(ProfileA.this).getString(Variables.U_ID,""))) {
             fromSetting=true;
-        }
-        else
-        {
+        } else {
             fromSetting=false;
         }
 
         final ShareUserProfileF fragment = new ShareUserProfileF(userId,userName,fullName,userPic,buttonStatus,isDirectMessage,fromSetting, new FragmentCallBack() {
             @Override
             public void onResponse(Bundle bundle) {
-                if (bundle.getBoolean("isShow",false))
-                {
-                    callApiForGetAllvideos();
+                if (bundle.getBoolean("isShow",false)) {
+                    callApiForGetAllVideos();
                 }
             }
         });
         fragment.show(getSupportFragmentManager(), "");
-
     }
-
-
-
-
-
-
-
-
-
-
-
 
     private void followSuggestedUser(String userId,int position) {
         Functions.callApiForFollowUnFollow(ProfileA.this,
@@ -966,21 +862,16 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
 
                     @Override
                     public void onSuccess(String responce) {
-
                         suggestionList.remove(position);
                         adapterSuggestion.notifyDataSetChanged();
-                        callApiForGetAllvideos();
+                        callApiForGetAllVideos();
                     }
 
                     @Override
                     public void onFail(String responce) {
-
                     }
-
                 });
-
     }
-
 
     private void followUnFollowUser() {
         Functions.callApiForFollowUnFollow(ProfileA.this,
@@ -992,20 +883,15 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
                     }
 
                     @Override
-                    public void onSuccess(String responce) {
-
-                        callApiForGetAllvideos();
+                    public void onSuccess(String response) {
+                        callApiForGetAllVideos();
                     }
 
                     @Override
-                    public void onFail(String responce) {
-
+                    public void onFail(String response) {
                     }
-
                 });
-
     }
-
 
     public void openWebUrl(String title, String url) {
         Intent intent=new Intent(ProfileA.this, WebviewA.class);
@@ -1019,8 +905,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
         ManageAccountsF f = new ManageAccountsF(new FragmentCallBack() {
             @Override
             public void onResponse(Bundle bundle) {
-                if (bundle.getBoolean("isShow",false))
-                {
+                if (bundle.getBoolean("isShow",false)) {
                     Functions.hideSoftKeyboard(ProfileA.this);
                     Intent intent = new Intent(ProfileA.this, LoginA.class);
                     startActivity(intent);
@@ -1034,8 +919,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
 
     // open the following screen
     private void openFollowing() {
-
-        Intent intent=new Intent(ProfileA.this, FollowsMainTabA.class);
+        Intent intent = new Intent(ProfileA.this, FollowsMainTabA.class);
         intent.putExtra("id", userId);
         intent.putExtra("from_where", "following");
         intent.putExtra("userName", userName);
@@ -1043,13 +927,10 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
         intent.putExtra("followerCount",""+followerCount);
         startActivity(intent);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-
-
     }
 
     // open the followers screen
     private void openFollowers() {
-
         Intent intent=new Intent(ProfileA.this, FollowsMainTabA.class);
         intent.putExtra("id", userId);
         intent.putExtra("from_where", "fan");
@@ -1058,9 +939,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
         intent.putExtra("followerCount",""+followerCount);
         startActivity(intent);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-
     }
-
 
     @Override
     public void onBackPressed() {
@@ -1069,5 +948,4 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
         setResult(RESULT_OK, intent);
         super.onBackPressed();
     }
-
 }

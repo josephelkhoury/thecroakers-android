@@ -1,6 +1,7 @@
 package com.thecroakers.app.ActivitiesFragment.VideoRecording;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,6 +16,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +26,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -32,8 +35,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hendraanggrian.appcompat.widget.SocialEditText;
+import com.thecroakers.app.ActivitiesFragment.Profile.ProfileA;
 import com.thecroakers.app.Constants;
 import com.thecroakers.app.MainMenu.MainMenuActivity;
+import com.thecroakers.app.Models.FollowingModel;
+import com.thecroakers.app.Models.PrivacyPolicySettingModel;
+import com.thecroakers.app.Models.PushNotificationSettingModel;
+import com.thecroakers.app.Models.UserModel;
 import com.thecroakers.app.R;
 import com.thecroakers.app.Models.HashTagModel;
 import com.thecroakers.app.Adapters.HashTagAdapter;
@@ -41,6 +49,7 @@ import com.thecroakers.app.Models.UsersModel;
 import com.thecroakers.app.Services.UploadService;
 import com.thecroakers.app.Interfaces.AdapterClickListener;
 import com.thecroakers.app.ApiClasses.ApiLinks;
+import com.thecroakers.app.SimpleClasses.DataParsing;
 import com.volley.plus.VPackages.VolleyRequest;
 import com.volley.plus.interfaces.Callback;
 import com.thecroakers.app.SimpleClasses.Functions;
@@ -55,10 +64,12 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PostVideoA extends AppCompatActivity implements View.OnClickListener {
 
-
+    Context context;
+    String userId;
     ImageView videoThumbnail;
     String videoPath;
 
@@ -66,15 +77,21 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
 
     String draftFile, duetVideoId, duetVideoUsername, duetOrientation;
 
-    String privcyType="Public";
-    TextView privcyTypeTxt, duetUsername, aditionalDetailsTextCount;
+    String topic_id = "0";
+    String country_id = "0";
+    String privacyType = "Public";
+    TextView topicTxt, countryTxt, privacyTypeTxt, duetUsername, additionalDetailsTextCount;
     Switch commentSwitch, duetSwitch;
 
     Bitmap bmThumbnail;
 
     int counter = -1;
     RelativeLayout duetLayoutUsername;
-    ArrayList<UsersModel> tagedUser = new ArrayList<>();
+    ArrayList<JSONObject> topics = new ArrayList<>();
+    ArrayList<String> topicsStr = new ArrayList<String>();
+    ArrayList<JSONObject> countries = new ArrayList<>();
+    ArrayList<String> countriesStr = new ArrayList<String>();
+    ArrayList<UsersModel> taggedUsers = new ArrayList<>();
 
     String main_video_id;
 
@@ -84,6 +101,10 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
         Functions.setLocale(Functions.getSharedPreference(PostVideoA.this).getString(Variables.APP_LANGUAGE_CODE,Variables.DEFAULT_LANGUAGE_CODE)
                 , this, PostVideoA.class,false);
         setContentView(R.layout.activity_post_video);
+        context = PostVideoA.this;
+        if (getIntent() == null) {
+            userId = Functions.getSharedPreference(context).getString(Variables.U_ID, "0");
+        }
         duetUsername = findViewById(R.id.duet_username);
         duetLayoutUsername = findViewById(R.id.duet_layout_username);
 
@@ -100,11 +121,14 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
             main_video_id = intent.getStringExtra("main_video_id");
         }
 
+        getTopics();
+        getCountries();
+
         videoPath = Functions.getAppFolder(this)+Variables.output_filter_file;
         videoThumbnail = findViewById(R.id.video_thumbnail);
 
         descriptionEdit = findViewById(R.id.description_edit);
-        aditionalDetailsTextCount = findViewById(R.id.aditional_details_text_count);
+        additionalDetailsTextCount = findViewById(R.id.aditional_details_text_count);
 
         // this will get the thumbnail of video and show them in imageview
 
@@ -137,13 +161,17 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
 
         }
 
-        privcyTypeTxt = findViewById(R.id.privcy_type_txt);
+        topicTxt = findViewById(R.id.topic_txt);
+        countryTxt = findViewById(R.id.country_txt);
+        privacyTypeTxt = findViewById(R.id.privcy_type_txt);
         commentSwitch = findViewById(R.id.comment_switch);
         duetSwitch = findViewById(R.id.duet_switch);
 
         setAdapterForHashtag();
         findViewById(R.id.goBack).setOnClickListener(this);
 
+        findViewById(R.id.topic_layout).setOnClickListener(this);
+        findViewById(R.id.country_layout).setOnClickListener(this);
         findViewById(R.id.privacy_type_layout).setOnClickListener(this);
         findViewById(R.id.post_btn).setOnClickListener(this);
         findViewById(R.id.save_draft_btn).setOnClickListener(this);
@@ -163,7 +191,7 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
             duetSwitch.setChecked(false);
         }
 
-        aditionalDetailsTextCount.setText("0" + "/" + Constants.VIDEO_DESCRIPTION_CHAR_LIMIT);
+        additionalDetailsTextCount.setText("0" + "/" + Constants.VIDEO_DESCRIPTION_CHAR_LIMIT);
 
         descriptionEdit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(Constants.VIDEO_DESCRIPTION_CHAR_LIMIT)});
 
@@ -211,7 +239,7 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
                     }
                 }
 
-                aditionalDetailsTextCount.setText(descriptionEdit.getText().length() + "/" + Constants.VIDEO_DESCRIPTION_CHAR_LIMIT);
+                additionalDetailsTextCount.setText(descriptionEdit.getText().length() + "/" + Constants.VIDEO_DESCRIPTION_CHAR_LIMIT);
             }
 
             @Override
@@ -243,13 +271,20 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
         return cs;
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
 
             case R.id.goBack:
                 onBackPressed();
+                break;
+
+            case R.id.topic_layout:
+                topicDialog();
+                break;
+
+            case R.id.country_layout:
+                countryDialog();
                 break;
 
             case R.id.privacy_type_layout:
@@ -261,6 +296,15 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
                 break;
 
             case R.id.post_btn:
+                if (topic_id == "0") {
+                    Functions.showToast(context, getString(R.string.please_choose_a_topic));
+                    break;
+                }
+
+                if (country_id == "0") {
+                    Functions.showToast(context, getString(R.string.please_choose_a_country));
+                    break;
+                }
                 makeMentionArrays();
                 startService();
                 break;
@@ -279,11 +323,10 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
         }
     }
 
-
     ArrayList<HashTagModel> hashList = new ArrayList<>();
     RecyclerView recyclerView;
     int pageCount = 0;
-    boolean ispostFinsh;
+    boolean ispostFinish;
     ProgressBar loadMoreProgress;
     LinearLayoutManager linearLayoutManager;
     HashTagAdapter hashtag_adapter;
@@ -320,8 +363,6 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
                                     item.name = Hashtag.optString("name");
                                     item.videos_count = Hashtag.optString("videos_count");
                                     temp_list.add(item);
-
-
                                 }
 
                                 if (pageCount == 0) {
@@ -340,7 +381,6 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
                             loadMoreProgress.setVisibility(View.GONE);
                         }
                     }
-
                 });
     }
 
@@ -395,18 +435,15 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
                 if (userScrolled && (scrollOutitems == hashList.size() - 1)) {
                     userScrolled = false;
 
-                    if (loadMoreProgress.getVisibility() != View.VISIBLE && !ispostFinsh) {
+                    if (loadMoreProgress.getVisibility() != View.VISIBLE && !ispostFinish) {
                         loadMoreProgress.setVisibility(View.VISIBLE);
                         pageCount = pageCount + 1;
                         callApiForHashTag("");
                     }
                 }
-
-
             }
         });
     }
-
 
     // open the follower list of the profile for mention them during post video
     public void openFriends() {
@@ -422,10 +459,9 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
-                        if (data.getBooleanExtra("isShow",false))
-                        {
+                        if (data.getBooleanExtra("isShow",false)) {
                             UsersModel item = (UsersModel) data.getSerializableExtra("data");
-                            tagedUser.add(item);
+                            taggedUsers.add(item);
 
                             String lastChar = null;
                             if (!TextUtils.isEmpty(descriptionEdit.getText().toString()))
@@ -438,11 +474,101 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
 
                             descriptionEdit.setSelection(descriptionEdit.getText().length());
                         }
-
                     }
                 }
             });
 
+    private void getTopics() {
+        JSONObject parameters = new JSONObject();
+
+        VolleyRequest.JsonPostRequest(PostVideoA.this, ApiLinks.showFeaturedHashtags, parameters, Functions.getHeaders(this), new Callback() {
+            @Override
+            public void onResponce(String resp) {
+                Functions.checkStatus(PostVideoA.this,resp);
+                try {
+                    JSONObject jsonObject = new JSONObject(resp);
+                    String code = jsonObject.optString("code");
+                    if (code.equals("200")) {
+                        JSONArray msgArray = jsonObject.getJSONArray("msg");
+                        for (int i = 0; i < msgArray.length(); i++) {
+                            JSONObject hashtagObj = msgArray.optJSONObject(i);
+                            JSONObject hashtag = hashtagObj.optJSONObject("Hashtag");
+                            topics.add(hashtag);
+                            topicsStr.add(hashtag.optString("name"));
+                        }
+                    } else {
+                        Functions.showToast(context, jsonObject.optString("msg"));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void getCountries() {
+        JSONObject parameters = new JSONObject();
+
+        VolleyRequest.JsonPostRequest(PostVideoA.this, ApiLinks.showCountries, parameters, Functions.getHeaders(this), new Callback() {
+            @Override
+            public void onResponce(String resp) {
+                Functions.checkStatus(PostVideoA.this,resp);
+                try {
+                    JSONObject jsonObject = new JSONObject(resp);
+                    String code = jsonObject.optString("code");
+                    if (code.equals("200")) {
+                        JSONArray msgArray = jsonObject.getJSONArray("msg");
+                        for (int i = 0; i < msgArray.length(); i++) {
+                            JSONObject countryObj = msgArray.optJSONObject(i);
+                            JSONObject country = countryObj.optJSONObject("Country");
+                            countries.add(country);
+                            countriesStr.add(country.optString("emoji")+" "+country.optString("name"));
+                        }
+                    } else {
+                        Functions.showToast(context, jsonObject.optString("msg"));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void topicDialog() {
+        final CharSequence[] options = topicsStr.toArray(new CharSequence[topicsStr.size()]);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogCustom);
+
+        builder.setTitle(null);
+
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                topicTxt.setText(options[i]);
+                JSONObject topic = topics.get(i);
+                topic_id = topic.optString("id");
+            }
+        });
+
+        builder.show();
+    }
+
+    private void countryDialog() {
+        final CharSequence[] options = countriesStr.toArray(new CharSequence[countriesStr.size()]);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogCustom);
+
+        builder.setTitle(null);
+
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                countryTxt.setText(options[i]);
+                JSONObject country = countries.get(i);
+                country_id = country.optString("id");
+            }
+        });
+
+        builder.show();
+    }
 
     // show the option that is you want to make video public or private
     private void privacyDialog() {
@@ -455,26 +581,18 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
         builder.setItems(options, new DialogInterface.OnClickListener() {
 
             @Override
-
             public void onClick(DialogInterface dialog, int item) {
-                privcyTypeTxt.setText(options[item]);
-                if (item==0)
-                {
-                    privcyType="Public";
+                privacyTypeTxt.setText(options[item]);
+                if (item == 0) {
+                    privacyType = "Public";
+                } else {
+                    privacyType = "Private";
                 }
-                else
-                {
-                    privcyType="Private";
-                }
-
             }
-
         });
 
         builder.show();
-
     }
-
 
     JSONArray hashTag, friendsTag;
 
@@ -500,7 +618,7 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
                     String string1 = item.replace("@", "");
                     JSONObject tag_object = new JSONObject();
                     try {
-                        for (UsersModel user_model : tagedUser) {
+                        for (UsersModel user_model : taggedUsers) {
                             if (user_model.username.contains(string1)) {
                                 tag_object.put("user_id", user_model.fb_id);
                                 friendsTag.put(tag_object);
@@ -514,8 +632,6 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
         }
         Functions.printLog(Constants.tag, hashTag.toString());
         Functions.printLog(Constants.tag, friendsTag.toString());
-
-
     }
 
     // this will start the service for uploading the video into database
@@ -529,7 +645,7 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
             mServiceIntent.putExtra("duet_video_id", duetVideoId);
             mServiceIntent.putExtra("uri", "" + videoPath);
             mServiceIntent.putExtra("desc", "" + descriptionEdit.getText().toString());
-            mServiceIntent.putExtra("privacy_type", privcyType);
+            mServiceIntent.putExtra("privacy_type", privacyType);
             mServiceIntent.putExtra("hashtags_json", hashTag.toString());
             mServiceIntent.putExtra("mention_users_json", friendsTag.toString());
             mServiceIntent.putExtra("duet_orientation", duetOrientation);
@@ -557,10 +673,7 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
         } else {
             Toast.makeText(PostVideoA.this, getString(R.string.please_wait_video_uploading_is_already_in_progress), Toast.LENGTH_SHORT).show();
         }
-
-
     }
-
 
     @Override
     public void onBackPressed() {
@@ -573,10 +686,7 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
             finish();
             overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
         }
-
-
     }
-
 
     @Override
     protected void onDestroy() {
@@ -585,7 +695,6 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
         }
         super.onDestroy();
     }
-
 
     // save the file into the draft
     public void saveFileInDraft() {

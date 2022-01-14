@@ -16,7 +16,6 @@ public class DataParsing {
 
         UserModel model=new UserModel();
         try {
-
             model.setId(user.optString("id"));
             model.setFirstName(user.optString("first_name"));
             model.setLastName(user.optString("last_name"));
@@ -28,13 +27,10 @@ public class DataParsing {
             model.setEmail(user.optString("email"));
             model.setPhone(user.optString("phone"));
             model.setPassword(user.optString("password"));
-            if (TextUtils.isEmpty(user.optString("profile_pic_small")))
-            {
+            if (TextUtils.isEmpty(user.optString("profile_pic_small"))) {
                 model.setProfilePic(user.optString("profile_pic"));
-            }
-            else
-            {
-                model.setProfilePic(user.optString("profile_pic_small"));
+            } else {
+                model.setProfilePic(user.optString("profile_pic"));
             }
             model.setRole(user.optString("role"));
             model.setUsername(user.optString("username"));

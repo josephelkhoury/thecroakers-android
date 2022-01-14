@@ -33,7 +33,7 @@ public class Constants {
     public static int RECORDING_DURATION = 24000;
 
     // minimum time of recode a video for now it is 5 sec
-    public static int MIN_TIME_RECORDING = 24000;
+    public static int MIN_TIME_RECORDING = 5000;
 
     // minimum trim chunk time span of a video for now it is 5 sec
     public static int MIN_TRIM_TIME = 24;

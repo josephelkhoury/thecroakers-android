@@ -3,10 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../android-sdk-macosx/platforms/android-30/data/res/layout/select_dialog_singlechoice.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_heart_gradient.xml" value="0.127" />
         <entry key="app/src/main/res/drawable/ic_like_fill_vector.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/ic_like_vector.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/ic_unliked.xml" value="0.127" />
+        <entry key="app/src/main/res/layout/activity_post_video.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_preview_video.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/activity_taged_videos.xml" value="0.21965579710144928" />
         <entry key="app/src/main/res/layout/activity_video_recoder.xml" value="0.19610507246376813" />

@@ -388,13 +388,13 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
     }
 
     // When you click on any Video a new activity is open which will play the Clicked video
-    private void openWatchVideo(int postion, ArrayList<HomeModel> data_list,String hashtag) {
-        if(data_list.size()>5)
+    private void openWatchVideo(int position, ArrayList<HomeModel> data_list, String hashtag) {
+        if (data_list.size()>5)
             data_list.remove(data_list.size()-1);
 
         Intent intent = new Intent(view.getContext(), WatchVideosA.class);
         intent.putExtra("arraylist", data_list);
-        intent.putExtra("position", postion);
+        intent.putExtra("position", position);
         intent.putExtra("pageCount", 0);
         intent.putExtra("hashtag", hashtag);
         intent.putExtra("userId", Functions.getSharedPreference(view.getContext()).getString(Variables.U_ID,""));

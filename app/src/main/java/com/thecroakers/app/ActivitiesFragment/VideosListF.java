@@ -431,6 +431,11 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
 
             case R.id.croaks_source_layout:
                 if (item.main_video_id != null && !item.main_video_id.equals("") && !item.main_video_id.equals("0") && !item.main_video_id.equals("null")) {
+                    Intent intent = new Intent(view.getContext(), WatchVideosA.class);
+                    intent.putExtra("userId", Functions.getSharedPreference(view.getContext()).getString(Variables.U_ID,""));
+                    intent.putExtra("video_id", item.main_video_id);
+                    intent.putExtra("whereFrom", "IdVideo");
+                    startActivity(intent);
                 } else {
                     Intent intent = new Intent(view.getContext(), TagedVideosA.class);
                     intent.putExtra("main_video_id", item.video_id);

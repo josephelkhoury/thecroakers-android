@@ -259,8 +259,7 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
             videoProgress.addDivider();
 
             if (audio != null) {
-                if (audio.isPlaying())
-                {
+                if (audio.isPlaying()) {
                     audio.pause();
                 }
             }

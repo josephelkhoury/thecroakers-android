@@ -541,4 +541,9 @@
     <string name="croak">Croak</string>
     <string name="croaks">Croaks</string>
     <string name="original">Original</string>
+    <string name="not_applicable">N/A</string>
+    <string name="topic_of_this_video">Topic of this video</string>
+    <string name="country">Country</string>
+    <string name="please_choose_a_topic">Please choose a topic for your video</string>
+    <string name="please_choose_a_country">Please choose a country for your video</string>
 </resources>

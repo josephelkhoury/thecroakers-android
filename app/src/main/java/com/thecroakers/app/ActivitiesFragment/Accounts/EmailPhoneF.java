@@ -81,7 +81,6 @@ public class EmailPhoneF extends RootFragment implements View.OnClickListener {
 
     // this method will change the text and style tabs
     private void setupTabIcons() {
-
         View view1 = LayoutInflater.from(getActivity()).inflate(R.layout.item_tabs_signup, null);
         TextView text_history = view1.findViewById(R.id.text_history);
         text_history.setText(view.getContext().getString(R.string.phone));
@@ -123,7 +122,6 @@ public class EmailPhoneF extends RootFragment implements View.OnClickListener {
                     case 1:
                         text_history.setTextColor(getResources().getColor(R.color.black));
                         break;
-
                 }
 
                 tab.setCustomView(v);
@@ -133,12 +131,8 @@ public class EmailPhoneF extends RootFragment implements View.OnClickListener {
             public void onTabReselected(TabLayout.Tab tab) {
 
             }
-
         });
-
-
     }
-
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
 

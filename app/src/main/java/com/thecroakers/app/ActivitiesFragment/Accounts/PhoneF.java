@@ -78,15 +78,12 @@ public class PhoneF extends Fragment implements View.OnClickListener {
         tvCountryCode.setText(ccp.getDefaultCountryNameCode() + " " + ccp.getDefaultCountryCodeWithPlus());
 
         if (fromWhere != null && fromWhere.equals("login")) {
-
             tabTermsCondition.setVisibility(View.GONE);
-
         }
 
         SetupScreenData();
         return view;
     }
-
 
     private void SetupScreenData() {
 
@@ -125,16 +122,12 @@ public class PhoneF extends Fragment implements View.OnClickListener {
     }
 
     public void openWebUrl(String title, String url) {
-
         Intent intent=new Intent(view.getContext(), WebviewA.class);
         intent.putExtra("url", url);
         intent.putExtra("title", title);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-
     }
-
-
 
     // this will initialize all the views
     private void initView() {
@@ -158,12 +151,10 @@ public class PhoneF extends Fragment implements View.OnClickListener {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int count) {
                 String txtName = phoneEdit.getText().toString();
-                if (loginTermsConditionTxt.getCurrentTextColor()==ContextCompat.getColor(view.getContext(),R.color.redcolor))
-                {
+                if (loginTermsConditionTxt.getCurrentTextColor()==ContextCompat.getColor(view.getContext(),R.color.redcolor)) {
                     loginTermsConditionTxt.setError(null);
                     loginTermsConditionTxt.setTextColor(ContextCompat.getColor(view.getContext(),R.color.darkgray));
-                }
-                if (txtName.length() > 0) {
+                }if (txtName.length() > 0) {
                     btnSendCode.setEnabled(true);
                     btnSendCode.setClickable(true);
                 } else {
@@ -191,8 +182,7 @@ public class PhoneF extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.chBox:
-            {
+            case R.id.chBox: {
                 if (loginTermsConditionTxt.getCurrentTextColor()==ContextCompat.getColor(view.getContext(),R.color.redcolor))
                 {
                     loginTermsConditionTxt.setError(null);
@@ -213,8 +203,7 @@ public class PhoneF extends Fragment implements View.OnClickListener {
                     }
 
                     phoneNo= phoneEdit.getText().toString();
-                    if (phoneNo.charAt(0)=='0')
-                    {
+                    if (phoneNo.charAt(0)=='0') {
                         phoneNo=phoneNo.substring(1);
                     }
                     phoneNo=phoneNo.replace("+","");
@@ -225,17 +214,13 @@ public class PhoneF extends Fragment implements View.OnClickListener {
                     phoneNo=phoneNo.replace(")","");
                     phoneNo=phoneNo.replace("-","");
 
-
-                    if (!(fromWhere != null && fromWhere.equals("login")))
-                    {
-                        if (!(chBox.isChecked()))
-                        {
+                    if (!(fromWhere != null && fromWhere.equals("login"))) {
+                        if (!(chBox.isChecked())) {
                             loginTermsConditionTxt.setError(view.getContext().getString(R.string.please_confirm_terms_and_condition));
                             loginTermsConditionTxt.setTextColor(ContextCompat.getColor(view.getContext(),R.color.redcolor));
                             return;
                         }
                     }
-
 
                     callApiOtp();
                 }
@@ -252,7 +237,6 @@ public class PhoneF extends Fragment implements View.OnClickListener {
             Toast.makeText(getActivity(), view.getContext().getString(R.string.please_enter_phone_number), Toast.LENGTH_SHORT).show();
             return false;
         }
-
 
         return true;
     }
@@ -278,8 +262,6 @@ public class PhoneF extends Fragment implements View.OnClickListener {
                 parseLoginData(resp);
             }
         });
-
-
     }
 
     // if api return the ok responce then open the get opt screen
@@ -310,8 +292,6 @@ public class PhoneF extends Fragment implements View.OnClickListener {
         }
     }
 
-
-
     // this will open the county picker screen
     @SuppressLint("WrongConstant")
     public void opencountry() {
@@ -319,7 +299,6 @@ public class PhoneF extends Fragment implements View.OnClickListener {
         picker.setListener(new CountryPickerListener() {
             @Override
             public void onSelectCountry(String name, String code, String dialCode, int flagDrawableResID) {
-
                 ccp.setCountryForNameCode(code);
                 tvCountryCode.setText(code + " " + dialCode);
                 picker.dismiss();

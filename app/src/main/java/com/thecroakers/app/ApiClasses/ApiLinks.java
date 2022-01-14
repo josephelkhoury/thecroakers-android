@@ -153,4 +153,8 @@ public class ApiLinks {
     public static final String deleteUserAccount = API_BASE_URL+"deleteUserAccount";
 
     public static final String showVideoReplies = API_BASE_URL+"showVideoReplies";
+
+    public static final String showFeaturedHashtags = API_BASE_URL+"showFeaturedHashtags";
+
+    public static final String showCountries = API_BASE_URL+"showCountries";
 }

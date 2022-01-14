@@ -1612,9 +1612,9 @@ public class Functions {
     }
 
     // logout to app automatically when the login token expire
-    public static void checkStatus(Activity activity, String responce) {
+    public static void checkStatus(Activity activity, String responseStr) {
         try {
-        JSONObject response=new JSONObject(responce);
+        JSONObject response = new JSONObject(responseStr);
         if (response.optString("code", "").equalsIgnoreCase("501")) {
 
             GoogleSignInOptions gso = new GoogleSignInOptions.
