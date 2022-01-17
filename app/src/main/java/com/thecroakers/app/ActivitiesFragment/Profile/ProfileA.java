@@ -78,7 +78,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
     public TextView followCountTxt, fansCountTxt, heartCountTxt;
     ImageView backBtn, messageBtn,unFriendBtn,notificationBtn,favBtn,ivMultipleAccount;
     String userId, userName,fullName,buttonStatus, userPic,totalLikes="";
-    RecyclerView rvSugesstion;
+    RecyclerView rvSuggestion;
     SuggestionAdapter adapterSuggestion;
     protected TabLayout tabLayout;
     protected ViewPager pager;
@@ -520,10 +520,10 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
 
     ArrayList<FollowingModel> suggestionList=new ArrayList<>();
     private void setUpSuggestionRecyclerview() {
-        rvSugesstion=findViewById(R.id.rvSugesstion);
+        rvSuggestion=findViewById(R.id.rvSuggestion);
         LinearLayoutManager layoutManager=new LinearLayoutManager(ProfileA.this);
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        rvSugesstion.setLayoutManager(layoutManager);
+        rvSuggestion.setLayoutManager(layoutManager);
         adapterSuggestion=new SuggestionAdapter(suggestionList, new SuggestionAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int postion, FollowingModel item) {
@@ -543,7 +543,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
                 }
             }
         });
-        rvSugesstion.setAdapter(adapterSuggestion);
+        rvSuggestion.setAdapter(adapterSuggestion);
     }
 
     @Override
@@ -822,7 +822,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
 
                 String verified = userDetailModel.getVerified();
                 if (verified != null && verified.equalsIgnoreCase("1")) {
-                    findViewById(R.id.varified_btn).setVisibility(View.VISIBLE);
+                    findViewById(R.id.verified_btn).setVisibility(View.VISIBLE);
                 }
             } else {
                 Functions.showToast(context, jsonObject.optString("msg"));

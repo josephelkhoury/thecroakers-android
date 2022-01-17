@@ -466,7 +466,7 @@
     <string name="signup">Signup</string>
     <string name="invalid_phone_number">Invalid Phone Number</string>
     <string name="please_enter_phone_number">Please enter phone number</string>
-    <string name="you_need_a">You need a</string>
+    <string name="you_need_a">You need an</string>
     <string name="account_to_continue">account to Continue</string>
     <string name="by_signing_up_you_confirm_that_you_agree_to_our_n_terms_of_use_and_have_read_and_understood_n_our_privacy_policy">By signing up, you confirm that you agree to our \n Terms of Use and have read and understood \n our Privacy Policy.</string>
     <string name="login_cancel">Login Cancel</string>
@@ -549,4 +549,5 @@
     <string name="please_choose_a_country">Please choose a country for your video</string>
     <string name="no_followers">No followers yet</string>
     <string name="not_following">Not following anyone yet</string>
+    <string name="where_are_you_located">Where are you located?</string>
 </resources>

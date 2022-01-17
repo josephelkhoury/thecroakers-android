@@ -56,7 +56,6 @@ public class EmailPhoneF extends RootFragment implements View.OnClickListener {
         return view;
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -64,7 +63,6 @@ public class EmailPhoneF extends RootFragment implements View.OnClickListener {
                 getActivity().onBackPressed();
                 break;
         }
-
     }
 
     // this method will initionalize all the views and set up the tabs
@@ -166,12 +164,10 @@ public class EmailPhoneF extends RootFragment implements View.OnClickListener {
             return 2;
         }
 
-
         @Override
         public CharSequence getPageTitle(final int position) {
             return null;
         }
-
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
@@ -185,8 +181,5 @@ public class EmailPhoneF extends RootFragment implements View.OnClickListener {
             registeredFragments.remove(position);
             super.destroyItem(container, position, object);
         }
-
-
     }
-
 }

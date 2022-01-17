@@ -115,12 +115,10 @@ public class LoginA extends AppCompatActivity implements View.OnClickListener {
         findViewById(R.id.google_btn).setOnClickListener(this::onClick);
         findViewById(R.id.goBack).setOnClickListener(this::onClick);
 
-
         topView = findViewById(R.id.top_view);
 
         loginTitleTxt = findViewById(R.id.login_title_txt);
-        loginTitleTxt.setText(getString(R.string.you_need_a)+" " + getString(R.string.app_name) + "\n"+getString(R.string.account_to_continue));
-
+        loginTitleTxt.setText(getString(R.string.you_need_a)+ " "+getString(R.string.account_to_continue));
 
         SpannableString ss = new SpannableString(getString(R.string.by_signing_up_you_confirm_that_you_agree_to_our_n_terms_of_use_and_have_read_and_understood_n_our_privacy_policy));
         ClickableSpan clickableSpan = new ClickableSpan() {

@@ -63,10 +63,6 @@ public class AppSpaceClearA extends AppCompatActivity implements View.OnClickLis
         deleteDir(downloadFile);
     }
 
-
-
-
-
     private boolean deleteDir(File dir) {
         if (dir != null && dir.isDirectory()) {
             String[] children = dir.list();
@@ -87,7 +83,6 @@ public class AppSpaceClearA extends AppCompatActivity implements View.OnClickLis
             return false;
         }
     }
-
 
     private void runClearCacheMethod() {
         deleteDir(cacheFile);
@@ -111,32 +106,26 @@ public class AppSpaceClearA extends AppCompatActivity implements View.OnClickLis
     }
 
     private String getUsageDownload() {
-        String totalDownload="";
+        String totalDownload = "";
         downloadFile=new File(Functions.getAppFolder(AppSpaceClearA.this));
         Log.d(Constants.tag,"Check : "+downloadFile.getAbsolutePath());
-        if (downloadFile.exists())
-        {
-            totalDownload=Functions.getDirectorySize(downloadFile.getAbsolutePath());
-        }
-        else
-        {
-            totalDownload="";
+        if (downloadFile.exists()) {
+            totalDownload = Functions.getDirectorySize(downloadFile.getAbsolutePath());
+        } else {
+            totalDownload = "";
         }
 
         return totalDownload;
     }
 
     private String getUsageCache() {
-        String totalCache="";
+        String totalCache = "";
         cacheFile=AppSpaceClearA.this.getCacheDir();
         Log.d(Constants.tag,"Check : "+cacheFile.getAbsolutePath());
-        if (cacheFile.exists())
-        {
-            totalCache=Functions.getDirectorySize(cacheFile.getAbsolutePath());
-        }
-        else
-        {
-            totalCache="";
+        if (cacheFile.exists()) {
+            totalCache = Functions.getDirectorySize(cacheFile.getAbsolutePath());
+        } else {
+            totalCache = "";
         }
 
         return totalCache;

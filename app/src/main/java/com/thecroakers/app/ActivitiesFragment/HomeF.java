@@ -83,7 +83,7 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
     }
 
     int page_count = 0;
-    boolean isApiRuning = false;
+    boolean isApiRunning = false;
     Handler handler;
     FrameLayout tabNoFollower;
     RelativeLayout uploadVideoLayout;
@@ -97,7 +97,7 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
         if (bundle != null && bundle.get("action").equals("showad")) {
             showCustomAd();
         } else if (bundle != null && bundle.get("action").equals("hidead")) {
-            hideCustomad();
+            hideCustomAd();
         }
         else if (bundle != null && bundle.get("action").equals("removeList")) {
             pagerSatetAdapter.removeFragment(menuPager.getCurrentItem());
@@ -233,7 +233,7 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
                 Log.d(Constants.tag,"Check : check "+(position+1)+"    "+(dataList.size()-1)+"      "+(dataList.size() > 2 && (dataList.size() - 1) == position));
                 Log.d(Constants.tag,"Test : Test "+(position+1)+"    "+(dataList.size()-5)+"      "+(dataList.size() > 5 && (dataList.size() - 5) == (position+1)));
                 if (dataList.size() > 5 && (dataList.size() -5) == (position+1)) {
-                    if (!isApiRuning) {
+                    if (!isApiRunning) {
                         page_count++;
                         callVideoApi();
                     }
@@ -429,7 +429,7 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
     }
 
     public void callVideoApi() {
-        isApiRuning = true;
+        isApiRunning = true;
 
         if (type.equalsIgnoreCase("following")) {
             callApiForGetFollowingVideos();
@@ -489,7 +489,6 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
         });
     }
 
-
     // parse the list of the videos
     public void parseData(String response) {
         try {
@@ -541,7 +540,7 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
                 tabNoFollower.setVisibility(View.GONE);
                 menuPager.setVisibility(View.VISIBLE);
             } else {
-                hideCustomad();
+                hideCustomAd();
                 if (dataList.isEmpty() && type.equalsIgnoreCase("following")) {
                     Functions.showToast(getActivity(), view.getContext().getString(R.string.follow_an_account_to_see_there_video_here));
                     tabNoFollower.setVisibility(View.VISIBLE);
@@ -558,7 +557,7 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
                 page_count--;
 
         } finally {
-            isApiRuning = false;
+            isApiRunning = false;
         }
     }
 
@@ -574,9 +573,8 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
         }
     }
 
-
     public void showCustomAd() {
-        if(is_visible_to_user && (type!=null && type.equalsIgnoreCase("related"))) {
+        if (is_visible_to_user && (type!=null && type.equalsIgnoreCase("related"))) {
 
             view.findViewById(R.id.top_btn_layout).setVisibility(View.GONE);
 
@@ -586,14 +584,11 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
         }
     }
 
-    public void hideCustomad() {
-
+    public void hideCustomAd() {
         if (MainMenuFragment.tabLayout != null)
                 MainMenuFragment.tabLayout.setVisibility(View.VISIBLE);
 
             view.findViewById(R.id.top_btn_layout).setVisibility(View.VISIBLE);
-
-
     }
 
 

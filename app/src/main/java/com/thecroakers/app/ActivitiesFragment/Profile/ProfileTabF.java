@@ -649,7 +649,7 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
 
                 String verified = userDetailModel.getVerified();
                 if (verified != null && verified.equalsIgnoreCase("1")) {
-                    view.findViewById(R.id.varified_btn).setVisibility(View.VISIBLE);
+                    view.findViewById(R.id.verified_btn).setVisibility(View.VISIBLE);
                 }
 
 

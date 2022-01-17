@@ -63,7 +63,7 @@ public class FollowingUserF extends Fragment {
     private final long DELAY = 1000; // Milliseconds
 
     int pageCount = 0;
-    boolean ispostFinsh;
+    boolean ispostFinish;
     ProgressBar loadMoreProgress;
     LinearLayoutManager linearLayoutManager;
 
@@ -95,13 +95,10 @@ public class FollowingUserF extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
         searchLayout=view.findViewById(R.id.search_layout);
-        if (isSelf)
-        {
+        if (isSelf) {
             searchLayout.setVisibility(View.VISIBLE);
             Functions.hideSoftKeyboard(getActivity());
-        }
-        else
-        {
+        } else {
             searchLayout.setVisibility(View.GONE);
         }
 
@@ -164,7 +161,6 @@ public class FollowingUserF extends Fragment {
                 }
         );
 
-
         recyclerView.setAdapter(adapter);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -189,21 +185,16 @@ public class FollowingUserF extends Fragment {
                 if (userScrolled && (scrollOutitems == datalist.size() - 1)) {
                     userScrolled = false;
 
-                    if (loadMoreProgress.getVisibility() != View.VISIBLE && !ispostFinsh) {
+                    if (loadMoreProgress.getVisibility() != View.VISIBLE && !ispostFinish) {
                         loadMoreProgress.setVisibility(View.VISIBLE);
                         pageCount = pageCount + 1;
-                        if (edtSearch.getText().toString().length()>0)
-                        {
+                        if (edtSearch.getText().toString().length()>0) {
                             callApiForFollowingSearch();
-                        }
-                        else
-                        {
+                        } else {
                             callFollowingApi();
                         }
                     }
                 }
-
-
             }
         });
 
@@ -212,17 +203,13 @@ public class FollowingUserF extends Fragment {
             public void onRefresh() {
                 refreshLayout.setRefreshing(false);
                 pageCount=0;
-                if (edtSearch.getText().toString().length()>0)
-                {
+                if (edtSearch.getText().toString().length()>0) {
                     callApiForFollowingSearch();
-                }
-                else
-                {
+                } else {
                     callFollowingApi();
                 }
             }
         });
-
 
         callFollowingApi();
 
@@ -258,41 +245,28 @@ public class FollowingUserF extends Fragment {
         });
     }
 
-
-
-
     private void selectNotificationPriority(int position) {
         boolean isFriend=false;
-        if (datalist.get(position).follow_status_button.equalsIgnoreCase("Follow"))
-        {
-            isFriend=false;
-        }
-        else
-        {
-            isFriend=true;
+        if (datalist.get(position).follow_status_button.equalsIgnoreCase("Follow")) {
+            isFriend = false;
+        } else {
+            isFriend = true;
         }
         NotificationPriorityF f = new NotificationPriorityF(datalist.get(position).notificationType,isFriend,
                 datalist.get(position).username,datalist.get(position).fb_id,new FragmentCallBack() {
             @Override
             public void onResponse(Bundle bundle) {
-                if (bundle.getBoolean("isShow",false))
-                {
+                if (bundle.getBoolean("isShow",false)) {
                     FollowingModel itemUpdate=datalist.get(position);
                     itemUpdate.notificationType=bundle.getString("type");
 
                     datalist.set(position,itemUpdate);
                     adapter.notifyDataSetChanged();
-                }
-                else
-                {
-
+                } else {
                     FollowingModel itemUpdte=datalist.get(position);
-                    if (itemUpdte.follow_status_button.equalsIgnoreCase("Follow"))
-                    {
+                    if (itemUpdte.follow_status_button.equalsIgnoreCase("Follow")) {
                         itemUpdte.follow_status_button="Following";
-                    }
-                    else
-                    {
+                    } else {
                         itemUpdte.follow_status_button="Follow";
                     }
 
@@ -307,13 +281,11 @@ public class FollowingUserF extends Fragment {
     // this will open the profile of user which have uploaded the currenlty running video
     private void openProfile(final FollowingModel item) {
 
-        String userName="";
+        String userName = "";
         if (view != null) {
-            userName=item.username;
-        }
-        else
-        {
-            userName=item.first_name + " " + item.last_name;
+            userName = item.username;
+        } else {
+            userName = item.first_name + " " + item.last_name;
         }
         Intent intent=new Intent(view.getContext(), ProfileA.class);
         intent.putExtra("user_id", item.fb_id);
@@ -321,11 +293,7 @@ public class FollowingUserF extends Fragment {
         intent.putExtra("user_pic", item.profile_pic);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-
-
     }
-
-
 
     public void followUnFollowUser(final FollowingModel item, final int position) {
 
@@ -335,8 +303,6 @@ public class FollowingUserF extends Fragment {
                 new APICallBack() {
                     @Override
                     public void arrayData(ArrayList arrayList) {
-
-
                     }
 
                     @Override
@@ -367,10 +333,7 @@ public class FollowingUserF extends Fragment {
                     public void onFail(String responce) {
 
                     }
-
                 });
-
-
     }
 
 
@@ -397,8 +360,6 @@ public class FollowingUserF extends Fragment {
                 parseFollowingData(resp);
             }
         });
-
-
     }
 
     // parse the list of user that follow the profile
@@ -430,38 +391,24 @@ public class FollowingUserF extends Fragment {
                         item.profile_pic = Constants.BASE_URL + item.profile_pic;
                     }
 
-                    if (isSelf)
-                    {
+                    if (isSelf) {
                         item.isFollow=false;
-                    }
-                    else
-                    {
+                    } else {
                         item.isFollow=true;
                     }
                     String userStatus=followingList.optString("button").toLowerCase();
-                    if (userStatus.equalsIgnoreCase("following"))
-                    {
+                    if (userStatus.equalsIgnoreCase("following")) {
                         item.follow_status_button = "Following";
-                    }
-                    else
-                    if (userStatus.equalsIgnoreCase("friends"))
-                    {
+                    } else if (userStatus.equalsIgnoreCase("friends")) {
                         item.follow_status_button = "Friends";
-                    }
-                    else
-                    if (userStatus.equalsIgnoreCase("follow back"))
-                    {
+                    } else if (userStatus.equalsIgnoreCase("follow back")) {
                         item.follow_status_button = "Follow back";
-                    }
-                    else
-                    {
+                    } else {
                         item.follow_status_button = "Follow";
                     }
                     item.notificationType=followingList.optString("notification","1");
 
                     temp_list.add(item);
-
-
                 }
 
                 if (pageCount == 0) {
@@ -486,5 +433,4 @@ public class FollowingUserF extends Fragment {
             loadMoreProgress.setVisibility(View.GONE);
         }
     }
-
 }

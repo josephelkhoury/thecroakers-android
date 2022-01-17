@@ -23,7 +23,6 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp">
 
-
             <ImageView
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
@@ -31,8 +30,8 @@
                 android:padding="@dimen/_3sdp"
                 android:layout_width="@dimen/_24sdp"
                 android:layout_height="@dimen/_24sdp"
-                android:src="@drawable/ic_live" />
-
+                android:src="@drawable/ic_live"
+                android:visibility="gone"/>
 
             <ImageView
                 android:layout_marginEnd="@dimen/_10sdp"
@@ -148,9 +147,8 @@
                                     fresco:placeholderImage="@drawable/ic_user_icon" />
 
 
-
                                 <ImageView
-                                    android:id="@+id/varified_btn"
+                                    android:id="@+id/verified_btn"
                                     android:layout_width="@dimen/_24sdp"
                                     android:layout_height="@dimen/_24sdp"
                                     android:layout_alignParentEnd="true"

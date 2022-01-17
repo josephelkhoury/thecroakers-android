@@ -78,12 +78,9 @@ public class SettingAndPrivacyA extends AppCompatActivity implements View.OnClic
     }
 
     private void setUpScreenData() {
-        if (Functions.getSharedPreference(SettingAndPrivacyA.this).getString(Variables.IS_VERIFIED,"0").equals("1"))
-        {
+        if (Functions.getSharedPreference(SettingAndPrivacyA.this).getString(Variables.IS_VERIFIED,"0").equals("1")) {
             tabVerifyProfile.setVisibility(View.GONE);
-        }
-        else
-        {
+        } else {
             tabVerifyProfile.setVisibility(View.VISIBLE);
         }
     }
@@ -170,8 +167,6 @@ public class SettingAndPrivacyA extends AppCompatActivity implements View.OnClic
         }
     }
 
-
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -185,15 +180,12 @@ public class SettingAndPrivacyA extends AppCompatActivity implements View.OnClic
         overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
     }
 
-
-
     public void openRequestVerification() {
         Intent intent=new Intent(SettingAndPrivacyA.this, ProfileVarificationA.class);
         startActivity(intent);
         overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 
     }
-
 
     private void shareProfile() {
 
@@ -205,8 +197,7 @@ public class SettingAndPrivacyA extends AppCompatActivity implements View.OnClic
         final ShareUserProfileF fragment = new ShareUserProfileF(userId,userName,fullName,userPic,"",false,true, new FragmentCallBack() {
             @Override
             public void onResponse(Bundle bundle) {
-                if (bundle.getBoolean("isShow",false))
-                {
+                if (bundle.getBoolean("isShow",false)) {
 
                 }
             }
@@ -231,8 +222,7 @@ public class SettingAndPrivacyA extends AppCompatActivity implements View.OnClic
 
 
     private void logoutProceed() {
-        if (Paper.book(Variables.MultiAccountKey).getAllKeys().size()>1)
-        {
+        if (Paper.book(Variables.MultiAccountKey).getAllKeys().size()>1) {
             Functions.showDoubleButtonAlert(SettingAndPrivacyA.this,
                     getString(R.string.are_you_sure_to_logout),
                     "",
@@ -241,24 +231,18 @@ public class SettingAndPrivacyA extends AppCompatActivity implements View.OnClic
                     new FragmentCallBack() {
                         @Override
                         public void onResponse(Bundle bundle) {
-                            if (bundle.getBoolean("isShow",false))
-                            {
+                            if (bundle.getBoolean("isShow",false)) {
                                 openManageMultipleAccounts();
-                            }
-                            else
-                            {
+                            } else {
                                 logout();
                             }
                         }
                     }
             );
-        }
-        else
-        {
+        } else {
             logout();
         }
     }
-
 
     public void openWebUrl(String title, String url) {
         Intent intent=new Intent(SettingAndPrivacyA.this, WebviewA.class);
@@ -267,7 +251,6 @@ public class SettingAndPrivacyA extends AppCompatActivity implements View.OnClic
         startActivity(intent);
         overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
     }
-
 
     public void logout() {
 
@@ -290,20 +273,14 @@ public class SettingAndPrivacyA extends AppCompatActivity implements View.OnClic
 
                     if (code.equalsIgnoreCase("200")) {
                         removePreferenceData();
-                    }
-                    else
-                    {
+                    } else {
                         removePreferenceData();
                     }
-
                 } catch (Exception e) {
                     Log.d(Constants.tag,"Exception : "+e);
                 }
-
-
             }
         });
-
     }
 
     private void removePreferenceData() {
@@ -330,13 +307,11 @@ public class SettingAndPrivacyA extends AppCompatActivity implements View.OnClic
         startActivity(intent);
     }
 
-
     private void openManageMultipleAccounts() {
         ManageAccountsF f = new ManageAccountsF(new FragmentCallBack() {
             @Override
             public void onResponse(Bundle bundle) {
-                if (bundle.getBoolean("isShow",false))
-                {
+                if (bundle.getBoolean("isShow",false)) {
                     Functions.hideSoftKeyboard(SettingAndPrivacyA.this);
                     Intent intent = new Intent(SettingAndPrivacyA.this, LoginA.class);
                     startActivity(intent);

@@ -51,7 +51,6 @@ public class CreateUsernameF extends Fragment {
         this.fromWhere = fromWhere;
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -62,15 +61,12 @@ public class CreateUsernameF extends Fragment {
         userRegisterModel = (UserRegisterModel) bundle.getSerializable("user_model");
 
         view.findViewById(R.id.goBack).setOnClickListener(v->{
-
                 getActivity().onBackPressed();
-
         });
 
         sharedPreferences = Functions.getSharedPreference(getContext());
         usernameEdit = view.findViewById(R.id.username_edit);
         signUpBtn = view.findViewById(R.id.btn_sign_up);
-
 
         usernameCountTxt = view.findViewById(R.id.username_count_txt);
 
@@ -80,12 +76,10 @@ public class CreateUsernameF extends Fragment {
         usernameEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
                 // check the username field length
 
                 usernameCountTxt.setText(usernameEdit.getText().length() + "/" + Constants.USERNAME_CHAR_LIMIT);
@@ -97,7 +91,6 @@ public class CreateUsernameF extends Fragment {
                     signUpBtn.setEnabled(false);
                     signUpBtn.setClickable(false);
                 }
-
             }
 
             @Override
@@ -106,25 +99,22 @@ public class CreateUsernameF extends Fragment {
             }
         });
 
-
         signUpBtn.setOnClickListener(v -> {
             // check validation and then call the signup api
                 if (checkValidation()) {
-                    call_api_for_sigup();
+                    call_api_for_signup();
                 }
-
         });
 
         return view;
     }
 
-    private void call_api_for_sigup() {
-
+    private void call_api_for_signup() {
         JSONObject parameters = new JSONObject();
         try {
-
             parameters.put("dob", "" + userRegisterModel.dateOfBirth);
             parameters.put("username", "" + usernameEdit.getText().toString());
+            parameters.put("country_id", "" + userRegisterModel.countryId);
 
             if (fromWhere.equals("fromEmail")) {
                 parameters.put("email", "" + userRegisterModel.email);
@@ -141,8 +131,6 @@ public class CreateUsernameF extends Fragment {
                 parameters.put("auth_token", "" + userRegisterModel.authTokon);
                 parameters.put("device_token", Variables.DEVICE);
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -155,13 +143,11 @@ public class CreateUsernameF extends Fragment {
 
                 Functions.cancelLoader();
                 parseSignupData(resp);
-
             }
         });
     }
 
-
-    // if the signup successfull then this method will call and it store the user info in local
+    // if the signup successful then this method will call and it store the user info in local
     public void parseSignupData(String loginData) {
         try {
             JSONObject jsonObject = new JSONObject(loginData);
@@ -174,25 +160,20 @@ public class CreateUsernameF extends Fragment {
                 }
                 Functions.storeUserLoginDataIntoDb(view.getContext(),userDetailModel);
 
-
                 Functions.setUpMultipleAccount(view.getContext());
 
                 getActivity().sendBroadcast(new Intent("newVideo"));
-
 
                 Variables.reloadMyVideos = true;
                 Variables.reloadMyVideosInner = true;
                 Variables.reloadMyLikesInner = true;
                 Variables.reloadMyNotification = true;
 
-                if (Paper.book(Variables.MultiAccountKey).getAllKeys().size()>1)
-                {
+                if (Paper.book(Variables.MultiAccountKey).getAllKeys().size()>1) {
                     Intent intent=new Intent(view.getContext(), SplashA.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     view.getContext().startActivity(intent);
-                }
-                else
-                {
+                } else {
                     Intent intent=new Intent(view.getContext(), MainMenuActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     view.getContext().startActivity(intent);
@@ -200,17 +181,13 @@ public class CreateUsernameF extends Fragment {
             } else {
                 Toast.makeText(getActivity(), "" + jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
-
 
     // check the username validation here
     public boolean checkValidation() {
-
         String uname = usernameEdit.getText().toString();
         if (TextUtils.isEmpty(uname)) {
             usernameEdit.setError(view.getContext().getString(R.string.username_cant_empty));
@@ -222,8 +199,7 @@ public class CreateUsernameF extends Fragment {
             usernameEdit.setFocusable(true);
             return false;
         }
-        if (!(UserNameTwoCaseValidate(uname)))
-        {
+        if (!(UserNameTwoCaseValidate(uname))) {
             usernameEdit.setError(view.getContext().getString(R.string.username_must_contain_alphabet));
             usernameEdit.setFocusable(true);
             return false;
@@ -232,19 +208,14 @@ public class CreateUsernameF extends Fragment {
         return true;
     }
 
-
     private boolean UserNameTwoCaseValidate(String name) {
-
         Pattern let_p = Pattern.compile("[a-z]", Pattern.CASE_INSENSITIVE);
         Matcher let_m = let_p.matcher(name);
         boolean let_str = let_m.find();
 
-        if (let_str)
-        {
+        if (let_str) {
             return true;
         }
         return false;
     }
-
-
 }

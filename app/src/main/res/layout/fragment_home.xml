@@ -170,6 +170,7 @@
           android:textColor="@color/white"
           android:layout_marginTop="@dimen/_22sdp"
           android:layout_marginEnd="@dimen/_12sdp"
+          android:visibility="gone"
           />
 
 

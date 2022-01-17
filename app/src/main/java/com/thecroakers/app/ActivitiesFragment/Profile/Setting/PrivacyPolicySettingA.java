@@ -39,10 +39,9 @@ public class PrivacyPolicySettingA extends AppCompatActivity implements View.OnC
         initControl();
     }
 
-
     // initialize the all views
     private void initControl() {
-        cancel=getString(R.string.cancel_);
+        cancel = getString(R.string.cancel_);
         privacyPolicySettingModel = (PrivacyPolicySettingModel) Paper.book(Variables.PrivacySetting).read(Variables.PrivacySettingModel);
         allowDownloadTxt = findViewById(R.id.allow_download_txt);
         allowCommenetTxt = findViewById(R.id.allow_commenet_txt);
@@ -102,7 +101,6 @@ public class PrivacyPolicySettingA extends AppCompatActivity implements View.OnC
                 final CharSequence[] likevidoption = {getString(R.string.everyone), getString(R.string.only_me), getString(R.string.cancel_)};
                 selectimage(getString(R.string.select_like_video_option), likevidoption, allowViewLikevidTxt, 5);
                 break;
-
         }
     }
 

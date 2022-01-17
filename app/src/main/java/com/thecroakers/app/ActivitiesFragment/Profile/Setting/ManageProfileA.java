@@ -51,35 +51,26 @@ public class ManageProfileA extends AppCompatActivity implements View.OnClickLis
         tabChangePassword=findViewById(R.id.tabChangePassword);
         tabChangePassword.setOnClickListener(this);
 
-
         setUpScreenData();
-
     }
 
     private void setUpScreenData() {
-        if (TextUtils.isEmpty(Functions.getSharedPreference(ManageProfileA.this).getString(Variables.U_SOCIAL_ID,"")))
-        {
+        if (TextUtils.isEmpty(Functions.getSharedPreference(ManageProfileA.this).getString(Variables.U_SOCIAL_ID,""))) {
             tvAccountInformation.setVisibility(View.VISIBLE);
             hideAbleView.setVisibility(View.VISIBLE);
 
-           if (TextUtils.isEmpty(Functions.getSharedPreference(ManageProfileA.this).getString(Variables.U_PHONE_NO,"")))
-            {
+           if (TextUtils.isEmpty(Functions.getSharedPreference(ManageProfileA.this).getString(Variables.U_PHONE_NO,""))) {
                 tabChangeEmail.setVisibility(View.VISIBLE);
                 tabChangePhoneNo.setVisibility(View.GONE);
                 tabChangePassword.setVisibility(View.VISIBLE);
                 tvEmail.setText(Functions.getSharedPreference(ManageProfileA.this).getString(Variables.U_EMAIL,""));
-            }
-            else
-            {
+            } else {
                 tabChangeEmail.setVisibility(View.GONE);
                 tabChangePhoneNo.setVisibility(View.VISIBLE);
                 tabChangePassword.setVisibility(View.GONE);
                 tvPhoneNo.setText(Functions.getSharedPreference(ManageProfileA.this).getString(Variables.U_PHONE_NO,""));
             }
-
-        }
-        else
-        {
+        } else {
             tabChangePhoneNo.setVisibility(View.GONE);
             tabChangeEmail.setVisibility(View.GONE);
             tabChangePassword.setVisibility(View.GONE);
@@ -90,40 +81,33 @@ public class ManageProfileA extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
-        switch (view.getId())
-        {
-            case R.id.tabDeleteAccount:
-            {
+        switch (view.getId()) {
+            case R.id.tabDeleteAccount: {
                 startActivity(new Intent(ManageProfileA.this, DeleteAccountA.class));
             }
             break;
-            case R.id.tabChangePhoneNo:
-            {
+            case R.id.tabChangePhoneNo: {
                 Intent intent=new Intent(ManageProfileA.this, UpdateEmailPhoneA.class);
                 intent.putExtra("type","phone");
                 resultCallback.launch(intent);
             }
             break;
-            case R.id.tabChangeEmail:
-            {
+            case R.id.tabChangeEmail: {
                 Intent intent=new Intent(ManageProfileA.this,UpdateEmailPhoneA.class);
                 intent.putExtra("type","email");
                 resultCallback.launch(intent);
             }
             break;
-            case R.id.tabChangePassword:
-            {
+            case R.id.tabChangePassword: {
                 startActivity(new Intent(ManageProfileA.this, ChangePasswordA.class));
             }
             break;
-            case R.id.back_btn:
-            {
+            case R.id.back_btn: {
                 ManageProfileA.super.onBackPressed();
             }
             break;
         }
     }
-
 
     ActivityResultLauncher<Intent> resultCallback = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
@@ -131,11 +115,9 @@ public class ManageProfileA extends AppCompatActivity implements View.OnClickLis
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
-                        if (data.getBooleanExtra("isShow",false))
-                        {
+                        if (data.getBooleanExtra("isShow",false)) {
                             setUpScreenData();
                         }
-
                     }
                 }
             });

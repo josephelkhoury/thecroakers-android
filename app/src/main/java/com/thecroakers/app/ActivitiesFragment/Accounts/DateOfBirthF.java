@@ -1,20 +1,33 @@
 package com.thecroakers.app.ActivitiesFragment.Accounts;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.thecroakers.app.ActivitiesFragment.VideoRecording.PostVideoA;
+import com.thecroakers.app.ApiClasses.ApiLinks;
 import com.thecroakers.app.Models.UserRegisterModel;
 import com.thecroakers.app.R;
+import com.thecroakers.app.SimpleClasses.Functions;
+import com.volley.plus.VPackages.VolleyRequest;
+import com.volley.plus.interfaces.Callback;
 import com.ycuwq.datepicker.date.DatePicker;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -24,6 +37,7 @@ import static java.util.Calendar.MONTH;
 import static java.util.Calendar.YEAR;
 
 public class DateOfBirthF extends Fragment implements View.OnClickListener {
+    Context context;
     View view;
     DatePicker datePicker;
     Button btnDobNext;
@@ -31,6 +45,10 @@ public class DateOfBirthF extends Fragment implements View.OnClickListener {
     Date c;
     String fromWhere;
     UserRegisterModel userRegisterModel = new UserRegisterModel();
+    TextView countryTxt;
+    ArrayList<JSONObject> countries = new ArrayList<>();
+    ArrayList<String> countriesStr = new ArrayList<String>();
+    String country_id = "";
 
     public DateOfBirthF() {
 
@@ -40,6 +58,7 @@ public class DateOfBirthF extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        context = DateOfBirthF.this.getContext();
         view = inflater.inflate(R.layout.fragment_dob_fragment, container, false);
         c = Calendar.getInstance().getTime();
         datePicker = view.findViewById(R.id.datePicker);
@@ -53,8 +72,6 @@ public class DateOfBirthF extends Fragment implements View.OnClickListener {
             @Override
             public void onDateSelected(int year, int month, int day) {
                 // select the date from datepicker
-                btnDobNext.setEnabled(true);
-                btnDobNext.setClickable(true);
                 stYear = String.valueOf(year);
                 currentDate = year + "-" + month + "-" + day;
                 userRegisterModel.dateOfBirth = currentDate;
@@ -64,6 +81,12 @@ public class DateOfBirthF extends Fragment implements View.OnClickListener {
 
         view.findViewById(R.id.btn_dob_next).setOnClickListener(this::onClick);
         view.findViewById(R.id.goBack).setOnClickListener(this::onClick);
+
+        view.findViewById(R.id.country_layout).setOnClickListener(this);
+        countryTxt = view.findViewById(R.id.country_txt);
+
+        getCountries();
+
         return view;
     }
 
@@ -78,13 +101,14 @@ public class DateOfBirthF extends Fragment implements View.OnClickListener {
             case R.id.btn_dob_next:
                 checkDobDate();
                 break;
+            case R.id.country_layout:
+                countryDialog();
+                break;
 
             default:
                 break;
         }
-
     }
-
 
     public void checkDobDate() {
         SimpleDateFormat df = new SimpleDateFormat("yyy", Locale.ENGLISH);
@@ -100,7 +124,7 @@ public class DateOfBirthF extends Fragment implements View.OnClickListener {
 
         int value = getDiffYears(currentdate, dob);
         // check that a user select the date greater then 17 year
-        if (value > 17) {
+        //if (value > 17) {
             //get the email or phone if a user want to signup
             if (fromWhere.equals("signup")) {
                 EmailPhoneF emailPhoneF = new EmailPhoneF(fromWhere);
@@ -123,9 +147,9 @@ public class DateOfBirthF extends Fragment implements View.OnClickListener {
                 transaction.addToBackStack(null);
                 transaction.replace(R.id.dob_fragment, signUp_fragment).commit();
             }
-        } else {
-            Toast.makeText(getActivity(), view.getContext().getString(R.string.age_must_be_over_eighteen), Toast.LENGTH_SHORT).show();
-        }
+        //} else {
+        //    Toast.makeText(getActivity(), view.getContext().getString(R.string.age_must_be_over_eighteen), Toast.LENGTH_SHORT).show();
+        //}
     }
 
     // this method will return the years difference
@@ -146,5 +170,57 @@ public class DateOfBirthF extends Fragment implements View.OnClickListener {
         return cal;
     }
 
+    private void getCountries() {
+        JSONObject parameters = new JSONObject();
+        try {
+            parameters.put("worldwide", "0");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        VolleyRequest.JsonPostRequest(DateOfBirthF.this.getActivity(), ApiLinks.showCountries, parameters, Functions.getHeaders(context), new Callback() {
+            @Override
+            public void onResponce(String resp) {
+                Functions.checkStatus(DateOfBirthF.this.getActivity(), resp);
+                try {
+                    JSONObject jsonObject = new JSONObject(resp);
+                    String code = jsonObject.optString("code");
+                    if (code.equals("200")) {
+                        JSONArray msgArray = jsonObject.getJSONArray("msg");
+                        for (int i = 0; i < msgArray.length(); i++) {
+                            JSONObject countryObj = msgArray.optJSONObject(i);
+                            JSONObject country = countryObj.optJSONObject("Country");
+                            countries.add(country);
+                            countriesStr.add(country.optString("emoji")+" "+country.optString("name"));
+                        }
+                    } else {
+                        Functions.showToast(context, jsonObject.optString("msg"));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void countryDialog() {
+        final CharSequence[] options = countriesStr.toArray(new CharSequence[countriesStr.size()]);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
+
+        builder.setTitle(getString(R.string.country));
+
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                countryTxt.setText(options[i]);
+                JSONObject country = countries.get(i);
+                country_id = country.optString("id");
+                userRegisterModel.countryId = country_id;
+                btnDobNext.setEnabled(true);
+                btnDobNext.setClickable(true);
+            }
+        });
+
+        builder.show();
+    }
 }

@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:clickable="true"
     android:focusable="true"
-    android:id="@+id/privacyPolicyConatinerId"
+    android:id="@+id/privacyPolicyContainerId"
     tools:context=".ActivitiesFragment.Profile.SettingAndPrivacyA">
 
     <RelativeLayout
@@ -161,7 +161,8 @@
                 android:layout_marginTop="@dimen/_4sdp"
                 android:layout_marginEnd="@dimen/_12sdp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="@dimen/_20sdp"
@@ -189,7 +190,8 @@
                 android:layout_marginTop="@dimen/_4sdp"
                 android:layout_marginEnd="@dimen/_12sdp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="@dimen/_20sdp"
