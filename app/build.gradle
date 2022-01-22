@@ -9,14 +9,31 @@ enigma.injectFakeKeys = false
 
 android {
     compileSdkVersion 30
+    buildToolsVersion "18.1.1"
 
-    defaultConfig {
-        applicationId "com.thecroakers.app"
-        minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 39
-        versionName "1.27"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    def versionPropsFile = file('version.properties')
+
+    if (versionPropsFile.canRead()) {
+        def Properties versionProps = new Properties()
+
+        versionProps.load(new FileInputStream(versionPropsFile))
+
+        def code = versionProps['VERSION_CODE'].toInteger() + 1
+
+        versionProps['VERSION_CODE']=code.toString()
+        versionProps.store(versionPropsFile.newWriter(), null)
+
+        defaultConfig {
+            applicationId "com.thecroakers.app"
+            minSdkVersion 21
+            targetSdkVersion 30
+            versionCode code
+            versionName "1.27"
+            testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        }
+    }
+    else {
+        throw new GradleException("Could not read version.properties!")
     }
 
     compileOptions {
