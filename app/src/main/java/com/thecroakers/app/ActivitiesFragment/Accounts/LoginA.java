@@ -79,8 +79,6 @@ public class LoginA extends AppCompatActivity implements View.OnClickListener {
     long mBackPressed;
     TextView loginTitleTxt;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,18 +133,13 @@ public class LoginA extends AppCompatActivity implements View.OnClickListener {
         };
         ss.setSpan(clickableSpan, 99, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-
         TextView textView = (TextView) findViewById(R.id.login_terms_condition_txt);
         textView.setText(ss);
         textView.setClickable(true);
         textView.setMovementMethod(LinkMovementMethod.getInstance());
 
-
         Functions.PrintHashKey(LoginA.this);
-
-
     }
-
 
     @Override
     public void onClick(View v) {
@@ -226,11 +219,10 @@ public class LoginA extends AppCompatActivity implements View.OnClickListener {
 
         try {
             LoginManager.getInstance().logOut();
-        }catch (Exception e){}
+        } catch (Exception e){}
         LoginManager.getInstance()
                 .logInWithReadPermissions(LoginA.this,
                         Arrays.asList("public_profile", "email"));
-
 
         mCallbackManager = CallbackManager.Factory.create();
         LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
@@ -293,11 +285,9 @@ public class LoginA extends AppCompatActivity implements View.OnClickListener {
                                     userRegisterModel.socailType = "facebook";
                                     userRegisterModel.authTokon = auth_token;
 
-
                                     callApiForLogin("" + id,
                                             "facebook",
                                             auth_token);
-
                                 }
                             });
 
@@ -321,7 +311,6 @@ public class LoginA extends AppCompatActivity implements View.OnClickListener {
 
         JSONObject parameters = new JSONObject();
         try {
-
             parameters.put("social_id", socialId);
             parameters.put("social", "" + social);
             parameters.put("auth_token", "" + authtoken);
@@ -337,7 +326,6 @@ public class LoginA extends AppCompatActivity implements View.OnClickListener {
                 Functions.checkStatus(LoginA.this,resp);
                 Functions.cancelLoader();
                 parseLoginData(resp, authtoken);
-
             }
         });
 
@@ -352,7 +340,7 @@ public class LoginA extends AppCompatActivity implements View.OnClickListener {
 
                 JSONObject jsonObj = jsonObject.getJSONObject("msg");
                 UserModel userDetailModel = DataParsing.getUserDataModel(jsonObj.optJSONObject("User"));
-                Functions.storeUserLoginDataIntoDb(LoginA.this,userDetailModel);
+                Functions.storeUserLoginDataIntoDb(LoginA.this, userDetailModel);
 
                 Functions.setUpMultipleAccount(LoginA.this);
                 sendBroadcast(new Intent("newVideo"));
@@ -363,19 +351,15 @@ public class LoginA extends AppCompatActivity implements View.OnClickListener {
                 Variables.reloadMyNotification = true;
                 topView.setVisibility(View.GONE);
 
-                if (Paper.book(Variables.MultiAccountKey).getAllKeys().size()>1)
-                {
+                if (Paper.book(Variables.MultiAccountKey).getAllKeys().size() > 1) {
                     Intent intent=new Intent(LoginA.this, SplashA.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     LoginA.this.startActivity(intent);
-                }
-                else
-                {
-                    Intent intent=new Intent(this, MainMenuActivity.class);
+                } else {
+                    Intent intent = new Intent(this, MainMenuActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
-
 
             } else if (code.equals("201") && !jsonObject.optString("msg").contains("have been blocked")) {
                 openDobFragment("social");
@@ -457,14 +441,10 @@ public class LoginA extends AppCompatActivity implements View.OnClickListener {
                     auth_token);
 
         } else {
-
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             resultCallbackForGoogle.launch(signInIntent);
-
         }
-
     }
-
 
     ActivityResultLauncher<Intent> resultCallbackForGoogle = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
@@ -477,8 +457,6 @@ public class LoginA extends AppCompatActivity implements View.OnClickListener {
                     }
                 }
             });
-
-
 
     //Relate to google login
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
@@ -495,7 +473,6 @@ public class LoginA extends AppCompatActivity implements View.OnClickListener {
                 Functions.printLog(Constants.tag, "signInResult:auth_token =" + auth_token);
                 // if we do not get the picture of user then we will use default profile picture
 
-
                 userRegisterModel = new UserRegisterModel();
 
                 userRegisterModel.fname = fname;
@@ -505,7 +482,6 @@ public class LoginA extends AppCompatActivity implements View.OnClickListener {
                 userRegisterModel.socailType = "google";
                 userRegisterModel.picture=image;
                 userRegisterModel.authTokon = account.getIdToken();
-
 
                 callApiForLogin("" + id,
                         "google",

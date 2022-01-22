@@ -4,6 +4,9 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/429d01bfd03b0f6fcf286094322c93d0/transformed/jetified-GPUVideo-android-v0.1.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/429d01bfd03b0f6fcf286094322c93d0/transformed/jetified-GPUVideo-android-v0.1.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/429d01bfd03b0f6fcf286094322c93d0/transformed/jetified-GPUVideo-android-v0.1.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/76a03f57e5a2075fb60cdbfcae14e4fb/transformed/jetified-GPUVideo-android-v0.1.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/76a03f57e5a2075fb60cdbfcae14e4fb/transformed/jetified-GPUVideo-android-v0.1.0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/76a03f57e5a2075fb60cdbfcae14e4fb/transformed/jetified-GPUVideo-android-v0.1.0/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

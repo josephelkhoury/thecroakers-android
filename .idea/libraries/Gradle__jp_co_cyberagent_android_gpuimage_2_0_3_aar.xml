@@ -4,6 +4,9 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/f46c7b679ba6865621f7bd37baeae0b5/transformed/jetified-gpuimage-2.0.3/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f46c7b679ba6865621f7bd37baeae0b5/transformed/jetified-gpuimage-2.0.3/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f46c7b679ba6865621f7bd37baeae0b5/transformed/jetified-gpuimage-2.0.3/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/108c8e88a51dec8c8009085c0408759d/transformed/jetified-gpuimage-2.0.3/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/108c8e88a51dec8c8009085c0408759d/transformed/jetified-gpuimage-2.0.3/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/108c8e88a51dec8c8009085c0408759d/transformed/jetified-gpuimage-2.0.3/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/jp.co.cyberagent.android/gpuimage/2.0.3/e70957fd77ab41dd983b4c4462c43f5a9c5c0719/gpuimage-2.0.3-javadoc.jar!/" />

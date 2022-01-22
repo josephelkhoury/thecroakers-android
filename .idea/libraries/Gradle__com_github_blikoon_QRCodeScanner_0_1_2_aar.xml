@@ -4,6 +4,9 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/424e88b63f1c8748e6f6c76f906b8032/transformed/jetified-QRCodeScanner-0.1.2/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/424e88b63f1c8748e6f6c76f906b8032/transformed/jetified-QRCodeScanner-0.1.2/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/424e88b63f1c8748e6f6c76f906b8032/transformed/jetified-QRCodeScanner-0.1.2/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/ced56863dd39171c4fcade2731f2a89c/transformed/jetified-QRCodeScanner-0.1.2/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/ced56863dd39171c4fcade2731f2a89c/transformed/jetified-QRCodeScanner-0.1.2/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/ced56863dd39171c4fcade2731f2a89c/transformed/jetified-QRCodeScanner-0.1.2/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

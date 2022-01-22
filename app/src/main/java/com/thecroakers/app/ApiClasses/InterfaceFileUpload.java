@@ -20,7 +20,10 @@ public interface InterfaceFileUpload {
                                     @Part("allow_duet") RequestBody AllowDuet,
                                     @Part("users_json") RequestBody UsersJson,
                                     @Part("hashtags_json") RequestBody HashtagsJson,
-                                    @Part("video_id") RequestBody videoId);
+                                    @Part("video_id") RequestBody videoId,
+                                    @Part("main_video_id") RequestBody mainVideoId,
+                                    @Part("topic_id") RequestBody topicId,
+                                    @Part("country_id") RequestBody countryId);
 
     @Multipart
     @POST(ApiLinks.postVideo)
@@ -35,6 +38,5 @@ public interface InterfaceFileUpload {
                                     @Part("hashtags_json") RequestBody HashtagsJson,
                                     @Part("video_id") RequestBody videoId,
                                     @Part("duet") RequestBody duet);
-
 
 }

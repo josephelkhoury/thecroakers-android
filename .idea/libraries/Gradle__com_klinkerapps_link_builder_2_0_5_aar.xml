@@ -4,6 +4,9 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/f31ff76a815d21cd702810c72c5c3828/transformed/jetified-link_builder-2.0.5/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f31ff76a815d21cd702810c72c5c3828/transformed/jetified-link_builder-2.0.5/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f31ff76a815d21cd702810c72c5c3828/transformed/jetified-link_builder-2.0.5/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/11cc9365c277e5abcd5fd03742c99216/transformed/jetified-link_builder-2.0.5/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/11cc9365c277e5abcd5fd03742c99216/transformed/jetified-link_builder-2.0.5/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/11cc9365c277e5abcd5fd03742c99216/transformed/jetified-link_builder-2.0.5/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.klinkerapps/link_builder/2.0.5/b9e0eb957d6434d8fedb64fb92901030dae5bc4d/link_builder-2.0.5-javadoc.jar!/" />

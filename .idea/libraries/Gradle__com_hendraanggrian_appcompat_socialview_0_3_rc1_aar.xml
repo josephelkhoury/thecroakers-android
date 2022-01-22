@@ -4,6 +4,9 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/6857895373f3fd39c11bda8c1e9beba7/transformed/jetified-socialview-0.3-rc1/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/6857895373f3fd39c11bda8c1e9beba7/transformed/jetified-socialview-0.3-rc1/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/6857895373f3fd39c11bda8c1e9beba7/transformed/jetified-socialview-0.3-rc1/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f00db06134b02f34f0cb20f972272df0/transformed/jetified-socialview-0.3-rc1/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f00db06134b02f34f0cb20f972272df0/transformed/jetified-socialview-0.3-rc1/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/f00db06134b02f34f0cb20f972272df0/transformed/jetified-socialview-0.3-rc1/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.hendraanggrian.appcompat/socialview/0.3-rc1/eb10544a72991df7f63908ec463a726dd0378b97/socialview-0.3-rc1-javadoc.jar!/" />

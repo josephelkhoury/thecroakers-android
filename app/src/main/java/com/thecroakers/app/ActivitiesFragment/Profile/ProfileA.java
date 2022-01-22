@@ -224,15 +224,14 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
     }
 
     private void openProfileShareTab() {
-        boolean fromSetting=false;
+        boolean fromSetting = false;
         if (userId.equalsIgnoreCase(Functions.getSharedPreference(ProfileA.this).getString(Variables.U_ID,""))) {
-            fromSetting=true;
+            fromSetting = true;
         } else {
-            fromSetting=false;
+            fromSetting = false;
         }
 
-        final ShareAndViewProfileF fragment = new ShareAndViewProfileF(userId,fromSetting
-                ,picUrl, new FragmentCallBack() {
+        final ShareAndViewProfileF fragment = new ShareAndViewProfileF(userId, fromSetting, picUrl, new FragmentCallBack() {
             @Override
             public void onResponse(Bundle bundle) {
                 if (bundle.getString("action").equals("profileShareMessage")) {

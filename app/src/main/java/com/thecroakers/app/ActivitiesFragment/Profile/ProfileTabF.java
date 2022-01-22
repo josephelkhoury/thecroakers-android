@@ -74,7 +74,7 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
     private TextView username, username2Txt,tvBio,tvLink,tvEditProfile;
     private SimpleDraweeView imageView;
     private TextView followCountTxt, fansCountTxt, heartCountTxt;
-    String totalLikes="";
+    String totalLikes = "";
     private LinearLayout tabAccount,tabLink;
     ImageView settingBtn,favBtn;
 
@@ -83,8 +83,8 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
     protected ViewPager pager;
 
     private ViewPagerAdapter adapter;
-    private String picUrl,followerCount,followingCount;
-    private LinearLayout createPopupLayout,tabPrivacyLikes;
+    private String picUrl, followerCount, followingCount;
+    private LinearLayout createPopupLayout, tabPrivacyLikes;
     private int myvideoCount = 0;
 
     PushNotificationSettingModel pushNotificationSettingModel;
@@ -102,7 +102,6 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
         view = inflater.inflate(R.layout.fragment_profile_tab, container, false);
         context = getContext();
 
-
         return init();
     }
 
@@ -112,18 +111,13 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
 
             case R.id.live_btn:
             {
-                if (takePermissionUtils.isCameraRecordingPermissionGranted())
-                {
+                if (takePermissionUtils.isCameraRecordingPermissionGranted()) {
                     goLive();
-                }
-                else
-                {
+                } else {
                     takePermissionUtils.showCameraRecordingPermissionDailog(getString(R.string.we_need_camera_and_recording_permission_for_live_streaming));
                 }
-
             }
                 break;
-
 
             case R.id.user_image:
                 openProfileShareTab();
@@ -134,7 +128,7 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
                 break;
             case R.id.message_btn:
             {
-                Intent intent=new Intent(view.getContext(),SettingAndPrivacyA.class);
+                Intent intent = new Intent(view.getContext(), SettingAndPrivacyA.class);
                 startActivity(intent);
             }
                 break;
@@ -169,7 +163,6 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
 //                startActivity(upload_intent);
 //                getActivity().overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
 //                break;
-
         }
     }
 
@@ -272,13 +265,13 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
     }
 
     private View init() {
-        takePermissionUtils=new PermissionUtils(getActivity(),mPermissionResult);
+        takePermissionUtils = new PermissionUtils(getActivity(), mPermissionResult);
         view.findViewById(R.id.live_btn).setOnClickListener(this::onClick);
 
         username = view.findViewById(R.id.username);
         username2Txt = view.findViewById(R.id.username2_txt);
-        tvLink=view.findViewById(R.id.tvLink);
-        tvBio=view.findViewById(R.id.tvBio);
+        tvLink = view.findViewById(R.id.tvLink);
+        tvBio = view.findViewById(R.id.tvBio);
         imageView = view.findViewById(R.id.user_image);
         imageView.setOnClickListener(this);
 

@@ -259,9 +259,15 @@
         <activity
             android:name=".ActivitiesFragment.Accounts.LoginA"
             android:screenOrientation="portrait"
-            android:theme="@style/white_status"
+            android:theme="@style/Theme.AppCompat.Translucent"
             android:windowSoftInputMode="adjustPan"
              />
+        <activity
+            android:name=".ActivitiesFragment.Accounts.UpgradeA"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Translucent"
+            android:windowSoftInputMode="adjustPan"
+            />
         <activity
             android:name=".ActivitiesFragment.SplashA"
             android:screenOrientation="portrait"

@@ -60,6 +60,7 @@ public class Variables {
     public static final String APP_LANGUAGE_CODE = "app_language_code";
     public static final String DEFAULT_LANGUAGE_CODE = "en";
     public static final String DEFAULT_LANGUAGE = "English";
+    public static final String U_ROLE = "u_role";
 
 
     public static final String IsExtended = "IsExtended";
@@ -83,7 +84,7 @@ public class Variables {
     public static final String GIF_SECONDPART = "/100w.gif";
 
 
-    public static final String http = "http";
+    public static final String http = "https";
 
     public static final SimpleDateFormat df =
             new SimpleDateFormat("dd-MM-yyyy HH:mm:ssZZ", Locale.ENGLISH);

@@ -417,7 +417,7 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
             case R.id.croak_layout:
                 Functions.makeDirectry(Functions.getAppFolder(getActivity())+Variables.APP_HIDED_FOLDER);
                 Functions.makeDirectry(Functions.getAppFolder(getActivity())+Variables.DRAFT_APP_FOLDER);
-                if (Functions.checkLoginUser(getActivity())) {
+                if (Functions.checkLoginUser(getActivity()) && Functions.checkIfCroakerOrPublisher(getActivity())) {
                     if (Functions.isMyServiceRunning(getActivity(), new UploadService().getClass())) {
                         Toast.makeText(getActivity(), context.getString(R.string.video_already_in_progress), Toast.LENGTH_SHORT).show();
                     } else {

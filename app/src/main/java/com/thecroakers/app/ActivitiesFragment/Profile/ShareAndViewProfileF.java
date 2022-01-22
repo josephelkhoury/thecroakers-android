@@ -57,13 +57,13 @@ public class ShareAndViewProfileF extends BottomSheetDialogFragment implements V
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view= inflater.inflate(R.layout.fragment_share_and_view_profile, container, false);
+        view = inflater.inflate(R.layout.fragment_share_and_view_profile, container, false);
         context = getContext();
 
-        userImage=view.findViewById(R.id.user_image);
+        userImage = view.findViewById(R.id.user_image);
         userImage.setOnClickListener(this);
 
-        bottomBtn =view.findViewById(R.id.bottom_btn);
+        bottomBtn = view.findViewById(R.id.bottom_btn);
         bottomBtn.setOnClickListener(this);
 
         userImage.setController(Functions.frescoImageLoad(picUrl,userImage,false));
@@ -95,109 +95,87 @@ public class ShareAndViewProfileF extends BottomSheetDialogFragment implements V
     }
 
     public void shareProfile(ShareAppModel item) {
-        String profielLink = Variables.http+"://"+getString(R.string.share_profile_domain_second)+getString(R.string.share_profile_endpoint_second) + Functions.getSharedPreference(getActivity()).getString(Variables.U_ID,"");
-        if (item.getName().equalsIgnoreCase(view.getContext().getString(R.string.whatsapp)))
-        {
-
+        String profileLink = Variables.http+"://"+getString(R.string.share_profile_domain_second)+getString(R.string.share_profile_endpoint_second) + Functions.getSharedPreference(getActivity()).getString(Variables.U_ID,"");
+        if (item.getName().equalsIgnoreCase(view.getContext().getString(R.string.whatsapp))) {
             try {
                 Intent sendIntent = new Intent("android.intent.action.MAIN");
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_TEXT, profielLink);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, profileLink);
                 sendIntent.setPackage("com.whatsapp");
                 startActivity(sendIntent);
             } catch(Exception e) {
                 Log.d(Constants.tag,"Exception : "+e);
             }
-        }
-        else
-        if (item.getName().equalsIgnoreCase(view.getContext().getString(R.string.facebook)))
-        {
+        } else if (item.getName().equalsIgnoreCase(view.getContext().getString(R.string.facebook))) {
             try {
                 Intent sendIntent = new Intent("android.intent.action.MAIN");
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_TEXT, profielLink);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, profileLink);
                 sendIntent.setPackage("com.facebook.katana");
                 startActivity(sendIntent);
             } catch(Exception e) {
                 Log.d(Constants.tag,"Exception : "+e);
             }
-        }
-        else
-        if (item.getName().equalsIgnoreCase(view.getContext().getString(R.string.messenger)))
-        {
+        } else if (item.getName().equalsIgnoreCase(view.getContext().getString(R.string.messenger))) {
             try {
                 Intent sendIntent = new Intent("android.intent.action.MAIN");
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_TEXT, profielLink);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, profileLink);
                 sendIntent.setPackage("com.facebook.orca");
                 startActivity(sendIntent);
             } catch(Exception e) {
                 Log.d(Constants.tag,"Exception : "+e);
             }
-        }
-        else
-        if (item.getName().equalsIgnoreCase(view.getContext().getString(R.string.sms)))
-        {
+        } else if (item.getName().equalsIgnoreCase(view.getContext().getString(R.string.sms))) {
             try {
                 Intent smsIntent = new Intent(Intent.ACTION_VIEW);
                 smsIntent.setType("vnd.android-dir/mms-sms");
-                smsIntent.putExtra("sms_body",""+profielLink);
+                smsIntent.putExtra("sms_body",""+profileLink);
                 startActivity(smsIntent);
             } catch(Exception e) {
                 Log.d(Constants.tag,"Exception : "+e);
             }
-        }
-        else
-        if (item.getName().equalsIgnoreCase(view.getContext().getString(R.string.copy_link)))
-        {
+        } else if (item.getName().equalsIgnoreCase(view.getContext().getString(R.string.copy_link))) {
             try {
                 ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("Copied Text", profielLink);
+                ClipData clip = ClipData.newPlainText("Copied Text", profileLink);
                 clipboard.setPrimaryClip(clip);
 
                 Toast.makeText(context, context.getString(R.string.link_copy_in_clipboard), Toast.LENGTH_SHORT).show();
             } catch(Exception e) {
                 Log.d(Constants.tag,"Exception : "+e);
             }
-        }
-        else
-        if (item.getName().equalsIgnoreCase(view.getContext().getString(R.string.email)))
-        {
+        } else if (item.getName().equalsIgnoreCase(view.getContext().getString(R.string.email))) {
             try {
                 Intent sendIntent = new Intent("android.intent.action.MAIN");
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_TEXT, profielLink);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, profileLink);
                 sendIntent.setPackage("com.google.android.gm");
                 startActivity(sendIntent);
             } catch(Exception e) {
                 Log.d(Constants.tag,"Exception : "+e);
             }
-        }
-        else
-        if (item.getName().equalsIgnoreCase(view.getContext().getString(R.string.other)))
-        {
+        } else if (item.getName().equalsIgnoreCase(view.getContext().getString(R.string.other))) {
             try {
                 Intent sendIntent = new Intent("android.intent.action.MAIN");
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_TEXT, profielLink);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, profileLink);
                 startActivity(sendIntent);
             } catch(Exception e) {
                 Log.d(Constants.tag,"Exception : "+e);
             }
         }
-
     }
 
     private ArrayList<ShareAppModel> getAppShareDataList() {
         ArrayList<ShareAppModel> dataList=new ArrayList<>();
         {
-            if (Functions.appInstalledOrNot(view.getContext(),"com.whatsapp"))
-            {
+            if (Functions.appInstalledOrNot(view.getContext(),"com.whatsapp")) {
                 ShareAppModel item=new ShareAppModel();
                 item.setName(getString(R.string.whatsapp));
                 item.setIcon(R.drawable.ic_share_whatsapp);
@@ -205,8 +183,7 @@ public class ShareAndViewProfileF extends BottomSheetDialogFragment implements V
             }
         }
         {
-            if (Functions.appInstalledOrNot(view.getContext(),"com.facebook.katana"))
-            {
+            if (Functions.appInstalledOrNot(view.getContext(),"com.facebook.katana")) {
                 ShareAppModel item=new ShareAppModel();
                 item.setName(getString(R.string.facebook));
                 item.setIcon(R.drawable.ic_share_facebook);
@@ -214,8 +191,7 @@ public class ShareAndViewProfileF extends BottomSheetDialogFragment implements V
             }
         }
         {
-            if (Functions.appInstalledOrNot(view.getContext(),"com.facebook.orca"))
-            {
+            if (Functions.appInstalledOrNot(view.getContext(),"com.facebook.orca")) {
                 ShareAppModel item=new ShareAppModel();
                 item.setName(getString(R.string.messenger));
                 item.setIcon(R.drawable.ic_share_messenger);
@@ -235,8 +211,7 @@ public class ShareAndViewProfileF extends BottomSheetDialogFragment implements V
             dataList.add(item);
         }
         {
-            if (Functions.appInstalledOrNot(view.getContext(),"com.whatsapp"))
-            {
+            if (Functions.appInstalledOrNot(view.getContext(),"com.whatsapp")) {
                 ShareAppModel item=new ShareAppModel();
                 item.setName(getString(R.string.email));
                 item.setIcon(R.drawable.ic_share_email);
@@ -251,8 +226,6 @@ public class ShareAndViewProfileF extends BottomSheetDialogFragment implements V
         }
         return dataList;
     }
-
-
 
     @Override
     public void onClick(View view) {
@@ -279,11 +252,6 @@ public class ShareAndViewProfileF extends BottomSheetDialogFragment implements V
             case R.id.bottom_btn:
                 dismiss();
                 break;
-
         }
-
-
     }
-
-
 }

@@ -4,6 +4,9 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/cdb90ea06ee0596b1e655bd074aca5f8/transformed/jetified-paperdb-2.7.1/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/cdb90ea06ee0596b1e655bd074aca5f8/transformed/jetified-paperdb-2.7.1/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/cdb90ea06ee0596b1e655bd074aca5f8/transformed/jetified-paperdb-2.7.1/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/9008d7e43a220cd498dc1e3767eeb534/transformed/jetified-paperdb-2.7.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/9008d7e43a220cd498dc1e3767eeb534/transformed/jetified-paperdb-2.7.1/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/9008d7e43a220cd498dc1e3767eeb534/transformed/jetified-paperdb-2.7.1/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.paperdb/paperdb/2.7.1/4803adae053e755c540bcef061b0d52268f10dcd/paperdb-2.7.1-javadoc.jar!/" />

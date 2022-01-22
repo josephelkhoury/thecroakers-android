@@ -2,11 +2,12 @@ package com.thecroakers.app;
 
 public class Constants {
 
-    public static final String BASE_URL ="https://app.thecroakers.com/mobileapp_api/";
-    public static final String API_KEY="156c4675-9608-4591-1111-00000";
+    public static final String BASE_URL = "https://app.thecroakers.com/mobileapp_api/";
+    public static final String API_KEY = "156c4675-9608-4591-1111-00000";
 
-    public static final String privacy_policy="https://thecroakers.com/privacy-policy/";
-    public static final String terms_conditions="https://thecroakers.com/terms-and-conditions/";
+    public static final String privacy_policy = "https://thecroakers.com/privacy-policy/";
+    public static final String terms_conditions = "https://thecroakers.com/terms-and-conditions/";
+    public static final String apply_as_croaker_or_publisher = "https://thecroakers.com/#APPLY";
 
     // if you want a user can't share a video from your app then you have to set this value to true
     public static final boolean IS_SECURE_INFO = false;
@@ -15,7 +16,7 @@ public class Constants {
     public static final boolean IS_REMOVE_ADS = true;
 
     // if you show the ad on after every specific video count
-    public static final int SHOW_AD_ON_EVERY=8;
+    public static final int SHOW_AD_ON_EVERY = 8;
 
     // if you want a video thumbnail image show rather then a video gif then set the below value to false.
     public static final boolean IS_SHOW_GIF = true;

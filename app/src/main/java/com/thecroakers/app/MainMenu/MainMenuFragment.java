@@ -141,7 +141,7 @@ public class MainMenuFragment extends RootFragment {
         TextView title2 = view2.findViewById(R.id.text);
         imageView2.setImageDrawable(getResources().getDrawable(R.drawable.ic_trending_white));
         imageView2.setColorFilter(ContextCompat.getColor(context, R.color.colorwhite_50), android.graphics.PorterDuff.Mode.SRC_IN);
-        title2.setText(context.getString(R.string.discover));
+        title2.setText(context.getString(R.string.trending));
         title2.setTextColor(context.getResources().getColor(R.color.colorwhite_50));
         tabLayout.getTabAt(1).setCustomView(view2);
 
@@ -303,7 +303,7 @@ public class MainMenuFragment extends RootFragment {
     private void uploadNewVideo() {
         Functions.makeDirectry(Functions.getAppFolder(getActivity())+Variables.APP_HIDED_FOLDER);
         Functions.makeDirectry(Functions.getAppFolder(getActivity())+Variables.DRAFT_APP_FOLDER);
-        if (Functions.checkLoginUser(getActivity())) {
+        if (Functions.checkLoginUser(getActivity()) && Functions.checkIfCroakerOrPublisher(getActivity())) {
             if (Functions.isMyServiceRunning(getActivity(), new UploadService().getClass())) {
                 Toast.makeText(getActivity(), context.getString(R.string.video_already_in_progress), Toast.LENGTH_SHORT).show();
             } else {
@@ -467,8 +467,7 @@ public class MainMenuFragment extends RootFragment {
 
     // open the chat fragment when click on notification of message
     public void chatFragment(String receiverid, String name, String picture) {
-
-        Intent intent=new Intent(context,ChatA.class);
+        Intent intent = new Intent(context,ChatA.class);
         intent.putExtra("user_id", receiverid);
         intent.putExtra("user_name", name);
         intent.putExtra("user_pic", picture);
@@ -495,15 +494,15 @@ public class MainMenuFragment extends RootFragment {
                 @Override
                 public void onActivityResult(Map<String, Boolean> result) {
 
-                    boolean allPermissionClear=true;
-                    List<String> blockPermissionCheck=new ArrayList<>();
+                    boolean allPermissionClear = true;
+                    List<String> blockPermissionCheck = new ArrayList<>();
                     for (String key : result.keySet()) {
                         if (!(result.get(key))) {
-                            allPermissionClear=false;
+                            allPermissionClear = false;
                             blockPermissionCheck.add(Functions.getPermissionStatus(getActivity(),key));
                         }
                     } if (blockPermissionCheck.contains("blocked")) {
-                        Functions.showPermissionSetting(context,context.getString(R.string.we_need_storage_camera_recording_permission_for_make_new_video));
+                        Functions.showPermissionSetting(context, context.getString(R.string.we_need_storage_camera_recording_permission_for_make_new_video));
                     } else if (allPermissionClear) {
                         uploadNewVideo();
                     }

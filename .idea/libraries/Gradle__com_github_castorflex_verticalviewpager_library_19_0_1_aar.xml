@@ -4,6 +4,9 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/ad75d5785372b96907f5b6df336c2ea8/transformed/jetified-library-19.0.1/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/ad75d5785372b96907f5b6df336c2ea8/transformed/jetified-library-19.0.1/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/ad75d5785372b96907f5b6df336c2ea8/transformed/jetified-library-19.0.1/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/44263fa81709207ad46d607aa94861b8/transformed/jetified-library-19.0.1/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/44263fa81709207ad46d607aa94861b8/transformed/jetified-library-19.0.1/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/44263fa81709207ad46d607aa94861b8/transformed/jetified-library-19.0.1/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.castorflex.verticalviewpager/library/19.0.1/a8384fd923fc06b744ade999ec126ebf8194e80d/library-19.0.1-javadoc.jar!/" />

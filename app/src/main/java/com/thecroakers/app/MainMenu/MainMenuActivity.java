@@ -56,7 +56,7 @@ public class MainMenuActivity extends AppCompatActivity {
     Context context;
     public static Intent intent;
 
-    ArrayList<InviteFriendModel> datalist=new ArrayList<>();
+    ArrayList<InviteFriendModel> datalist = new ArrayList<>();
     CountryCodePicker ccp;
     EditText checkNumber;
 
@@ -67,20 +67,20 @@ public class MainMenuActivity extends AppCompatActivity {
         Functions.setLocale(Functions.getSharedPreference(MainMenuActivity.this).getString(Variables.APP_LANGUAGE_CODE,Variables.DEFAULT_LANGUAGE_CODE)
                 , this, MainMenuActivity.class,false);
         setContentView(R.layout.activity_main_menu);
-        context=MainMenuActivity.this;
+        context = MainMenuActivity.this;
         mainMenuActivity = this;
 
-        ccp=new CountryCodePicker(MainMenuActivity.this);
-        checkNumber=new EditText(MainMenuActivity.this);
+        ccp = new CountryCodePicker(MainMenuActivity.this);
+        checkNumber = new EditText(MainMenuActivity.this);
         intent = getIntent();
-        chechDeepLink(intent);
+        checkDeepLink(intent);
 
         if (Functions.getSharedPreference(this).getBoolean(Variables.IS_LOGIN, false)) {
             getPublicIP();
         }
 
-        if(!Functions.getSharedPreference(this).getBoolean(Variables.IsExtended,false))
-        checkLicence();
+        if (!Functions.getSharedPreference(this).getBoolean(Variables.IsExtended,false))
+            checkLicence();
 
         if (savedInstanceState == null) {
             initScreen();
@@ -95,13 +95,13 @@ public class MainMenuActivity extends AppCompatActivity {
         setIntent(null);
     }
 
-    private void chechDeepLink(Intent intent) {
+    private void checkDeepLink(Intent intent) {
         try {
-            Uri uri=intent.getData();
-            String linkUri=""+uri;
-            String userId="";
-            String videoId="";
-            String profileURL=Variables.http+"://"+getString(R.string.share_profile_domain_second)+getString(R.string.share_profile_endpoint_second);
+            Uri uri = intent.getData();
+            String linkUri = ""+uri;
+            String userId = "";
+            String videoId = "";
+            String profileURL = Variables.http+"://"+getString(R.string.share_profile_domain_second)+getString(R.string.share_profile_endpoint_second);
             if (linkUri.contains(profileURL)) {
                 String[] parts = linkUri.split(profileURL);
                 userId = parts[1];
@@ -146,14 +146,11 @@ public class MainMenuActivity extends AppCompatActivity {
                     if (code.equals("200")) {
                         JSONObject msg = jsonObject.optJSONObject("msg");
 
-
                         UserModel userDetailModel= DataParsing.getUserDataModel(msg.optJSONObject("User"));
 
                         moveToProfile(userDetailModel.getId()
                                 ,userDetailModel.getUsername()
                                 ,userDetailModel.getProfilePic());
-
-
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -163,7 +160,7 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     private void moveToProfile(String id,String username,String pic) {
-        Intent intent=new Intent(MainMenuActivity.this, ProfileA.class);
+        Intent intent = new Intent(MainMenuActivity.this, ProfileA.class);
         intent.putExtra("user_id", id);
         intent.putExtra("user_name", username);
         intent.putExtra("user_pic", pic);
@@ -174,21 +171,19 @@ public class MainMenuActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(final Intent intent) {
         super.onNewIntent(intent);
-        chechDeepLink(intent);
+        checkDeepLink(intent);
         if (intent != null) {
             String type = intent.getStringExtra("type");
             if (type != null && type.equalsIgnoreCase("message")) {
                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
-
-                        Intent intent=new Intent(MainMenuActivity.this,ChatA.class);
+                        Intent intent = new Intent(MainMenuActivity.this,ChatA.class);
                         intent.putExtra("user_id", intent.getStringExtra("user_id"));
                         intent.putExtra("user_name", intent.getStringExtra("user_name"));
                         intent.putExtra("user_pic", intent.getStringExtra("user_pic"));
                         resultChatCallback.launch(intent);
                         overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-
                     }
                 }, 2000);
             }
@@ -228,8 +223,8 @@ public class MainMenuActivity extends AppCompatActivity {
             @Override
             public void onResponce(String s) {
                 try {
-                    JSONObject responce = new JSONObject(s);
-                    String ip = responce.optString("ip");
+                    JSONObject response = new JSONObject(s);
+                    String ip = response.optString("ip");
                     Functions.getSharedPreference(MainMenuActivity.this).edit().putString(Variables.DEVICE_IP, ip).commit();
 
                     if (Functions.getSharedPreference(MainMenuActivity.this).getString(Variables.DEVICE_TOKEN,"").equalsIgnoreCase("")) {
@@ -266,9 +261,9 @@ public class MainMenuActivity extends AppCompatActivity {
             public void onResponce(String resp) {
                 Functions.checkStatus(MainMenuActivity.this,resp);
                 try {
-                    JSONObject jsonObject=new JSONObject(resp);
-                    String code=jsonObject.optString("code");
-                    if(code!=null && code.equals("200")){
+                    JSONObject jsonObject = new JSONObject(resp);
+                    String code = jsonObject.optString("code");
+                    if (code != null && code.equals("200")){
                         Functions.getSharedPreference(MainMenuActivity.this).edit().putBoolean(Variables.IsExtended,true).commit();
                     }
                 } catch (Exception e) {
@@ -317,7 +312,7 @@ public class MainMenuActivity extends AppCompatActivity {
         Functions.RegisterConnectivity(this, new InternetCheckCallback() {
             @Override
             public void GetResponse(String requestType, String response) {
-                if(response.equalsIgnoreCase("disconnected")) {
+                if (response.equalsIgnoreCase("disconnected")) {
                     startActivity(new Intent(getApplicationContext(), NoInternetA.class));
                     overridePendingTransition(R.anim.in_from_bottom,R.anim.out_to_top);
                 }

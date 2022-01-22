@@ -54,6 +54,7 @@ import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.googlecode.mp4parser.authoring.Track;
 import com.thecroakers.app.ActivitiesFragment.Accounts.LoginA;
+import com.thecroakers.app.ActivitiesFragment.Accounts.UpgradeA;
 import com.thecroakers.app.ActivitiesFragment.LiveStreaming.CallBack;
 import com.thecroakers.app.ActivitiesFragment.SendGift.StickerModel;
 import com.thecroakers.app.ActivitiesFragment.SplashA;
@@ -1275,7 +1276,6 @@ public class Functions {
         }
     }
 
-
     //check login status
     public static boolean checkLoginUser(Activity context) {
         if (Functions.getSharedPreference(context)
@@ -1284,6 +1284,19 @@ public class Functions {
             return true;
         } else {
             Intent intent = new Intent(context, LoginA.class);
+            context.startActivity(intent);
+            context.overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
+            return false;
+        }
+    }
+
+    //check if user is croaker or publisher
+    public static boolean checkIfCroakerOrPublisher(Activity context) {
+        String role = Functions.getSharedPreference(context).getString(Variables.U_ROLE, null);
+        if (role != null && !role.equals("user")) {
+            return true;
+        } else {
+            Intent intent = new Intent(context, UpgradeA.class);
             context.startActivity(intent);
             context.overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
             return false;
@@ -1465,6 +1478,7 @@ public class Functions {
         editor.putString(Variables.IS_VERIFIED, userDetailModel.getVerified());
         editor.putString(Variables.IS_VERIFICATION_APPLY, userDetailModel.getApplyVerification());
         editor.putBoolean(Variables.IS_LOGIN, true);
+        editor.putString(Variables.U_ROLE, userDetailModel.getRole());
         editor.commit();
     }
 

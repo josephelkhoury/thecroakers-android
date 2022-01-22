@@ -19,8 +19,8 @@
     <string name="banner_ad" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
 
 
-    <string name="share_profile_domain" translatable="false">apps.thecroakers.com</string>
-    <string name="share_profile_domain_second" translatable="false">demo.thecroakers.com</string>
+    <string name="share_profile_domain" translatable="false">app.thecroakers.com/mobileapp_api</string>
+    <string name="share_profile_domain_second" translatable="false">app.thecroakers.com/mobileapp_api</string>
     <string name="share_profile_endpoint" translatable="false">/thecroakers/</string>
     <string name="share_profile_endpoint_second" translatable="false">/profile/</string>
 
@@ -85,7 +85,10 @@
     <string name="use_8_20_characters_from_password">Your password length must be between 5-12 character</string>
     <string name="login">Login</string>
     <string name="login_in_to_musictok">Login in to The Croakers</string>
-    <string name="manage_your_account_check_notification_comments_on_videos_and_more">Manage Your account, check notifications, comment on videos, and more</string>
+    <string name="apply_as_croaker_or_publisher">Apply as a Croaker or Publisher</string>
+    <string name="apply_as_croaker">Apply as a Croaker</string>
+    <string name="apply_as_publisher">Apply as a Publisher</string>
+    <string name="manage_your_account_check_notification_comments_on_videos_and_more">Manage your account, check notifications, comment on videos, and more</string>
     <string name="user_phone_email_username">User phone / email / username</string>
     <string name="continue_with_facebook">Continue With Facebook</string>
     <string name="continue_with_google">Continue With Google</string>
@@ -114,7 +117,7 @@
     <string name="comment_message_here">Comment message here...</string>
     <string name="show_less">Show Less</string>
     <string name="title">Title</string>
-    <string name="trending">Trending hashtag</string>
+    <string name="trending">Trending</string>
     <string name="duet_with">#duet with</string>
     <string name="skip">Skip</string>
     <string name="please_wait">Please Wait</string>
@@ -467,7 +470,7 @@
     <string name="invalid_phone_number">Invalid Phone Number</string>
     <string name="please_enter_phone_number">Please enter phone number</string>
     <string name="you_need_a">You need an</string>
-    <string name="account_to_continue">account to Continue</string>
+    <string name="account_to_continue">account to continue</string>
     <string name="by_signing_up_you_confirm_that_you_agree_to_our_n_terms_of_use_and_have_read_and_understood_n_our_privacy_policy">By signing up, you confirm that you agree to our \n Terms of Use and have read and understood \n our Privacy Policy.</string>
     <string name="login_cancel">Login Cancel</string>
     <string name="login_error">Login Error</string>

@@ -4,6 +4,7 @@ package com.thecroakers.app.ActivitiesFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -16,6 +17,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,6 +81,7 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
 
     int section = 0;
     String country_id = "0";
+    String country_emoji = "\uD83C\uDF10";
 
     public DiscoverF(int section) {
         this.section = section;
@@ -101,6 +104,8 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
         recyclerViewDiscover.setLayoutManager(linearLayoutManager);
         recyclerViewDiscover.setHasFixedSize(true);
         countryBtn = view.findViewById(R.id.country_btn);
+
+        setCountryFlag();
 
         getCountries();
 
@@ -181,6 +186,12 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        setCountryFlag();
+    }
+
+    @Override
     public void setMenuVisibility(boolean menuVisible) {
         super.setMenuVisibility(menuVisible);
         if (menuVisible && datalist.size()<1) {
@@ -193,6 +204,16 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
                 }
             }, 200);
         }
+    }
+
+    public void setCountryFlag() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        if (preferences.getString("country_id", null) != null)
+            country_id = preferences.getString("country_id", null);
+        if (preferences.getString("country_emoji", null) != null)
+            country_emoji = preferences.getString("country_emoji", null);
+
+        countryBtn.setText(country_emoji);
     }
 
     // get the image of the upper slider in the discover screen
@@ -251,7 +272,7 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
             public void onItemClick(View view, int pos, Object object) {
                 String slider_url = slider_list.get(pos).url;
                 if (slider_url != null && !slider_url.equals("")) {
-                    Intent intent=new Intent(view.getContext(),WebviewA.class);
+                    Intent intent=new Intent(view.getContext(), WebviewA.class);
                     intent.putExtra("url", slider_url);
                     intent.putExtra("title", "Link");
                     startActivity(intent);
@@ -470,7 +491,6 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
                 break;
             default:
                 return;
-
         }
     }
 
@@ -485,9 +505,15 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
             public void onClick(DialogInterface dialogInterface, int i) {
                 JSONObject country = countries.get(i);
                 country_id = country.optString("id");
-                countryBtn.setText(country.optString("emoji"));
+                country_emoji = country.optString("emoji");
+                countryBtn.setText(country_emoji);
                 pageCount = 0;
                 callApiForAllVideos();
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("country_id", country_id);
+                editor.putString("country_emoji", country_emoji);
+                editor.commit();
             }
         });
 

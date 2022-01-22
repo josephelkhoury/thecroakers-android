@@ -28,7 +28,7 @@ public class FileUploader {
     UploadVideoModel uploadModel;
 
     public FileUploader(File file, Context context, UploadVideoModel uploadModel) {
-        this.uploadModel=uploadModel;
+        this.uploadModel = uploadModel;
         filesize = file.length();
 
         InterfaceFileUpload interfaceFileUpload = ApiClient.getRetrofitInstance(context)
@@ -37,7 +37,6 @@ public class FileUploader {
         PRRequestBody mFile = new PRRequestBody(file);
         MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("video",
                 file.getName(), mFile);
-
 
         RequestBody PrivacyType = RequestBody.create(
                 okhttp3.MultipartBody.FORM, uploadModel.getPrivacyPolicy());
@@ -63,18 +62,23 @@ public class FileUploader {
         RequestBody HashtagsJson = RequestBody.create(
                 okhttp3.MultipartBody.FORM, uploadModel.getHashtagsJson());
 
+        RequestBody mainVideoId = RequestBody.create(
+                okhttp3.MultipartBody.FORM, uploadModel.getMainVideoId());
+
+        RequestBody topicId = RequestBody.create(
+                okhttp3.MultipartBody.FORM, uploadModel.getTopicId());
+
+        RequestBody countryId = RequestBody.create(
+                okhttp3.MultipartBody.FORM, uploadModel.getCountryId());
 
         Call<UploadResponse> fileUpload;
-        if (uploadModel.getVideoId().equalsIgnoreCase("0"))
-        {
+        if (uploadModel.getVideoId().equalsIgnoreCase("0")) {
             RequestBody videoId = RequestBody.create(
                     okhttp3.MultipartBody.FORM, uploadModel.getVideoId());
 
             fileUpload = interfaceFileUpload.UploadFile(fileToUpload,PrivacyType,UserId,
-                    SoundId,AllowComments,Description,AllowDuet,UsersJson,HashtagsJson,videoId);
-        }
-        else
-        {
+                    SoundId,AllowComments,Description,AllowDuet,UsersJson,HashtagsJson,videoId,mainVideoId,topicId,countryId);
+        } else {
             RequestBody videoId = RequestBody.create(
                     okhttp3.MultipartBody.FORM, uploadModel.getVideoId());
             RequestBody duet = RequestBody.create(
@@ -97,10 +101,7 @@ public class FileUploader {
                     if (response.body().getCode().equalsIgnoreCase("200")) {
                         mFileUploaderCallback.onFinish(response.toString());
                     }
-
                 }
-
-
             }
 
             @Override
@@ -108,8 +109,6 @@ public class FileUploader {
                 mFileUploaderCallback.onError();
             }
         });
-
-
     }
 
     public void SetCallBack(FileUploaderCallback fileUploaderCallback) {
@@ -167,10 +166,9 @@ public class FileUploader {
         }
     }
 
-
     private class ProgressUpdater implements Runnable {
-        private long mUploaded=0;
-        private long mTotal=0;
+        private long mUploaded = 0;
+        private long mTotal = 0;
 
         ProgressUpdater(long uploaded, long total) {
             mUploaded = uploaded;

@@ -4,6 +4,9 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/828ea99a29684e1f4881fb12924380eb/transformed/jetified-hashtag-helper-1.1.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/828ea99a29684e1f4881fb12924380eb/transformed/jetified-hashtag-helper-1.1.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/828ea99a29684e1f4881fb12924380eb/transformed/jetified-hashtag-helper-1.1.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/5eb5a9a38bba828c0c34518c5bf55479/transformed/jetified-hashtag-helper-1.1.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/5eb5a9a38bba828c0c34518c5bf55479/transformed/jetified-hashtag-helper-1.1.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/5eb5a9a38bba828c0c34518c5bf55479/transformed/jetified-hashtag-helper-1.1.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.danylovolokh/hashtag-helper/1.1.0/a829e13d3a604ecc986f80ec59b354afe3703926/hashtag-helper-1.1.0-javadoc.jar!/" />

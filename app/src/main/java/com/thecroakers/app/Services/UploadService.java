@@ -49,7 +49,6 @@ public class UploadService extends Service {
 
     boolean mAllowRebind;
 
-
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -102,7 +101,6 @@ public class UploadService extends Service {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-
                     UploadVideoModel uploadModel = new UploadVideoModel();
                     uploadModel.setUserId(sharedPreferences.getString(Variables.U_ID, "0"));
                     uploadModel.setSoundId(Variables.selectedSoundId);
@@ -127,12 +125,11 @@ public class UploadService extends Service {
                     uploadModel.setTopicId(topic_id);
                     uploadModel.setCountryId(country_id);
 
-                    FileUploader fileUploader = new FileUploader(new File(videopath),getApplicationContext(),uploadModel);
+                    FileUploader fileUploader = new FileUploader(new File(videopath), getApplicationContext(), uploadModel);
                     fileUploader.SetCallBack(new FileUploader.FileUploaderCallback() {
                         @Override
                         public void onError() {
                             //send error broadcast
-
                             stopForeground(true);
                             stopSelf();
 
@@ -141,21 +138,20 @@ public class UploadService extends Service {
                         }
 
                         @Override
-                        public void onFinish(String responses) {
+                        public void onFinish(String response) {
 
                             if (!Constants.IS_SECURE_INFO)
-                                Functions.printLog(Constants.tag, responses);
+                                Functions.printLog(Constants.tag, response);
 
                             try {
-                                JSONObject jsonObject = new JSONObject(responses);
+                                JSONObject jsonObject = new JSONObject(response);
                                 String code = jsonObject.optString("code");
+                                String msg = jsonObject.optString("msg");
                                 if (code.equalsIgnoreCase("200")) {
-
                                     Variables.reloadMyVideos = true;
                                     Variables.reloadMyVideosInner = true;
                                     deleteDraftFile();
-                                    Functions.showToast(UploadService.this, UploadService.this.getString(R.string.your_video_is_uploaded_successfully));
-
+                                    Functions.showToast(UploadService.this, msg);
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -170,20 +166,17 @@ public class UploadService extends Service {
                         }
 
                         @Override
-                        public void onProgressUpdate(int currentpercent, int totalpercent,String msg) {
+                        public void onProgressUpdate(int currentpercent, int totalpercent, String msg) {
                             //send progress broadcast
-                            if (currentpercent>0)
-                            {
-                                Bundle bundle=new Bundle();
-                                bundle.putBoolean("isShow",true);
-                                bundle.putInt("currentpercent",currentpercent);
-                                bundle.putInt("totalpercent",totalpercent);
-                                if (HomeF.uploadingCallback!=null)
-                                {
+                            if (currentpercent > 0) {
+                                Bundle bundle = new Bundle();
+                                bundle.putBoolean("isShow", true);
+                                bundle.putInt("currentpercent", currentpercent);
+                                bundle.putInt("totalpercent", totalpercent);
+                                if (HomeF.uploadingCallback != null) {
                                     HomeF.uploadingCallback.onResponse(bundle);
                                 }
-                                if (WatchVideosA.uploadingCallback!=null)
-                                {
+                                if (WatchVideosA.uploadingCallback != null) {
                                     WatchVideosA.uploadingCallback.onResponse(bundle);
                                 }
                             }
