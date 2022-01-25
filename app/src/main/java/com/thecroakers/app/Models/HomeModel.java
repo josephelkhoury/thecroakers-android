@@ -16,7 +16,7 @@ public class HomeModel implements Serializable {
 
     public String topic_id="", topic_name="", country_id="", country_name="";
 
-    public String privacy_type="", allow_likes="", allow_comments="", allow_duet="", liked="", like_count="", video_comment_count="", views="", main_video_id="", duet_video_id="",
+    public String privacy_type="", allow_likes="", allow_comments="", allow_replies="", allow_duet="", liked="", like_count="", video_comment_count="", views="", main_video_id="", duet_video_id="",
             duet_username="";
 
     // additional param

@@ -60,7 +60,7 @@ public class UserVideoF extends Fragment {
     NewVideoBroadCast mReceiver;
 
     int pageCount = 0;
-    boolean ispostFinsh;
+    boolean ispostFinish;
     ProgressBar loadMoreProgress;
     GridLayoutManager linearLayoutManager;
 
@@ -77,7 +77,6 @@ public class UserVideoF extends Fragment {
         this.userName=userName;
     }
 
-
     private class NewVideoBroadCast extends BroadcastReceiver {
 
         @Override
@@ -85,10 +84,9 @@ public class UserVideoF extends Fragment {
 
             Variables.reloadMyVideosInner = false;
             pageCount = 0;
-            callApiMyvideos();
+            callApiMyVideos();
         }
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -103,7 +101,7 @@ public class UserVideoF extends Fragment {
         linearLayoutManager = new GridLayoutManager(context, 3);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
-
+        recyclerView.setItemViewCacheSize(20);
 
         dataList = new ArrayList<>();
         adapter = new MyVideosAdapter(context, dataList, (view, pos, object) -> {
@@ -115,7 +113,7 @@ public class UserVideoF extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             boolean userScrolled;
-            int scrollOutitems,scrollInItem;
+            int scrollOutitems, scrollInItem;
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -128,57 +126,48 @@ public class UserVideoF extends Fragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                scrollInItem=linearLayoutManager.findFirstVisibleItemPosition();
+                scrollInItem = linearLayoutManager.findFirstVisibleItemPosition();
                 scrollOutitems = linearLayoutManager.findLastVisibleItemPosition();
 
-                if (scrollInItem == 0)
-                {
+                if (scrollInItem == 0) {
                     recyclerView.setNestedScrollingEnabled(true);
-                }
-                else
-                {
+                } else {
                     recyclerView.setNestedScrollingEnabled(false);
                 }
+
                 if (userScrolled && (scrollOutitems == dataList.size() - 1)) {
                     userScrolled = false;
 
-                    if (loadMoreProgress.getVisibility() != View.VISIBLE && !ispostFinsh) {
+                    if (loadMoreProgress.getVisibility() != View.VISIBLE && !ispostFinish) {
                         loadMoreProgress.setVisibility(View.VISIBLE);
                         pageCount = pageCount + 1;
-                        callApiMyvideos();
+                        callApiMyVideos();
                     }
                 }
-
-
             }
         });
 
         noDataLayout = view.findViewById(R.id.no_data_layout);
 
-        tvTitleNoData=view.findViewById(R.id.tvTitleNoData);
-        tvMessageNoData=view.findViewById(R.id.tvMessageNoData);
+        tvTitleNoData = view.findViewById(R.id.tvTitleNoData);
+        tvMessageNoData = view.findViewById(R.id.tvMessageNoData);
         Log.d(Constants.tag,"Exception : "+userId);
         Log.d(Constants.tag,"Exception : "+Functions.getSharedPreference(context).getString(Variables.U_ID, ""));
 
 
-        if (is_my_profile)
-        {
+        if (is_my_profile) {
             tvTitleNoData.setVisibility(View.GONE);
             tvMessageNoData.setVisibility(View.GONE);
-        }
-        else
-        {
+        } else {
             tvTitleNoData.setVisibility(View.GONE);
             tvMessageNoData.setVisibility(View.VISIBLE);
             tvMessageNoData.setText(view.getContext().getString(R.string.this_user_has_not_publish_any_video));
         }
 
-
         mReceiver = new NewVideoBroadCast();
         getActivity().registerReceiver(mReceiver, new IntentFilter("newVideo"));
 
         return view;
-
     }
 
     @Override
@@ -187,7 +176,7 @@ public class UserVideoF extends Fragment {
         if (visible) {
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 pageCount = 0;
-                callApiMyvideos();
+                callApiMyVideos();
             }, 200);
         }
     }
@@ -204,7 +193,7 @@ public class UserVideoF extends Fragment {
     Boolean isApiRun = false;
 
     //this will get the all videos data of user and then parse the data
-    private void callApiMyvideos() {
+    private void callApiMyVideos() {
         if (dataList == null)
             dataList = new ArrayList<>();
 
@@ -230,22 +219,17 @@ public class UserVideoF extends Fragment {
                 parseData(resp);
             }
         });
-
-
     }
 
-    public void parseData(String responce) {
-
+    public void parseData(String response) {
         try {
-            JSONObject jsonObject = new JSONObject(responce);
+            JSONObject jsonObject = new JSONObject(response);
             String code = jsonObject.optString("code");
             if (code.equals("200")) {
                 JSONObject msg = jsonObject.optJSONObject("msg");
                 ArrayList<HomeModel> temp_list = new ArrayList<>();
 
-
                 JSONArray public_array = msg.optJSONArray("public");
-
 
                 for (int i = 0; i < public_array.length(); i++) {
                     JSONObject itemdata = public_array.optJSONObject(i);
@@ -271,12 +255,9 @@ public class UserVideoF extends Fragment {
                 }
 
                 adapter.notifyDataSetChanged();
-            }
-            else
-            {
-                if (pageCount==0)
-                {
-                    pageCount=0;
+            } else {
+                if (pageCount == 0) {
+                    pageCount = 0;
                     dataList.clear();
                     adapter.notifyDataSetChanged();
                 }
@@ -295,13 +276,11 @@ public class UserVideoF extends Fragment {
         }
     }
 
-
     // open the videos in full screen on click
-    private void openWatchVideo(int postion) {
-
+    private void openWatchVideo(int position) {
         Intent intent = new Intent(getActivity(), WatchVideosA.class);
         intent.putExtra("arraylist", dataList);
-        intent.putExtra("position", postion);
+        intent.putExtra("position", position);
         intent.putExtra("pageCount", pageCount);
         intent.putExtra("userId",userId);
         intent.putExtra("whereFrom","userVideo");
@@ -314,8 +293,7 @@ public class UserVideoF extends Fragment {
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
-                        if (data.getBooleanExtra("isShow",false))
-                        {
+                        if (data.getBooleanExtra("isShow",false)) {
                             Log.d(Constants.tag,"notify data : "+dataList.size());
                             dataList.clear();
                             dataList.addAll((ArrayList<HomeModel>) data.getSerializableExtra("arraylist"));
@@ -327,6 +305,4 @@ public class UserVideoF extends Fragment {
                     }
                 }
             });
-
-
 }

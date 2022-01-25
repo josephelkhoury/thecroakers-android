@@ -62,7 +62,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="@dimen/_14sdp"
@@ -237,8 +238,8 @@
                     android:text="60s"
                     android:textColor="@color/graycolor2"
                     android:textSize="@dimen/_11sdp"
-                    android:textStyle="bold" />
-
+                    android:textStyle="bold"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/short_video_time_txt"

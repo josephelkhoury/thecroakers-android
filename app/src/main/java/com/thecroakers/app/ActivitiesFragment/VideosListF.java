@@ -281,6 +281,12 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
             }
             commentTxt.setText(Functions.getSuffix(item.video_comment_count));
 
+            if (item.allow_replies != null && item.allow_replies.equalsIgnoreCase("0")) {
+                croakLayout.setVisibility(View.GONE);
+            } else {
+                croakLayout.setVisibility(View.VISIBLE);
+            }
+
             if (item.verified != null && item.verified.equalsIgnoreCase("1")) {
                 verifiedBtn.setVisibility(View.VISIBLE);
             } else {
@@ -293,12 +299,14 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
             }
 
             if (item.main_video_id != null && !item.main_video_id.equals("") && !item.main_video_id.equals("0") && !item.main_video_id.equals("null")) {
-                croakLayout.setVisibility(View.GONE);
                 croaksSourceImg.setImageDrawable(getResources().getDrawable(R.drawable.ic_source));
                 croaksSourceTxt.setText(R.string.original);
-            } else {
+            } else if (item.allow_replies != null && item.allow_replies.equalsIgnoreCase("1")) {
                 croaksSourceImg.setImageDrawable(getResources().getDrawable(R.drawable.ic_replies));
                 croaksSourceTxt.setText(R.string.croaks);
+            } else {
+                croaksSourceImg.setVisibility(View.GONE);
+                croaksSourceTxt.setVisibility(View.GONE);
             }
 
             if (Functions.getSharedPreference(context).getBoolean(Variables.IS_LOGIN, false)) {

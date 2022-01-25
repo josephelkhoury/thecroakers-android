@@ -199,7 +199,7 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
         dataList = new ArrayList<>();
 
         if (isFirstTime) {
-            HomeModel item=Paper.book(Variables.PromoAds).read(Variables.PromoAdsModel);
+            HomeModel item = Paper.book(Variables.PromoAds).read(Variables.PromoAdsModel);
             dataList.add(item);
         }
 
@@ -372,7 +372,7 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
                             item.follow_status_button = "follow";
 
                             if (videoArray.length()>0) {
-                                item.gifLink=videoArray.getJSONObject(0).optString("gif");
+                                item.gifLink = videoArray.getJSONObject(0).optString("gif");
                             } else {
                                 item.gifLink="";
                             }

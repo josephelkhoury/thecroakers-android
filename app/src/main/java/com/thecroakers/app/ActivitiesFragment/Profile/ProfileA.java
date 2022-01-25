@@ -111,7 +111,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
         init();
     }
 
-    boolean isSuggestion=true;
+    boolean isSuggestion = true;
 
     @Override
     public void onClick(View v) {
@@ -143,8 +143,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
                         public void onAnimationEnd(Animator animation) {
                             super.onAnimationEnd(animation);
                             tabSuggestion.setVisibility(View.VISIBLE);
-                            if (suggestionList.isEmpty())
-                            {
+                            if (suggestionList.isEmpty()) {
                                 showLoadingProgressSuggestionButton();
                                 getSuggestionUserList();
                             }
@@ -299,11 +298,11 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
     }
 
     private void selectNotificationPriority() {
-        boolean isFriend=false;
+        boolean isFriend = false;
         if (tvFollowBtn.getText().toString().equalsIgnoreCase("Message")) {
-            isFriend=true;
+            isFriend = true;
         } else {
-          isFriend=false;
+          isFriend = false;
         }
 
         NotificationPriorityF f = new NotificationPriorityF(notificationType,isFriend,userName,userId,new FragmentCallBack() {
@@ -349,7 +348,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
     }
 
     private void OpenSuggestionScreen() {
-        Intent intent=new Intent(ProfileA.this, FollowsMainTabA.class);
+        Intent intent = new Intent(ProfileA.this, FollowsMainTabA.class);
         intent.putExtra("id", userId);
         intent.putExtra("from_where", "suggestion");
         intent.putExtra("userName", userName);
@@ -373,7 +372,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
             public void onResponce(String resp) {
                 Functions.checkStatus(ProfileA.this,resp);
 
-               hideSugestionButtonProgress();
+               hideSuggestionButtonProgress();
 
                 suggestionList.clear();
 
@@ -418,7 +417,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
         });
     }
 
-    private void hideSugestionButtonProgress() {
+    private void hideSuggestionButtonProgress() {
         ImageRequest request = ImageRequestBuilder.newBuilderWithResourceId(R.drawable.ic_arrow_drop_down_black_24dp)
                 .build();
         DraweeController controller = Fresco.newDraweeControllerBuilder()
@@ -627,9 +626,8 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
                     break;
                 case 1:
                     result = new LikedVideoF(false, userId,userName,isLikeVideoShow);
-                    likedFragment= (LikedVideoF) result;
+                    likedFragment = (LikedVideoF) result;
                     break;
-
                 default:
                     result = null;
                     break;

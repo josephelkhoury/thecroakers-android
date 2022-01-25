@@ -402,7 +402,8 @@
                 android:id="@+id/duet_layout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_38sdp"
-                android:background="@drawable/d_bottom_gray_line">
+                android:background="@drawable/d_bottom_gray_line"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/duet_img"

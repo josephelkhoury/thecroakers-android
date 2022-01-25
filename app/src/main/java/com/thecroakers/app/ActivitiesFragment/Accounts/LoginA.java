@@ -98,7 +98,6 @@ public class LoginA extends AppCompatActivity implements View.OnClickListener {
 
         setContentView(R.layout.activity_login);
 
-
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
 

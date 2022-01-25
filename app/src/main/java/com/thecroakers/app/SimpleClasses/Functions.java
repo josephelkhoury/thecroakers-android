@@ -1053,6 +1053,7 @@ public class Functions {
             item.privacy_type = video.optString("privacy_type");
             item.allow_likes = video.optString("allow_likes");
             item.allow_comments = video.optString("allow_comments");
+            item.allow_replies = video.optString("allow_replies");
             item.allow_duet = video.optString("allow_duet");
             item.video_id = video.optString("id");
             item.liked = video.optString("like");

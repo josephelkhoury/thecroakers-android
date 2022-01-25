@@ -223,7 +223,6 @@ public class WatchVideosAdapter extends RecyclerView.Adapter<WatchVideosAdapter.
 
             });
 
-
             userPic.setOnClickListener(v -> {
                 listener.onItemClick(postion, item, v);
 
@@ -244,7 +243,6 @@ public class WatchVideosAdapter extends RecyclerView.Adapter<WatchVideosAdapter.
 
             });
 
-
             commentLayout.setOnClickListener(v -> {
                 listener.onItemClick(postion, item, v);
 
@@ -259,14 +257,6 @@ public class WatchVideosAdapter extends RecyclerView.Adapter<WatchVideosAdapter.
                 listener.onItemClick(postion, item, v);
 
             });
-
-
-
-
         }
-
-
     }
-
-
 }

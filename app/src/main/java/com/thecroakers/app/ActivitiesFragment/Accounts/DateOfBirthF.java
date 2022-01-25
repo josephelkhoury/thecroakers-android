@@ -51,7 +51,6 @@ public class DateOfBirthF extends Fragment implements View.OnClickListener {
     String country_id = "";
 
     public DateOfBirthF() {
-
     }
 
     @Override

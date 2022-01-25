@@ -79,15 +79,15 @@ public class EmailPhoneF extends RootFragment implements View.OnClickListener {
 
     // this method will change the text and style tabs
     private void setupTabIcons() {
-        View view1 = LayoutInflater.from(getActivity()).inflate(R.layout.item_tabs_signup, null);
+        /*View view1 = LayoutInflater.from(getActivity()).inflate(R.layout.item_tabs_signup, null);
         TextView text_history = view1.findViewById(R.id.text_history);
         text_history.setText(view.getContext().getString(R.string.phone));
-        tabLayout.getTabAt(0).setCustomView(view1);
+        tabLayout.getTabAt(0).setCustomView(view1);*/
 
         View view2 = LayoutInflater.from(getActivity()).inflate(R.layout.item_tabs_signup, null);
         TextView text_history1 = view2.findViewById(R.id.text_history);
         text_history1.setText(view.getContext().getString(R.string.email));
-        tabLayout.getTabAt(1).setCustomView(view2);
+        tabLayout.getTabAt(0).setCustomView(view2);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
@@ -144,10 +144,10 @@ public class EmailPhoneF extends RootFragment implements View.OnClickListener {
         public Fragment getItem(int position) {
             final Fragment result;
             switch (position) {
-                case 0:
+                /*case 0:
                     result = new PhoneF(userRegisterModel, fromWhere);
-                    break;
-                case 1:
+                    break;*/
+                case 0:
                     result = new EmailF(userRegisterModel, fromWhere);
                     break;
 
@@ -161,7 +161,7 @@ public class EmailPhoneF extends RootFragment implements View.OnClickListener {
 
         @Override
         public int getCount() {
-            return 2;
+            return 1;
         }
 
         @Override

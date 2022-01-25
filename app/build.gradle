@@ -20,7 +20,7 @@ android {
 
         def code = versionProps['VERSION_CODE'].toInteger() + 1
 
-        versionProps['VERSION_CODE']=code.toString()
+        versionProps['VERSION_CODE'] = code.toString()
         versionProps.store(versionPropsFile.newWriter(), null)
 
         defaultConfig {
@@ -28,7 +28,7 @@ android {
             minSdkVersion 21
             targetSdkVersion 30
             versionCode code
-            versionName "1.27"
+            versionName "1.28"
             testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         }
     }

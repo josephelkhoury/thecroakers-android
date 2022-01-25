@@ -32,11 +32,11 @@
             app:controller_layout_id="@layout/item_player_controler"/>
 
             <com.facebook.drawee.view.SimpleDraweeView
-                android:layout_centerInParent="true"
+                android:id="@+id/thumb_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/thumb_image"
-                fresco:actualImageScaleType="centerCrop"/>
+                android:layout_centerInParent="true"
+                fresco:actualImageScaleType="centerCrop" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
