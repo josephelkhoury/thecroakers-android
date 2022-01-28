@@ -19,8 +19,8 @@
     <string name="banner_ad" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
 
 
-    <string name="share_profile_domain" translatable="false">app.thecroakers.com/mobileapp_api</string>
-    <string name="share_profile_domain_second" translatable="false">app.thecroakers.com/mobileapp_api</string>
+    <string name="share_profile_domain" translatable="false">app.thecroakers.com</string>
+    <string name="share_profile_domain_second" translatable="false">app.thecroakers.com</string>
     <string name="share_profile_endpoint" translatable="false">/thecroakers/</string>
     <string name="share_profile_endpoint_second" translatable="false">/profile/</string>
 
@@ -402,7 +402,7 @@
     <string name="video_only_can_be_a">Video only can be a</string>
     <string name="please_wait_">Please wait...</string>
     <string name="discard_the_last_clip">Discard the last clip?</string>
-    <string name="are_you_sure_if_you_back">Are you Sure? if you Go back you can\'t undo this action</string>
+    <string name="are_you_sure_if_you_back">Are you sure? if you go back you can\'t undo this action</string>
     <string name="try_again">Try Again</string>
     <string name="video_must_be_larger_then_second">Video should be larger than 5 sec</string>
     <string name="descard_the_last_clip_">Discard the last clip?</string>
@@ -530,7 +530,7 @@
     <string name="we_need_contact_permission_for_synced_your_contact_for_invitation">We need contact permission for synced your contact for invitation.</string>
     <string name="we_need_camera_and_recording_permission_for_make_video_on_sound">We need camera and recording permission for make video on sound.</string>
     <string name="we_need_storage_permission_for_save_sound">We need storage permission for save sound into your external storage.</string>
-    <string name="we_need_storage_camera_recording_permission_for_make_new_video">We need storage,camera and recording permission for upload new video.</string>
+    <string name="we_need_storage_camera_recording_permission_for_make_new_video">We need storage, camera and recording permission to upload new video.</string>
     <string name="we_need_storage_camera_recording_permission_for_make_new_duet_video">We need storage,camera and recording permission for upload new duet video.</string>
     <string name="we_need_location_and_contact_permission_for_syned_your_phone_with_app">We need location and storage permission for syned your phone with app</string>
     <string name="verification_request_already_apply">Verification request already applied</string>

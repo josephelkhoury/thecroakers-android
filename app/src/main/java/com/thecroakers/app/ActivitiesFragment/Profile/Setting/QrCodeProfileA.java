@@ -165,7 +165,7 @@ public class QrCodeProfileA extends AppCompatActivity implements View.OnClickLis
                 }
                 else
                 {
-                    takePermissionUtils.showStoragePermissionDailog(getString(R.string.we_need_storage_permission_for_save_qr_code));
+                    takePermissionUtils.showStoragePermissionDialog(getString(R.string.we_need_storage_permission_for_save_qr_code));
                 }
             }
             break;
@@ -178,7 +178,7 @@ public class QrCodeProfileA extends AppCompatActivity implements View.OnClickLis
                 }
                 else
                 {
-                    takePermissionUtils.showCameraPermissionDailog(getString(R.string.we_need_camera_permission_for_qr_scan));
+                    takePermissionUtils.showCameraPermissionDialog(getString(R.string.we_need_camera_permission_for_qr_scan));
                 }
             }
             break;

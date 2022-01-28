@@ -128,7 +128,7 @@ public class ProfileVarificationA extends AppCompatActivity implements View.OnCl
                 else
                 {
                     takePermissionUtils.
-                            showStorageCameraPermissionDailog(getString(R.string.we_need_storage_and_camera_permission_for_upload_verification_pic));
+                            showStorageCameraPermissionDialog(getString(R.string.we_need_storage_and_camera_permission_for_upload_verification_pic));
                 }
                 break;
             case R.id.send_btn:

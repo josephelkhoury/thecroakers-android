@@ -94,13 +94,13 @@ public class InviteFriendsA extends AppCompatActivity implements View.OnClickLis
 
         adapter = new FollowingAdapter(InviteFriendsA.this,true,"", datalist, new FollowingAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int postion, FollowingModel item) {
+            public void onItemClick(View view, int position, FollowingModel item) {
 
                 switch (view.getId()) {
                     case R.id.action_txt:
                         if (Functions.checkLoginUser(InviteFriendsA.this)) {
                             if (!item.fb_id.equals(Functions.getSharedPreference(InviteFriendsA.this).getString(Variables.U_ID, "")))
-                                followUnFollowUser(item, postion);
+                                followUnFollowUser(item, position);
                         }
                         break;
 
@@ -108,7 +108,7 @@ public class InviteFriendsA extends AppCompatActivity implements View.OnClickLis
                         openProfile(item);
                         break;
                     case R.id.ivCross:
-                        datalist.remove(postion);
+                        datalist.remove(position);
                         adapter.notifyDataSetChanged();
                         break;
 
@@ -349,7 +349,7 @@ public class InviteFriendsA extends AppCompatActivity implements View.OnClickLis
                 }
                 else
                 {
-                    takePermissionUtils.showCameraPermissionDailog(getString(R.string.we_need_camera_permission_for_qr_scan));
+                    takePermissionUtils.showCameraPermissionDialog(getString(R.string.we_need_camera_permission_for_qr_scan));
                 }
             }
                 break;
@@ -363,7 +363,7 @@ public class InviteFriendsA extends AppCompatActivity implements View.OnClickLis
                 else
                 {
                     String contactMsg=getString(R.string.contact_permission_get_part_one)+" "+getString(R.string.app_name)+". "+getString(R.string.contact_permission_get_part_two);
-                    takePermissionUtils.showContactPermissionDailog(contactMsg);
+                    takePermissionUtils.showContactPermissionDialog(contactMsg);
                 }
                 break;
             case R.id.btnFindInviteFriendsByContacts:
@@ -376,7 +376,7 @@ public class InviteFriendsA extends AppCompatActivity implements View.OnClickLis
                 else
                 {
                     String contactMsg=getString(R.string.contact_permission_get_part_one)+" "+getString(R.string.app_name)+". "+getString(R.string.contact_permission_get_part_two);
-                    takePermissionUtils.showContactPermissionDailog(contactMsg);
+                    takePermissionUtils.showContactPermissionDialog(contactMsg);
                 }
                 break;
             case R.id.btnFindInviteFacebookFriend:

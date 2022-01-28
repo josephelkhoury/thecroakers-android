@@ -245,7 +245,7 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                     if (takePermissionUtils.isStorageRecordingPermissionGranted()) {
                         audioPlaying(selectedAudioView,selectedChatModel,selectedAudioPosition);
                     } else {
-                        takePermissionUtils.showStorageRecordingPermissionDailog(getString(R.string.we_need_recording_permission_for_upload_sound));
+                        takePermissionUtils.showStorageRecordingPermissionDialog(getString(R.string.we_need_recording_permission_for_upload_sound));
                     }
                 }
             }
@@ -386,7 +386,7 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                 if (takePermissionUtils.isStorageRecordingPermissionGranted()) {
                     sendAudio.startRecording();
                 } else {
-                    takePermissionUtils.showStorageRecordingPermissionDailog(getString(R.string.we_need_recording_permission_for_upload_sound));
+                    takePermissionUtils.showStorageRecordingPermissionDialog(getString(R.string.we_need_recording_permission_for_upload_sound));
                 }
             }
 
@@ -496,7 +496,7 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                 if (takePermissionUtils.isStorageCameraPermissionGranted()) {
                     selectImage();
                 } else {
-                    takePermissionUtils.showStorageCameraPermissionDailog(getString(R.string.we_need_storage_permission_for_upload_media_file));
+                    takePermissionUtils.showStorageCameraPermissionDialog(getString(R.string.we_need_storage_permission_for_upload_media_file));
                 }
             }
                 break;

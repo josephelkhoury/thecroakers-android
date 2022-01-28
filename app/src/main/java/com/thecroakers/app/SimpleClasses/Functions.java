@@ -1560,8 +1560,8 @@ public class Functions {
 
     //check rational permission status
     public static String getPermissionStatus(Activity activity, String androidPermissionName) {
-        if(ContextCompat.checkSelfPermission(activity, androidPermissionName) != PackageManager.PERMISSION_GRANTED) {
-            if(!ActivityCompat.shouldShowRequestPermissionRationale(activity, androidPermissionName)){
+        if (ContextCompat.checkSelfPermission(activity, androidPermissionName) != PackageManager.PERMISSION_GRANTED) {
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(activity, androidPermissionName)){
                 return "blocked";
             }
             return "denied";
@@ -1575,8 +1575,7 @@ public class Functions {
                 context.getString(R.string.cancel_), context.getString(R.string.settings), false, new FragmentCallBack() {
                     @Override
                     public void onResponse(Bundle bundle) {
-                        if (bundle.getBoolean("isShow",false))
-                        {
+                        if (bundle.getBoolean("isShow",false)) {
                             Intent intent = new Intent();
                             intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                             Uri uri = Uri.fromParts("package",context.getPackageName(), null);

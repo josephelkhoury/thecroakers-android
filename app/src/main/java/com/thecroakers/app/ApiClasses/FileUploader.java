@@ -31,68 +31,48 @@ public class FileUploader {
         this.uploadModel = uploadModel;
         filesize = file.length();
 
-        InterfaceFileUpload interfaceFileUpload = ApiClient.getRetrofitInstance(context)
-                .create(InterfaceFileUpload.class);
+        InterfaceFileUpload interfaceFileUpload = ApiClient.getRetrofitInstance(context).create(InterfaceFileUpload.class);
 
         PRRequestBody mFile = new PRRequestBody(file);
-        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("video",
-                file.getName(), mFile);
+        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("video", file.getName(), mFile);
 
-        RequestBody PrivacyType = RequestBody.create(
-                okhttp3.MultipartBody.FORM, uploadModel.getPrivacyPolicy());
+        RequestBody PrivacyType = RequestBody.create(okhttp3.MultipartBody.FORM, uploadModel.getPrivacyPolicy());
 
-        RequestBody UserId = RequestBody.create(
-                okhttp3.MultipartBody.FORM, uploadModel.getUserId());
+        RequestBody UserId = RequestBody.create(okhttp3.MultipartBody.FORM, uploadModel.getUserId());
 
-        RequestBody SoundId = RequestBody.create(
-                okhttp3.MultipartBody.FORM, uploadModel.getSoundId());
+        RequestBody SoundId = RequestBody.create(okhttp3.MultipartBody.FORM, uploadModel.getSoundId());
 
-        RequestBody AllowComments = RequestBody.create(
-                okhttp3.MultipartBody.FORM, uploadModel.getAllowComments());
+        RequestBody AllowComments = RequestBody.create(okhttp3.MultipartBody.FORM, uploadModel.getAllowComments());
 
-        RequestBody Description = RequestBody.create(
-                okhttp3.MultipartBody.FORM, uploadModel.getDescription());
+        RequestBody Description = RequestBody.create(okhttp3.MultipartBody.FORM, uploadModel.getDescription());
 
-        RequestBody AllowDuet = RequestBody.create(
-                okhttp3.MultipartBody.FORM, uploadModel.getAllowDuet());
+        RequestBody AllowDuet = RequestBody.create(okhttp3.MultipartBody.FORM, uploadModel.getAllowDuet());
 
-        RequestBody UsersJson = RequestBody.create(
-                okhttp3.MultipartBody.FORM, uploadModel.getUsersJson());
+        RequestBody UsersJson = RequestBody.create(okhttp3.MultipartBody.FORM, uploadModel.getUsersJson());
 
-        RequestBody HashtagsJson = RequestBody.create(
-                okhttp3.MultipartBody.FORM, uploadModel.getHashtagsJson());
+        RequestBody HashtagsJson = RequestBody.create(okhttp3.MultipartBody.FORM, uploadModel.getHashtagsJson());
 
-        RequestBody mainVideoId = RequestBody.create(
-                okhttp3.MultipartBody.FORM, uploadModel.getMainVideoId());
+        RequestBody mainVideoId = RequestBody.create(okhttp3.MultipartBody.FORM, uploadModel.getMainVideoId());
 
-        RequestBody topicId = RequestBody.create(
-                okhttp3.MultipartBody.FORM, uploadModel.getTopicId());
+        RequestBody topicId = RequestBody.create(okhttp3.MultipartBody.FORM, uploadModel.getTopicId());
 
-        RequestBody countryId = RequestBody.create(
-                okhttp3.MultipartBody.FORM, uploadModel.getCountryId());
+        RequestBody countryId = RequestBody.create(okhttp3.MultipartBody.FORM, uploadModel.getCountryId());
 
         Call<UploadResponse> fileUpload;
         if (uploadModel.getVideoId().equalsIgnoreCase("0")) {
-            RequestBody videoId = RequestBody.create(
-                    okhttp3.MultipartBody.FORM, uploadModel.getVideoId());
+            RequestBody videoId = RequestBody.create(okhttp3.MultipartBody.FORM, uploadModel.getVideoId());
 
-            fileUpload = interfaceFileUpload.UploadFile(fileToUpload,PrivacyType,UserId,
-                    SoundId,AllowComments,Description,AllowDuet,UsersJson,HashtagsJson,videoId,mainVideoId,topicId,countryId);
+            fileUpload = interfaceFileUpload.UploadFile(fileToUpload,PrivacyType,UserId, SoundId,AllowComments,Description,AllowDuet,UsersJson,HashtagsJson,videoId,mainVideoId,topicId,countryId);
         } else {
-            RequestBody videoId = RequestBody.create(
-                    okhttp3.MultipartBody.FORM, uploadModel.getVideoId());
-            RequestBody duet = RequestBody.create(
-                    okhttp3.MultipartBody.FORM, uploadModel.getDuet());
+            RequestBody videoId = RequestBody.create(okhttp3.MultipartBody.FORM, uploadModel.getVideoId());
+            RequestBody duet = RequestBody.create(okhttp3.MultipartBody.FORM, uploadModel.getDuet());
 
-            fileUpload = interfaceFileUpload.UploadFile(fileToUpload,PrivacyType,UserId,
-                    SoundId,AllowComments,Description,AllowDuet,UsersJson,HashtagsJson,videoId,duet);
+            fileUpload = interfaceFileUpload.UploadFile(fileToUpload,PrivacyType,UserId, SoundId,AllowComments,Description,AllowDuet,UsersJson,HashtagsJson,videoId,duet);
         }
 
-        Log.d("TestApp_", "************************  before call : " +
-                fileUpload.request().url());
+        Log.d("TestApp_", "************************  before call : " + fileUpload.request().url());
 
         fileUpload.enqueue(new Callback<UploadResponse>() {
-
             @Override
             public void onResponse(@NonNull Call<UploadResponse> call,
                                    @NonNull Response<UploadResponse> response) {
@@ -114,7 +94,6 @@ public class FileUploader {
     public void SetCallBack(FileUploaderCallback fileUploaderCallback) {
         this.mFileUploaderCallback = fileUploaderCallback;
     }
-
 
     public class PRRequestBody extends RequestBody {
         private File mFile;
@@ -158,7 +137,7 @@ public class FileUploader {
                     sink.write(buffer, 0, read);
 //                    Log.d(Constants.tag, String.valueOf(uploaded));
                 }
-            } catch (Exception e){
+            } catch (Exception e) {
                 Log.d(Constants.tag,"Exception : "+e);
             } finally {
                 in.close();
@@ -185,13 +164,10 @@ public class FileUploader {
     }
 
     public interface FileUploaderCallback {
-
         void onError();
 
         void onFinish(String responses);
 
         void onProgressUpdate(int currentpercent, int totalpercent, String msg);
     }
-
-
 }

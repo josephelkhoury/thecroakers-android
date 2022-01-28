@@ -217,7 +217,7 @@ public class EditProfileA extends AppCompatActivity implements View.OnClickListe
                 else
                 {
                     takePermissionUtils.
-                            showStorageCameraPermissionDailog(getString(R.string.we_need_storage_and_camera_permission_for_upload_profile_pic));
+                            showStorageCameraPermissionDialog(getString(R.string.we_need_storage_and_camera_permission_for_upload_profile_pic));
                 }
                 break;
 

@@ -24,6 +24,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
@@ -136,8 +137,7 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
 
         // this will get the thumbnail of video and show them in imageview
 
-        bmThumbnail = ThumbnailUtils.createVideoThumbnail(videoPath,
-                MediaStore.Video.Thumbnails.FULL_SCREEN_KIND);
+        bmThumbnail = ThumbnailUtils.createVideoThumbnail(videoPath, MediaStore.Video.Thumbnails.FULL_SCREEN_KIND);
 
         if (bmThumbnail != null && duetVideoId != null) {
             Bitmap duet_video_bitmap = null;
@@ -153,8 +153,6 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
 
             videoThumbnail.setImageBitmap(bitmap);
             Functions.getSharedPreference(this).edit().putString(Variables.UPLOADING_VIDEO_THUMB, Functions.bitmapToBase64(bitmap)).commit();
-
-
         } else if (bmThumbnail != null) {
             Bitmap bitmap = Bitmap.createScaledBitmap(bmThumbnail, (bmThumbnail.getWidth() / 6), (bmThumbnail.getHeight() / 6), false);
 
@@ -173,7 +171,7 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
         setAdapterForHashtag();
         findViewById(R.id.goBack).setOnClickListener(this);
 
-        if (!main_video_id.equals("") && !main_video_id.equals("0")) {
+        if (main_video_id != null && !main_video_id.equals("") && !main_video_id.equals("0")) {
             topicTxt.setText(topic_name);
             countryTxt.setText(country_name);
         } else {
@@ -246,7 +244,6 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
                         counter--;
                     }
                 }
-
                 additionalDetailsTextCount.setText(descriptionEdit.getText().length() + "/" + Constants.VIDEO_DESCRIPTION_CHAR_LIMIT);
             }
 
@@ -304,12 +301,12 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
                 break;
 
             case R.id.post_btn:
-                if (topic_id.equals("")) {
+                if (topic_id == null || topic_id.equals("")) {
                     Functions.showToast(context, getString(R.string.please_choose_a_topic));
                     return;
                 }
 
-                if (country_id.equals("")) {
+                if (country_id == null || country_id.equals("")) {
                     Functions.showToast(context, getString(R.string.please_choose_a_country));
                     return;
                 }
@@ -351,8 +348,8 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
         }
 
         VolleyRequest.JsonPostRequest(this, ApiLinks.search, params, Functions.getHeaders(this),new Callback() {
-                    @Override
-                    public void onResponce(String resp) {
+            @Override
+            public void onResponce(String resp) {
                 Functions.checkStatus(PostVideoA.this,resp);
                         Functions.cancelLoader();
                         try {
@@ -382,7 +379,6 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
 
                                 hashtag_adapter.notifyDataSetChanged();
                             }
-
                         } catch (Exception e) {
                             e.printStackTrace();
                         } finally {
@@ -649,7 +645,6 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
 
     // this will start the service for uploading the video into database
     public void startService() {
-
         UploadService mService = new UploadService();
         if (!Functions.isMyServiceRunning(this, mService.getClass())) {
             Intent mServiceIntent = new Intent(this.getApplicationContext(), mService.getClass());
@@ -660,7 +655,7 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
             mServiceIntent.putExtra("desc", "" + descriptionEdit.getText().toString());
             mServiceIntent.putExtra("privacy_type", privacyType);
             mServiceIntent.putExtra("hashtags_json", hashTag.toString());
-            mServiceIntent.putExtra("mention_users_json", friendsTag.toString());
+            mServiceIntent.putExtra("users_json", friendsTag.toString());
             mServiceIntent.putExtra("duet_orientation", duetOrientation);
             mServiceIntent.putExtra("main_video_id", main_video_id);
             mServiceIntent.putExtra("topic_id", topic_id);
@@ -742,5 +737,4 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
             e.printStackTrace();
         }
     }
-
 }

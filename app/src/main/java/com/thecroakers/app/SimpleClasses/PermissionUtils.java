@@ -99,7 +99,7 @@ public class PermissionUtils {
     }
 
 
-    public void showCameraPermissionDailog(String message)
+    public void showCameraPermissionDialog(String message)
     {
         List<String> permissionStatusList=new ArrayList<>();
         String[] permissions = {Manifest.permission.CAMERA};
@@ -132,7 +132,7 @@ public class PermissionUtils {
         return (cameraPermission== PackageManager.PERMISSION_GRANTED);
     }
 
-    public void showStorageCameraPermissionDailog(String message)
+    public void showStorageCameraPermissionDialog(String message)
     {
         List<String> permissionStatusList=new ArrayList<>();
         String[] permissions;
@@ -185,7 +185,7 @@ public class PermissionUtils {
         }
     }
 
-    public void showStoragePermissionDailog(String message)
+    public void showStoragePermissionDialog(String message)
     {
         List<String> permissionStatusList=new ArrayList<>();
         String[] permissions ;
@@ -235,7 +235,7 @@ public class PermissionUtils {
         }
     }
 
-    public void showCameraRecordingPermissionDailog(String message)
+    public void showCameraRecordingPermissionDialog(String message)
     {
         List<String> permissionStatusList=new ArrayList<>();
         String[] permissions = {Manifest.permission.CAMERA,Manifest.permission.RECORD_AUDIO};
@@ -269,7 +269,7 @@ public class PermissionUtils {
         return (cameraPermission== PackageManager.PERMISSION_GRANTED && recordAudioPermission== PackageManager.PERMISSION_GRANTED );
     }
 
-    public void showContactPermissionDailog(String message)
+    public void showContactPermissionDialog(String message)
     {
         List<String> permissionStatusList=new ArrayList<>();
         String[] permissions = {Manifest.permission.READ_CONTACTS};
@@ -302,7 +302,7 @@ public class PermissionUtils {
         return (contactPermission== PackageManager.PERMISSION_GRANTED);
     }
 
-    public void showStorageRecordingPermissionDailog(String message)
+    public void showStorageRecordingPermissionDialog(String message)
     {
         List<String> permissionStatusList=new ArrayList<>();
         String[] permissions;
@@ -355,7 +355,7 @@ public class PermissionUtils {
         }
     }
 
-    public void showStorageCameraRecordingPermissionDailog(String message)
+    public void showStorageCameraRecordingPermissionDialog(String message)
     {
         List<String> permissionStatusList=new ArrayList<>();
         String[] permissions ;

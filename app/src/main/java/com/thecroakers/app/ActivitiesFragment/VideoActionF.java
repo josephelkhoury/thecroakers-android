@@ -655,16 +655,6 @@ public class VideoActionF extends BottomSheetDialogFragment implements View.OnCl
                 }
             });
 
-
-
-
-
-
-
-
-
-
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -675,7 +665,7 @@ public class VideoActionF extends BottomSheetDialogFragment implements View.OnCl
                 }
                 else
                 {
-                    takePermissionUtils.showStoragePermissionDailog(view.getContext().getString(R.string.we_need_storage_permission_for_save_video));
+                    takePermissionUtils.showStoragePermissionDialog(view.getContext().getString(R.string.we_need_storage_permission_for_save_video));
                 }
 
                 break;
@@ -691,7 +681,7 @@ public class VideoActionF extends BottomSheetDialogFragment implements View.OnCl
                     }
                     else
                     {
-                        takePermissionUtils.showStorageCameraRecordingPermissionDailog(context.getString(R.string.we_need_storage_camera_recording_permission_for_make_new_duet_video));
+                        takePermissionUtils.showStorageCameraRecordingPermissionDialog(context.getString(R.string.we_need_storage_camera_recording_permission_for_make_new_duet_video));
                     }
 
                 }

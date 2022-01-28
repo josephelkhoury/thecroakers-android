@@ -260,7 +260,7 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
 
                     temp_list.add(item);
 
-                    if(dataList.isEmpty()){
+                    if (dataList.isEmpty()) {
                         setTabs(true);
                     }
                     dataList.addAll(temp_list);
@@ -547,10 +547,10 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public void parseMyVideoData(String responce) {
+    public void parseMyVideoData(String response) {
 
         try {
-            JSONObject jsonObject = new JSONObject(responce);
+            JSONObject jsonObject = new JSONObject(response);
             String code = jsonObject.optString("code");
             if (code.equals("200")) {
                 JSONObject msg = jsonObject.optJSONObject("msg");
@@ -574,7 +574,7 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
                     temp_list.add(item);
                 }
 
-                if(dataList.isEmpty()) {
+                if (dataList.isEmpty()) {
                     setTabs(true);
                 }
                 dataList.addAll(temp_list);
@@ -589,7 +589,7 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
         } catch (Exception e) {
             e.printStackTrace();
 
-            if (pageCount >0)
+            if (pageCount > 0)
                 pageCount--;
 
         } finally {

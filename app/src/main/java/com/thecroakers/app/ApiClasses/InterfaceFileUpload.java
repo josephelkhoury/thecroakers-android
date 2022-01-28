@@ -38,5 +38,4 @@ public interface InterfaceFileUpload {
                                     @Part("hashtags_json") RequestBody HashtagsJson,
                                     @Part("video_id") RequestBody videoId,
                                     @Part("duet") RequestBody duet);
-
 }

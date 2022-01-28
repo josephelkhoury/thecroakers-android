@@ -205,7 +205,7 @@ public class VideoSoundA extends AppCompatActivity implements View.OnClickListen
                 }
                 else
                 {
-                    takePermissionUtils.showStoragePermissionDailog(getString(R.string.we_need_storage_permission_for_save_sound));
+                    takePermissionUtils.showStoragePermissionDialog(getString(R.string.we_need_storage_permission_for_save_sound));
                 }
 
             }

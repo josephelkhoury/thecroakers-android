@@ -85,7 +85,7 @@ public class LiveUsersA extends AppCompatActivity implements View.OnClickListene
                     }
                     else
                     {
-                        takePermissionUtils.showCameraRecordingPermissionDailog(getString(R.string.we_need_camera_and_recording_permission_for_live_streaming));
+                        takePermissionUtils.showCameraRecordingPermissionDialog(getString(R.string.we_need_camera_and_recording_permission_for_live_streaming));
                     }
 
                 }

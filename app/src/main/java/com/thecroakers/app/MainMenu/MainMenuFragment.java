@@ -250,11 +250,11 @@ public class MainMenuFragment extends RootFragment {
 
         tabStrip.getChildAt(2).setClickable(false);
         view3.setOnClickListener(v -> {
-            takePermissionUtils=new PermissionUtils(getActivity(),mPermissionResult);
+            takePermissionUtils = new PermissionUtils(getActivity(),mPermissionResult);
             if (takePermissionUtils.isStorageCameraRecordingPermissionGranted()) {
                 uploadNewVideo();
             } else {
-                takePermissionUtils.showStorageCameraRecordingPermissionDailog(context.getString(R.string.we_need_storage_camera_recording_permission_for_make_new_video));
+                takePermissionUtils.showStorageCameraRecordingPermissionDialog(context.getString(R.string.we_need_storage_camera_recording_permission_for_make_new_video));
             }
         });
 
@@ -499,7 +499,7 @@ public class MainMenuFragment extends RootFragment {
                     for (String key : result.keySet()) {
                         if (!(result.get(key))) {
                             allPermissionClear = false;
-                            blockPermissionCheck.add(Functions.getPermissionStatus(getActivity(),key));
+                            blockPermissionCheck.add(Functions.getPermissionStatus(getActivity(), key));
                         }
                     } if (blockPermissionCheck.contains("blocked")) {
                         Functions.showPermissionSetting(context, context.getString(R.string.we_need_storage_camera_recording_permission_for_make_new_video));

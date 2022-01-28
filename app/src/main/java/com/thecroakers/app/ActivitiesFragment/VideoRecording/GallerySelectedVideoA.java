@@ -43,6 +43,9 @@ public class GallerySelectedVideoA extends AppCompatActivity implements View.OnC
     TextView addSoundTxt;
     String draftFile, isSelected;
     String soundFilePath;
+    String main_video_id;
+    String topic_id, topic_name;
+    String country_id, country_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,11 @@ public class GallerySelectedVideoA extends AppCompatActivity implements View.OnC
         if (intent != null) {
             path = intent.getStringExtra("video_path");
             draftFile = intent.getStringExtra("draft_file");
+            main_video_id = intent.getStringExtra("main_video_id");
+            topic_id = intent.getStringExtra("topic_id");
+            topic_name = intent.getStringExtra("topic_name");
+            country_id = intent.getStringExtra("country_id");
+            country_name = intent.getStringExtra("country_name");
         }
 
         Variables.selectedSoundId = "null";
@@ -69,9 +77,7 @@ public class GallerySelectedVideoA extends AppCompatActivity implements View.OnC
 
         setPlayer();
 
-
-        if (getIntent().hasExtra("sound_name"))
-        {
+        if (getIntent().hasExtra("sound_name")) {
             isSelected = getIntent().getStringExtra("isSelected");
             if (isSelected.equals("yes")) {
                 addSoundTxt.setText(getIntent().getStringExtra("sound_name"));
@@ -81,7 +87,6 @@ public class GallerySelectedVideoA extends AppCompatActivity implements View.OnC
                 preparedAudio();
             }
         }
-
     }
 
     // this will call when swipe for another video and
@@ -89,8 +94,6 @@ public class GallerySelectedVideoA extends AppCompatActivity implements View.OnC
     SimpleExoPlayer videoPlayer;
 
     public void setPlayer() {
-
-
         DefaultTrackSelector trackSelector = new DefaultTrackSelector(this);
 
         videoPlayer = new SimpleExoPlayer.Builder(this).
@@ -106,7 +109,6 @@ public class GallerySelectedVideoA extends AppCompatActivity implements View.OnC
         videoPlayer.setRepeatMode(Player.REPEAT_MODE_OFF);
         videoPlayer.addListener(this);
 
-
         final PlayerView playerView = findViewById(R.id.playerview);
         playerView.setPlayer(videoPlayer);
 //        videoPlayer.setDeviceMuted(false);
@@ -117,12 +119,8 @@ public class GallerySelectedVideoA extends AppCompatActivity implements View.OnC
             }
         });
 
-
         videoPlayer.setPlayWhenReady(true);
-
-
     }
-
 
     @Override
     public void onClick(View v) {
@@ -140,7 +138,6 @@ public class GallerySelectedVideoA extends AppCompatActivity implements View.OnC
                 break;
 
             case R.id.next_btn:
-
                 if (videoPlayer != null) {
                     videoPlayer.setPlayWhenReady(false);
                 }
@@ -205,12 +202,10 @@ public class GallerySelectedVideoA extends AppCompatActivity implements View.OnC
 
 
     public void goToPreviewActivity() {
-
         try {
-            File videoPath=new File(path);
+            File videoPath = new File(path);
             Log.d(Constants.tag,"Preview Path : "+videoPath.getAbsolutePath());
-            Functions.copyFile(videoPath,
-                    new File(Functions.getAppFolder(this)+Variables.outputfile2));
+            Functions.copyFile(videoPath, new File(Functions.getAppFolder(this)+Variables.outputfile2));
         }
         catch (Exception e) {
             Log.d(Constants.tag,"Exception : "+e);
@@ -220,12 +215,15 @@ public class GallerySelectedVideoA extends AppCompatActivity implements View.OnC
         intent.putExtra("draft_file", draftFile);
         intent.putExtra("fromWhere", "video_recording");
         intent.putExtra("isSoundSelected", isSelected);
+        intent.putExtra("main_video_id", main_video_id);
+        intent.putExtra("topic_id", topic_id);
+        intent.putExtra("topic_name", topic_name);
+        intent.putExtra("country_id", country_id);
+        intent.putExtra("country_name", country_name);
         startActivity(intent);
         overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
         finish();
-
     }
-
 
     // play the video again on resume
     @Override
@@ -235,7 +233,6 @@ public class GallerySelectedVideoA extends AppCompatActivity implements View.OnC
             videoPlayer.setPlayWhenReady(true);
         }
     }
-
 
     @Override
     public void onStop() {
@@ -252,7 +249,6 @@ public class GallerySelectedVideoA extends AppCompatActivity implements View.OnC
         }
     }
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -265,7 +261,6 @@ public class GallerySelectedVideoA extends AppCompatActivity implements View.OnC
             audio.release();
         }
     }
-
 
     // handle that will be call on player state change
     @Override
@@ -280,15 +275,11 @@ public class GallerySelectedVideoA extends AppCompatActivity implements View.OnC
                 audio.seekTo(0);
                 audio.start();
             }
-
         }
-
     }
-
 
     // this will hide the bottom mobile navigation controll
     public void hideNavigation() {
-
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -319,9 +310,7 @@ public class GallerySelectedVideoA extends AppCompatActivity implements View.OnC
                         }
                     });
         }
-
     }
-
 
     @SuppressLint("NewApi")
     @Override
@@ -338,12 +327,9 @@ public class GallerySelectedVideoA extends AppCompatActivity implements View.OnC
         }
     }
 
-
     @Override
     public void onLowMemory() {
         super.onLowMemory();
         Functions.deleteCache(this);
     }
-
-
 }

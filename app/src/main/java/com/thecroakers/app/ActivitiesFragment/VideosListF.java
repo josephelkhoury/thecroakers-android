@@ -124,9 +124,9 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
     PermissionUtils takePermissionUtils;
 
     public VideosListF(boolean showad, HomeModel item, VerticalViewPager menuPager, FragmentCallBack fragmentCallBack,int fragmentContainerId) {
-        this.showad=showad;
+        this.showad = showad;
         this.item = item;
-        this.menuPager=menuPager;
+        this.menuPager = menuPager;
         this.fragmentCallBack = fragmentCallBack;
         this.fragmentContainerId=fragmentContainerId;
     }
@@ -410,7 +410,7 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                 if (takePermissionUtils.isCameraRecordingPermissionGranted()) {
                    openSoundByScreen();
                 } else {
-                    takePermissionUtils.showCameraRecordingPermissionDailog(view.getContext().getString(R.string.we_need_camera_and_recording_permission_for_make_video_on_sound));
+                    takePermissionUtils.showCameraRecordingPermissionDialog(view.getContext().getString(R.string.we_need_camera_and_recording_permission_for_make_video_on_sound));
                 }
                 break;
 
@@ -906,7 +906,6 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
 
     // this will open the comment screen
     private void openComment(HomeModel item) {
-
         int comment_count = Functions.parseInterger(item.video_comment_count);
 
         FragmentDataSend fragment_data_send = this;

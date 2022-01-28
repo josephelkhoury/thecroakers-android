@@ -369,7 +369,7 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
                         if (section == 0) {
                             user = video.optJSONObject("User");
                             sound = video.optJSONObject("Sound");
-                            topic = video.optJSONObject("Topic");
+                            topic = itemdata.optJSONObject("Hashtag");
                             country = video.optJSONObject("Country");
                         } else {
                             user = itemdata.optJSONObject("User");

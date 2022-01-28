@@ -18,7 +18,6 @@ public class ApiClient {
     private static Retrofit retrofit;
     public static Retrofit getRetrofitInstance(Context context) {
 
-
         if (retrofit == null) {
 
             OkHttpClient.Builder httpClient = new OkHttpClient.Builder();

@@ -198,7 +198,6 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
 
     // initialize the video progress for video recording percentage
     public void initializeVideoProgress() {
-
         secPassed = 0;
         videoProgress = findViewById(R.id.video_progress);
         videoProgress.enableAutoProgressView(Constants.RECORDING_DURATION);
@@ -381,8 +380,6 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
                             }
                         }
                     });
-
-
                 } catch (Exception e) {
                 }
             }
@@ -391,9 +388,7 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
         return true;
     }
 
-
     public void changeFlippedVideo(String srcMp4Path, final String destMp4Path) {
-
         Functions.showDeterminentLoader(this, false, false);
         new GPUMp4Composer(srcMp4Path, destMp4Path)
                 .flipHorizontal(true)
@@ -685,10 +680,20 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
                 intent.putExtra("sound_name",getIntent().getStringExtra("sound_name"));
                 intent.putExtra("isSelected", "yes");
                 intent.putExtra("sound_id", Variables.selectedSoundId);
+                intent.putExtra("main_video_id", main_video_id);
+                intent.putExtra("topic_id", topic_id);
+                intent.putExtra("topic_name", topic_name);
+                intent.putExtra("country_id", country_id);
+                intent.putExtra("country_name", country_name);
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(VideoRecoderA.this, GallerySelectedVideoA.class);
                 intent.putExtra("video_path", Functions.getAppFolder(this)+Variables.gallery_resize_video);
+                intent.putExtra("main_video_id", main_video_id);
+                intent.putExtra("topic_id", topic_id);
+                intent.putExtra("topic_name", topic_name);
+                intent.putExtra("country_id", country_id);
+                intent.putExtra("country_name", country_name);
                 startActivity(intent);
             }
         } catch (Exception e) {
@@ -696,7 +701,6 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
             Functions.printLog(Constants.tag, e.toString());
         }
     }
-
 
     // this will play the sound with the video when we select the audio
     MediaPlayer audio;
@@ -746,7 +750,6 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
 
     public void releaseResources() {
         try {
-
             if (audio != null) {
                 audio.stop();
                 audio.reset();
@@ -755,11 +758,9 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
             cameraView.stop();
 
         } catch (Exception e) {
-
         }
         deleteFile();
     }
-
 
     // show a alert before close the activity
     @Override
@@ -788,7 +789,6 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
     }
 
     public void goToPreviewActivity() {
-
         Intent intent = new Intent(this, PreviewVideoA.class);
         intent.putExtra("fromWhere", "video_recording");
         intent.putExtra("isSoundSelected", isSelected);
@@ -797,30 +797,27 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
         intent.putExtra("topic_name", topic_name);
         intent.putExtra("country_id", country_id);
         intent.putExtra("country_name", country_name);
-
         startActivity(intent);
         overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
     }
 
-    // this will delete all the video parts that is create during priviously created video
+    // this will delete all the video parts that is create during previously created video
     public void deleteFile() {
-
         File output = new File(Functions.getAppFolder(VideoRecoderA.this)+Variables.outputfile);
         File output2 = new File(Functions.getAppFolder(VideoRecoderA.this)+Variables.outputfile2);
 
-        File gallery_trimed_video = new File(Functions.getAppFolder(VideoRecoderA.this)+Variables.gallery_trimed_video);
+        File gallery_trimmed_video = new File(Functions.getAppFolder(VideoRecoderA.this)+Variables.gallery_trimed_video);
         File gallery_resize_video = new File(Functions.getAppFolder(VideoRecoderA.this)+Variables.gallery_resize_video);
 
         if (output.exists() && !output.delete()) {
             Functions.printLog(Constants.tag, "output File Not delete");
         }
         if (output2.exists() && !output2.delete()) {
-
             Functions.printLog(Constants.tag, "output2 File Not delete");
         }
 
-        if (gallery_trimed_video.exists() && !gallery_trimed_video.delete()) {
-            Functions.printLog(Constants.tag, "gallery_trimed_video File Not delete");
+        if (gallery_trimmed_video.exists() && !gallery_trimmed_video.delete()) {
+            Functions.printLog(Constants.tag, "gallery_trimmed_video File Not delete");
         }
 
         if (gallery_resize_video.exists() && !gallery_resize_video.delete()) {

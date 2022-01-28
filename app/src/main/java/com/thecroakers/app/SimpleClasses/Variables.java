@@ -18,11 +18,8 @@ public class Variables {
     public static final String DEVICE = "android";
     public static final String SelectedAudio_AAC = "SelectedAudio.aac";
 
-
     public static final String APP_HIDED_FOLDER = "HidedTicTic/";
     public static final String DRAFT_APP_FOLDER = "Draft/";
-
-
 
     public static String is_puchase = "is_puchase";
     public static String output_frontcamera = APP_HIDED_FOLDER + "output_frontcamera.mp4";

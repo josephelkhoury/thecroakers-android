@@ -1,5 +1,6 @@
 package com.thecroakers.app.ActivitiesFragment;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,7 +16,11 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.provider.Settings;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.VideoView;
 
 import com.thecroakers.app.ActivitiesFragment.Profile.Setting.NoInternetA;
@@ -35,30 +40,33 @@ import io.paperdb.Paper;
 
 public class SplashA extends AppCompatActivity {
     CountDownTimer countDownTimer;
+    VideoView videoHolder;
+    boolean videoPlayed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         Functions.setLocale(Functions.getSharedPreference(SplashA.this).getString(Variables.APP_LANGUAGE_CODE,Variables.DEFAULT_LANGUAGE_CODE)
                 , this, SplashA.class,false);
         setContentView(R.layout.activity_splash);
-        */
+
+        videoHolder = findViewById(R.id.videoHolder);
 
         try {
-            VideoView videoHolder = new VideoView(this);
-            setContentView(videoHolder);
             Uri video = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.splash);
             videoHolder.setVideoURI(video);
 
             videoHolder.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 public void onCompletion(MediaPlayer mp) {
+                    videoPlayed = true;
                     jump();
                 }
             });
             videoHolder.start();
         } catch (Exception ex) {
+            videoPlayed = true;
             jump();
         }
 
@@ -72,14 +80,14 @@ public class SplashA extends AppCompatActivity {
     }
 
     private void jump() {
-        if (isFinishing())
+        if (isFinishing() || !videoPlayed)
             return;
         Intent intent = new Intent(SplashA.this, MainMenuActivity.class);
 
         if (getIntent().getExtras() != null) {
             try {
                 // its for multiple account notification handling
-                String userId=getIntent().getStringExtra("receiver_id");
+                String userId = getIntent().getStringExtra("receiver_id");
                 Functions.setUpSwitchOtherAccount(SplashA.this,userId);
             } catch (Exception e){}
 
@@ -108,20 +116,20 @@ public class SplashA extends AppCompatActivity {
             public void onResponce(String resp) {
                 Functions.checkStatus(SplashA.this,resp);
                 try {
-                    JSONObject jsonObject=new JSONObject(resp);
-                    String code=jsonObject.optString("code");
+                    JSONObject jsonObject = new JSONObject(resp);
+                    String code = jsonObject.optString("code");
 
-                    if (code!=null && code.equals("200")){
-                        JSONObject msg=jsonObject.optJSONObject("msg");
-                        JSONObject video=msg.optJSONObject("Video");
-                        JSONObject user=msg.optJSONObject("User");
+                    if (code != null && code.equals("200")){
+                        JSONObject msg = jsonObject.optJSONObject("msg");
+                        JSONObject video = msg.optJSONObject("Video");
+                        JSONObject user = msg.optJSONObject("User");
                         JSONObject sound = msg.optJSONObject("Sound");
                         JSONObject topic = msg.optJSONObject("Topic");
                         JSONObject country = msg.optJSONObject("Country");
-                        JSONObject pushNotification=user.optJSONObject("PushNotification");
-                        JSONObject privacySetting=user.optJSONObject("PrivacySetting");
+                        JSONObject pushNotification = user.optJSONObject("PushNotification");
+                        JSONObject privacySetting = user.optJSONObject("PrivacySetting");
                         HomeModel item = Functions.parseVideoData(user, sound, video, topic, country, privacySetting, pushNotification);
-                        item.promote="1";
+                        item.promote = "1";
                         Paper.book(Variables.PromoAds).write(Variables.PromoAdsModel,item);
                     } else {
                         Paper.book(Variables.PromoAds).destroy();
@@ -146,12 +154,11 @@ public class SplashA extends AppCompatActivity {
                 Intent intent = new Intent(SplashA.this, MainMenuActivity.class);
 
                 if (getIntent().getExtras() != null) {
-
                     try {
                         // its for multiple account notification handling
-                        String userId=getIntent().getStringExtra("receiver_id");
+                        String userId = getIntent().getStringExtra("receiver_id");
                         Functions.setUpSwitchOtherAccount(SplashA.this,userId);
-                    }catch (Exception e){}
+                    } catch (Exception e){}
 
                     intent.putExtras(getIntent().getExtras());
                     setIntent(null);
@@ -160,11 +167,9 @@ public class SplashA extends AppCompatActivity {
                 startActivity(intent);
                 overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
                 finish();
-
             }
         }.start();
     }
-
 
     @Override
     protected void onDestroy() {
@@ -176,14 +181,11 @@ public class SplashA extends AppCompatActivity {
 
     // register the device on server on application open
     public void callApiRegisterDevice() {
-
-        String androidId = Settings.Secure.getString(getContentResolver(),
-                Settings.Secure.ANDROID_ID);
+        String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
         JSONObject param = new JSONObject();
         try {
             param.put("key", androidId);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -191,7 +193,7 @@ public class SplashA extends AppCompatActivity {
         VolleyRequest.JsonPostRequest(this, ApiLinks.registerDevice, param,Functions.getHeaders(this), new Callback() {
             @Override
             public void onResponce(String resp) {
-                Functions.checkStatus(SplashA.this,resp);
+                Functions.checkStatus(SplashA.this, resp);
 
                 try {
                     JSONObject jsonObject = new JSONObject(resp);
@@ -209,8 +211,6 @@ public class SplashA extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-
             }
         });
 

@@ -86,7 +86,7 @@ public class PreviewVideoA extends AppCompatActivity implements Player.Listener 
             if (selectPostion == 0) {
                 try {
                     Functions.copyFile(new File(Functions.getAppFolder(this)+Variables.outputfile2), new File(Functions.getAppFolder(this)+Variables.output_filter_file));
-                    gotopostScreen();
+                    goToPostScreen();
                 } catch (Exception e) {
                     e.printStackTrace();
                     Functions.printLog(Constants.tag, e.toString());
@@ -243,7 +243,6 @@ public class PreviewVideoA extends AppCompatActivity implements Player.Listener 
         }
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -274,7 +273,7 @@ public class PreviewVideoA extends AppCompatActivity implements Player.Listener 
                             @Override
                             public void run() {
                                 Functions.cancelDeterminentLoader();
-                                gotopostScreen();
+                                goToPostScreen();
                             }
                         });
                     }
@@ -309,9 +308,8 @@ public class PreviewVideoA extends AppCompatActivity implements Player.Listener 
     }
 
 
-    // go to the post video screen from perview video screen
-    public void gotopostScreen() {
-
+    // go to the post video screen from preview video screen
+    public void goToPostScreen() {
         Intent intent = new Intent(PreviewVideoA.this, PostVideoA.class);
         intent.putExtra("draft_file", draftFile);
         intent.putExtra("main_video_id", main_video_id);

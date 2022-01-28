@@ -114,7 +114,7 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
                 if (takePermissionUtils.isCameraRecordingPermissionGranted()) {
                     goLive();
                 } else {
-                    takePermissionUtils.showCameraRecordingPermissionDailog(getString(R.string.we_need_camera_and_recording_permission_for_live_streaming));
+                    takePermissionUtils.showCameraRecordingPermissionDialog(getString(R.string.we_need_camera_and_recording_permission_for_live_streaming));
                 }
             }
                 break;

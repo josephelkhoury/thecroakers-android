@@ -166,7 +166,8 @@
             android:name=".ActivitiesFragment.WatchVideosA"
             android:screenOrientation="portrait"
             android:theme="@style/black_status"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"
+            />
         <activity
             android:name=".ActivitiesFragment.Profile.Setting.ManageProfileA"
             android:screenOrientation="portrait"
@@ -294,7 +295,7 @@
                 <data
                     android:host="@string/share_profile_domain"
                     android:pathPrefix="@string/share_profile_endpoint_second"
-                    android:scheme="https" />
+                    android:scheme="http" />
                 <data
                     android:host="@string/share_profile_domain"
                     android:pathPrefix="@string/share_profile_endpoint_second"

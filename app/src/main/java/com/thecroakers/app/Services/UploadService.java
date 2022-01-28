@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -94,7 +95,7 @@ public class UploadService extends Service {
             allow_comment = intent.getStringExtra("allow_comment");
             allow_duet = intent.getStringExtra("allow_duet");
             hashtags_json = intent.getStringExtra("hashtags_json");
-            users_json = intent.getStringExtra("mention_users_json");
+            users_json = intent.getStringExtra("users_json");
             topic_id = intent.getStringExtra("topic_id");
             country_id = intent.getStringExtra("country_id");
 
@@ -139,7 +140,6 @@ public class UploadService extends Service {
 
                         @Override
                         public void onFinish(String response) {
-
                             if (!Constants.IS_SECURE_INFO)
                                 Functions.printLog(Constants.tag, response);
 
@@ -205,6 +205,9 @@ public class UploadService extends Service {
                     } else {
                         map.put("main_video_id", "0");
                     }
+
+                    map.put("topic_id", topic_id);
+                    map.put("country_id", country_id);
 
                     Functions.printLog(Constants.tag, map.toString());
                 }
