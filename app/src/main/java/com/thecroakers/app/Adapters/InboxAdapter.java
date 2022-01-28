@@ -53,7 +53,6 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.CustomViewHo
         // get the today as a integer number to make the dicision the chat date is today or yesterday
         Calendar cal = Calendar.getInstance();
         today_day = cal.get(Calendar.DAY_OF_MONTH);
-
     }
 
     @Override
@@ -82,14 +81,11 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.CustomViewHo
         }
 
         public void bind(final InboxModel item, final InboxAdapter.OnItemClickListener listener, final InboxAdapter.OnLongItemClickListener longItemClickListener) {
-
             itemView.setOnClickListener(v -> {
                 listener.onItemClick(item);
-
             });
         }
     }
-
 
     @Override
     public void onBindViewHolder(final InboxAdapter.CustomViewHolder holder, final int i) {
@@ -97,7 +93,7 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.CustomViewHo
         final InboxModel item = inboxDataListFilter.get(i);
         holder.username.setText(item.getName());
         holder.lastMessage.setText(item.getMsg());
-        holder.dateCreated.setText(Functions.changeDateTodayYesterday(context, item.getDate()));
+        holder.dateCreated.setText(Functions.changeDateTodayYesterday(context, Functions.getDate(item.getTimestamp())));
 
         if (item.getPic() != null && !item.getPic().equals("")) {
             holder.userImage.setController(Functions.frescoImageLoad(item.getPic(),holder.userImage,false));

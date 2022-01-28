@@ -77,8 +77,8 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
 
     String draftFile, duetVideoId, duetVideoUsername, duetOrientation;
 
-    String topic_id = "";
-    String country_id = "";
+    String topic_id = "", topic_name = "";
+    String country_id = "", country_name = "";
     String privacyType = "Public";
     TextView topicTxt, countryTxt, privacyTypeTxt, duetUsername, additionalDetailsTextCount;
     Switch commentSwitch, duetSwitch;
@@ -119,6 +119,10 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
                 duetUsername.setText(duetVideoUsername);
             }
             main_video_id = intent.getStringExtra("main_video_id");
+            topic_id = intent.getStringExtra("topic_id");
+            topic_name = intent.getStringExtra("topic_name");
+            country_id = intent.getStringExtra("country_id");
+            country_name = intent.getStringExtra("country_name");
         }
 
         getTopics();
@@ -158,7 +162,6 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
 
             videoThumbnail.setImageBitmap(bitmap);
             Functions.getSharedPreference(this).edit().putString(Variables.UPLOADING_VIDEO_THUMB, Functions.bitmapToBase64(bitmap)).commit();
-
         }
 
         topicTxt = findViewById(R.id.topic_txt);
@@ -170,8 +173,13 @@ public class PostVideoA extends AppCompatActivity implements View.OnClickListene
         setAdapterForHashtag();
         findViewById(R.id.goBack).setOnClickListener(this);
 
-        findViewById(R.id.topic_layout).setOnClickListener(this);
-        findViewById(R.id.country_layout).setOnClickListener(this);
+        if (!main_video_id.equals("") && !main_video_id.equals("0")) {
+            topicTxt.setText(topic_name);
+            countryTxt.setText(country_name);
+        } else {
+            findViewById(R.id.topic_layout).setOnClickListener(this);
+            findViewById(R.id.country_layout).setOnClickListener(this);
+        }
         findViewById(R.id.privacy_type_layout).setOnClickListener(this);
         findViewById(R.id.post_btn).setOnClickListener(this);
         findViewById(R.id.save_draft_btn).setOnClickListener(this);

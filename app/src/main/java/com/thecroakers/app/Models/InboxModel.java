@@ -1,12 +1,17 @@
 package com.thecroakers.app.Models;
 
+import android.util.Log;
+
+import com.thecroakers.app.SimpleClasses.Functions;
+
 /**
  * Created by thecroakers on 9/11/2018.
  */
 
 public class InboxModel {
 
-    String id, name, msg, pic, type, date, status;
+    String id, name, msg, pic, type, status;
+    Long date, timestamp;
 
     public String getId() {
         return id;
@@ -48,16 +53,15 @@ public class InboxModel {
         this.type = type;
     }
 
-    public String getDate() {
-        return date;
+    public Long getTimestamp() {
+        return timestamp;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getStatus() {
         return status;
     }
-
 }

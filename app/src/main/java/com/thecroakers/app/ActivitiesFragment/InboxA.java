@@ -48,7 +48,6 @@ public class InboxA extends AppCompatActivity {
     ProgressBar pbar;
     boolean isviewCreated = false;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,11 +58,10 @@ public class InboxA extends AppCompatActivity {
 
         rootRef = FirebaseDatabase.getInstance().getReference();
 
-
         pbar = findViewById(R.id.pbar);
         inboxList = findViewById(R.id.inboxlist);
 
-        // intialize the arraylist and and inboxlist
+        // initialize the arraylist and and inboxlist
         inboxArraylist = new ArrayList<>();
 
         inboxList = (RecyclerView) findViewById(R.id.inboxlist);
@@ -85,16 +83,11 @@ public class InboxA extends AppCompatActivity {
 
         inboxList.setAdapter(inboxAdapter);
 
-
-
-       findViewById(R.id.back_btn).setOnClickListener(v -> {
+        findViewById(R.id.back_btn).setOnClickListener(v -> {
            InboxA.super.onBackPressed();
-
-
         });
         isviewCreated = true;
         getData();
-
     }
 
     // show the banner ad at the bottom of the screen
@@ -103,18 +96,16 @@ public class InboxA extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        adView = findViewById(R.id.bannerad);
+        /*adView = findViewById(R.id.bannerad);
         AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+        adView.loadAd(adRequest);*/
     }
-
 
     // on start we will get the Inbox Message of user  which is show in bottom list of third tab
     ValueEventListener eventListener2;
     Query inboxQuery;
 
     public void getData() {
-
         pbar.setVisibility(View.VISIBLE);
 
         inboxQuery = rootRef.child("Inbox").child(Functions.getSharedPreference(InboxA.this).getString(Variables.U_ID, "0")).orderByChild("date");
@@ -124,13 +115,11 @@ public class InboxA extends AppCompatActivity {
                 inboxArraylist.clear();
                 pbar.setVisibility(View.GONE);
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-
                     InboxModel model = ds.getValue(InboxModel.class);
                     model.setId(ds.getKey());
 
                     inboxArraylist.add(model);
                 }
-
 
                 if (inboxArraylist.isEmpty()) {
                     Functions.showToast(context, getString(R.string.no_data));
@@ -141,7 +130,6 @@ public class InboxA extends AppCompatActivity {
                     Collections.reverse(inboxArraylist);
                     inboxAdapter.notifyDataSetChanged();
                 }
-
             }
 
             @Override
@@ -152,10 +140,7 @@ public class InboxA extends AppCompatActivity {
         };
 
         inboxQuery.addValueEventListener(eventListener2);
-
-
     }
-
 
     // on stop we will remove the listener
     @Override
@@ -165,11 +150,10 @@ public class InboxA extends AppCompatActivity {
             inboxQuery.removeEventListener(eventListener2);
     }
 
-
     //open the chat fragment and on item click and pass your id and the other person id in which
     //you want to chat with them and this parameter is that is we move from match list or inbox list
     public void chatFragment(String receiverid, String name, String picture) {
-        Intent intent=new Intent(InboxA.this,ChatA.class);
+        Intent intent = new Intent(InboxA.this, ChatA.class);
         intent.putExtra("user_id", receiverid);
         intent.putExtra("user_name", name);
         intent.putExtra("user_pic", picture);
@@ -177,22 +161,17 @@ public class InboxA extends AppCompatActivity {
         overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
     }
 
-
     ActivityResultLauncher<Intent> resultCallback = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
-                        if (data.getBooleanExtra("isShow",false))
-                        {
-
+                        if (data.getBooleanExtra("isShow",false)) {
                         }
                     }
                 }
             });
-
-
 
     @Override
     protected void onResume() {
@@ -200,7 +179,7 @@ public class InboxA extends AppCompatActivity {
         Functions.RegisterConnectivity(this, new InternetCheckCallback() {
             @Override
             public void GetResponse(String requestType, String response) {
-                if(response.equalsIgnoreCase("disconnected")) {
+                if (response.equalsIgnoreCase("disconnected")) {
                     startActivity(new Intent(getApplicationContext(), NoInternetA.class));
                     overridePendingTransition(R.anim.in_from_bottom,R.anim.out_to_top);
                 }
@@ -213,6 +192,4 @@ public class InboxA extends AppCompatActivity {
         super.onPause();
         Functions.unRegisterConnectivity(getApplicationContext());
     }
-
-
 }

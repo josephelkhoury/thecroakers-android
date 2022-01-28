@@ -26,6 +26,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -85,6 +86,7 @@ import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -93,6 +95,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.TimeZone;
 
 import io.paperdb.Paper;
 
@@ -463,10 +466,7 @@ public class Functions {
         } catch (Exception e) {
             return false;
         }
-
-
     }
-
 
     public static String changeDateTodayYesterday(Context context, String date) {
         try {
@@ -474,7 +474,7 @@ public class Functions {
 
             Calendar date_cal = Calendar.getInstance();
 
-            SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy HH:mm:ssZZ",Locale.ENGLISH);
+            SimpleDateFormat f = new SimpleDateFormat("dd-MM-yy hh:mm a", Locale.ENGLISH);
             Date d = null;
             try {
                 d = f.parse(date);
@@ -483,27 +483,22 @@ public class Functions {
                 e.printStackTrace();
             }
 
-
             long difference = (current_cal.getTimeInMillis() - date_cal.getTimeInMillis()) / 1000;
 
             if (difference < 86400) {
                 if (current_cal.get(Calendar.DAY_OF_YEAR) - date_cal.get(Calendar.DAY_OF_YEAR) == 0) {
-
-                    SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a",Locale.ENGLISH);
+                    SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
                     return sdf.format(d);
                 } else
                     return context.getString(R.string.yesterday);
             } else if (difference < 172800) {
                 return context.getString(R.string.yesterday);
             } else
-                return (difference / 86400) + context.getString(R.string.day_ago);
-
+                return (difference / 86400) + context.getString(R.string.days_ago);
         }
         catch (Exception e) {
             return date;
         }
-
-
     }
 
 
@@ -1668,5 +1663,16 @@ public class Functions {
         headers.put("device-token", getSharedPreference(context).getString(Variables.DEVICE_TOKEN, null));
         printLog(Constants.tag, headers.toString());
         return headers;
+    }
+
+    public static String getDate(Long time) {
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        cal.setTimeInMillis(time);
+        String date = DateFormat.format("dd-MM-yy hh:mm a", cal).toString();
+        return date;
+    }
+
+    public static long currentTimeSecsUTC() {
+        return System.currentTimeMillis();
     }
 }

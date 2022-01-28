@@ -120,11 +120,11 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
     public static String playingId = "none";
     public static MediaPlayer mediaPlayer;
     EditText message;
-    public int audioPostion;
+    public int audioPosition;
     public static int mediaPlayerProgress = 0;
     private DatabaseReference adduserInbox;
 
-    private DatabaseReference mchatRefReteriving;
+    private DatabaseReference mchatRefRetrieving;
     private DatabaseReference sendTypingIndication;
     private DatabaseReference receiveTypingIndication;
     RecyclerView chatrecyclerview;
@@ -156,7 +156,6 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
     boolean isPrivacyfollow = false;
     RelativeLayout tabChat;
 
-
     PermissionUtils takePermissionUtils;
 
     String audioPermissionCheck="player";
@@ -173,40 +172,34 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
 
         context = ChatA.this;
         direct = new File(Functions.getAppFolder(ChatA.this));
-        // intialize the database refer
+        // initialize the database refer
         rootref = FirebaseDatabase.getInstance().getReference();
         adduserInbox = FirebaseDatabase.getInstance().getReference();
-        chatMainView=findViewById(R.id.chat_F);
+        chatMainView = findViewById(R.id.chat_F);
         message = (EditText) findViewById(R.id.msgedittext);
         tabChat = findViewById(R.id.writechatlayout);
         userName = findViewById(R.id.username);
         profileimage = findViewById(R.id.profileimage);
         pBar = findViewById(R.id.progress_bar);
 
-        // the sender id and reciever id from the back activity in which we come from
+        // the sender id and receiver id from the back activity in which we came from
 
        {
-
            senderId = Functions.getSharedPreference(ChatA.this).getString(Variables.U_ID, "");
            receiverId = getIntent().getStringExtra("user_id");
            receiverName = getIntent().getStringExtra("user_name");
            receiverPic = getIntent().getStringExtra("user_pic");
 
-
            if (receiverId == null && TextUtils.isEmpty(receiverId)) {
                moveBack();
            } else {
-
                if (!TextUtils.isEmpty(receiverName))
                    userName.setText(receiverName);
-
 
                if (receiverPic != null && receiverPic.equalsIgnoreCase("")) {
                    Uri uri = Uri.parse(receiverPic);
                    profileimage.setImageURI(uri);
                }
-
-
            }
 
            senderidForCheckNotification = receiverId;
@@ -224,8 +217,6 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
            });
        }
 
-
-
         //set layout manager to chat recycler view and get all the privous chat of th user which spacifc user
         chatrecyclerview = (RecyclerView) findViewById(R.id.chatlist);
         final LinearLayoutManager layout = new LinearLayoutManager(context);
@@ -235,7 +226,7 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
         ((SimpleItemAnimator) chatrecyclerview.getItemAnimator()).setSupportsChangeAnimations(false);
         mAdapter = new ChatAdapter(mChats, senderId, context, new ChatAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(ChatModel item, View view, int postion) {
+            public void onItemClick(ChatModel item, View view, int position) {
                 if (item.getType().equalsIgnoreCase("profileShare"))
                     openUserProfile(item);
                 else
@@ -246,25 +237,22 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                     openVideo(item);
 
                 if (view.getId() == R.id.audio_bubble) {
-                    selectedAudioView=view;
-                    selectedAudioPosition=postion;
-                    selectedChatModel=item;
-                    takePermissionUtils=new PermissionUtils(ChatA.this,mPermissionStorageRecordingResult);
-                    audioPermissionCheck="playing";
+                    selectedAudioView = view;
+                    selectedAudioPosition = position;
+                    selectedChatModel = item;
+                    takePermissionUtils = new PermissionUtils(ChatA.this,mPermissionStorageRecordingResult);
+                    audioPermissionCheck = "playing";
                     if (takePermissionUtils.isStorageRecordingPermissionGranted()) {
                         audioPlaying(selectedAudioView,selectedChatModel,selectedAudioPosition);
-                    }
-                    else
-                    {
+                    } else {
                         takePermissionUtils.showStorageRecordingPermissionDailog(getString(R.string.we_need_recording_permission_for_upload_sound));
                     }
                 }
-
             }
         }, new ChatAdapter.OnLongClickListener() {
             @Override
             public void onLongclick(ChatModel item, View view) {
-                if (senderId.equals(item.getSender_id()) && istodaymessage(item.getTimestamp())) {
+                if (senderId.equals(item.getSender_id()) && istodaymessage(item.getDate())) {
                     if (view.getId() == R.id.msgtxt) {
                         deleteMessage(item);
                     } else if (view.getId() == R.id.chatimage) {
@@ -273,14 +261,10 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                         deleteMessage(item);
                     }
                 }
-
             }
-
         });
 
-
         chatrecyclerview.setAdapter(mAdapter);
-
 
         chatrecyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
             boolean userScrolled;
@@ -321,7 +305,6 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                                     if (arrayList.size() > 8) {
                                         chatrecyclerview.scrollToPosition(arrayList.size());
                                     }
-
                                 }
 
                                 @Override
@@ -333,20 +316,17 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
             }
         });
 
-
         gifLayout = findViewById(R.id.gif_layout);
 
-        // this the send btn action in that mehtod we will check message field is empty or not
+        // this the send btn action in that method we will check message field is empty or not
         // if not then we call a method and pass the message
         sendbtn = findViewById(R.id.sendbtn);
         sendbtn.setOnClickListener(this::onClick);
 
         findViewById(R.id.uploadimagebtn).setOnClickListener(this::onClick);
 
-
         uploadGifBtn = findViewById(R.id.upload_gif_btn);
         uploadGifBtn.setOnClickListener(this::onClick);
-
 
         findViewById(R.id.goBack).setOnClickListener(this::onClick);
 
@@ -361,7 +341,7 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
 
         micBtn = findViewById(R.id.mic_btn);
         // this is the message field event lister which tells the second user either the user is typing or not
-        // most importent to show type indicator to second user
+        // most important to show type indicator to second user
         message.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -385,13 +365,11 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
             }
         });
 
-
         sendAudio = new SendAudio(context, message, rootref, adduserInbox, senderId, receiverId, receiverName, receiverPic);
 
         // this the mic touch listener
         // when our touch action is Down is will start recording and when our Touch action is Up
         // it will stop the recording
-
 
         RecordView recordView = (RecordView) findViewById(R.id.record_view);
         micBtn.setRecordView(recordView);
@@ -403,22 +381,17 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                 findViewById(R.id.write_layout).setVisibility(View.GONE);
                 findViewById(R.id.uploadimagebtn).setVisibility(View.GONE);
 
-                takePermissionUtils=new PermissionUtils(ChatA.this,mPermissionStorageRecordingResult);
+                takePermissionUtils = new PermissionUtils(ChatA.this,mPermissionStorageRecordingResult);
                 audioPermissionCheck="recording";
                 if (takePermissionUtils.isStorageRecordingPermissionGranted()) {
                     sendAudio.startRecording();
-                }
-                else
-                {
+                } else {
                     takePermissionUtils.showStorageRecordingPermissionDailog(getString(R.string.we_need_recording_permission_for_upload_sound));
                 }
-
-
             }
 
             @Override
             public void onCancel() {
-
                 sendAudio.stopTimer();
                 findViewById(R.id.write_layout).setVisibility(View.VISIBLE);
             }
@@ -440,21 +413,18 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
         micBtn.setListenForRecord(true);
         recordView.setLessThanSecondAllowed(false);
 
-
         // this method receiver the type indicator of second user to tell that his friend is typing or not
         receiveTypeIndication();
 
-
         alertBtn = findViewById(R.id.alert_btn);
         alertBtn.setOnClickListener(this::onClick);
-
 
         client = new GPHApiClient(context.getResources().getString(R.string.gif_api_key));
         getChatData();
         callApiForUserDetails();
     }
 
-    private void audioPlaying(View view,ChatModel item,int postion) {
+    private void audioPlaying(View view, ChatModel item, int position) {
         RelativeLayout mainlayout = (RelativeLayout) view.getParent();
         File fullpath = new File(Functions.getAppFolder(ChatA.this) + item.chat_id + ".mp3");
 
@@ -463,23 +433,19 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
             if (playingId.equals(item.chat_id)) {
                 stopPlaying();
             } else {
-
-                playAudio(postion, item);
+                playAudio(position, item);
             }
-
         } else {
-
             downloadAudio((ProgressBar) mainlayout.findViewById(R.id.p_bar), item);
         }
     }
 
     private void openUserProfile(ChatModel item) {
        try {
-
-           JSONObject jsonObject=new JSONObject(item.getText());
-           String userId=jsonObject.optString("id");
-           String username=jsonObject.optString("username");
-           String pic=jsonObject.optString("pic");
+           JSONObject jsonObject = new JSONObject(item.getText());
+           String userId = jsonObject.optString("id");
+           String username = jsonObject.optString("username");
+           String pic = jsonObject.optString("pic");
 
            Intent intent=new Intent(ChatA.this, ProfileA.class);
            intent.putExtra("user_id", userId);
@@ -488,9 +454,7 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
            startActivity(intent);
            overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
 
-       }
-       catch (Exception e)
-       {
+       } catch (Exception e) {
            Log.d(Constants.tag,"Exception : "+e);
        }
     }
@@ -521,7 +485,7 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                     slideDown();
                 } else {
                     slideUp();
-                    getGipy();
+                    getGiphy();
                 }
                 break;
 
@@ -529,17 +493,12 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
             {
                 takePermissionUtils=new PermissionUtils(ChatA.this,mPermissionCameraStorageResult);
 
-                if (takePermissionUtils.isStorageCameraPermissionGranted())
-                {
+                if (takePermissionUtils.isStorageCameraPermissionGranted()) {
                     selectImage();
-                }
-                else
-                {
+                } else {
                     takePermissionUtils.showStorageCameraPermissionDailog(getString(R.string.we_need_storage_permission_for_upload_media_file));
                 }
-
             }
-
                 break;
 
             case R.id.sendbtn:
@@ -551,18 +510,10 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                         sendMessage(message.getText().toString());
                         message.setText(null);
                     }
-
                 }
-
                 break;
         }
-
     }
-
-
-
-
-
 
     ValueEventListener valueEventListener;
     ChildEventListener eventListener;
@@ -571,17 +522,16 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
 
     private void getChatData() {
         mChats.clear();
-        mchatRefReteriving = FirebaseDatabase.getInstance().getReference();
-        queryGetchat = mchatRefReteriving.child("chat").child(senderId + "-" + receiverId);
+        mchatRefRetrieving = FirebaseDatabase.getInstance().getReference();
+        queryGetchat = mchatRefRetrieving.child("chat").child(senderId + "-" + receiverId);
 
-        myBlockStatusQuery = mchatRefReteriving.child("Inbox")
+        myBlockStatusQuery = mchatRefRetrieving.child("Inbox")
                 .child(Functions.getSharedPreference(ChatA.this).getString(Variables.U_ID, "0"))
                 .child(receiverId);
 
-        otherBlockStatusQuery = mchatRefReteriving.child("Inbox")
+        otherBlockStatusQuery = mchatRefRetrieving.child("Inbox")
                 .child(receiverId)
                 .child(Functions.getSharedPreference(ChatA.this).getString(Variables.U_ID, "0"));
-
 
         // this will get all the messages between two users
         eventListener = new ChildEventListener() {
@@ -600,10 +550,7 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-
                 if (dataSnapshot != null && dataSnapshot.getValue() != null) {
-
                     try {
                         ChatModel model = dataSnapshot.getValue(ChatModel.class);
 
@@ -637,7 +584,6 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
             }
         };
 
-
         // this will check the two user are do chat before or not
         valueEventListener = new ValueEventListener() {
             @Override
@@ -664,7 +610,6 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (isPrivacyfollow) {
-
                     if (dataSnapshot.exists() && dataSnapshot.child("block").getValue() != null) {
                         String block = dataSnapshot.child("block").getValue().toString();
                         if (block.equals("1")) {
@@ -710,14 +655,12 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
             }
         };
 
-
         queryGetchat.limitToLast(20).addChildEventListener(eventListener);
-        mchatRefReteriving.child("chat").addValueEventListener(valueEventListener);
+        mchatRefRetrieving.child("chat").addValueEventListener(valueEventListener);
 
         myBlockStatusQuery.addValueEventListener(myInboxListener);
         otherBlockStatusQuery.addValueEventListener(otherInboxListener);
     }
-
 
     // this will add the new message in chat node and update the ChatInbox by new message by present date
     public void sendMessage(final String message) {
@@ -738,9 +681,8 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
         message_user_map.put("type", "text");
         message_user_map.put("pic_url", "");
         message_user_map.put("status", "0");
-        message_user_map.put("time", "");
         message_user_map.put("sender_name", Functions.getSharedPreference(context).getString(Variables.U_NAME, ""));
-        message_user_map.put("timestamp", formattedDate);
+        message_user_map.put("timestamp", Functions.currentTimeSecsUTC());
 
         final HashMap user_map = new HashMap<>();
         user_map.put(current_user_ref + "/" + pushid, message_user_map);
@@ -759,8 +701,8 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                 sendermap.put("pic", Functions.getSharedPreference(context).getString(Variables.U_PIC, ""));
                 sendermap.put("msg", message);
                 sendermap.put("status", "0");
-                sendermap.put("timestamp", -1 * System.currentTimeMillis());
-                sendermap.put("date", formattedDate);
+                sendermap.put("type", "text");
+                sendermap.put("timestamp", Functions.currentTimeSecsUTC());
 
                 HashMap receivermap = new HashMap<>();
                 receivermap.put("rid", receiverId);
@@ -768,8 +710,8 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                 receivermap.put("pic", receiverPic);
                 receivermap.put("msg", message);
                 receivermap.put("status", "1");
-                receivermap.put("timestamp", -1 * System.currentTimeMillis());
-                receivermap.put("date", formattedDate);
+                receivermap.put("type", "text");
+                receivermap.put("timestamp", Functions.currentTimeSecsUTC());
 
                 HashMap both_user_map = new HashMap<>();
                 both_user_map.put(inbox_sender_ref, receivermap);
@@ -778,16 +720,13 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                 adduserInbox.updateChildren(both_user_map).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-
                         ChatA.sendPushNotification(ChatA.this, Functions.getSharedPreference(context).getString(Variables.U_NAME, ""), message,
                                 receiverId, senderId);
-
                     }
                 });
             }
         });
     }
-
 
     // this method will upload the image in chhat
     public void uploadImage(ByteArrayOutputStream byteArrayOutputStream) {
@@ -810,9 +749,8 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
         my_dummi_pic_map.put("type", "image");
         my_dummi_pic_map.put("pic_url", "none");
         my_dummi_pic_map.put("status", "0");
-        my_dummi_pic_map.put("time", "");
         my_dummi_pic_map.put("sender_name", Functions.getSharedPreference(context).getString(Variables.U_NAME, ""));
-        my_dummi_pic_map.put("timestamp", formattedDate);
+        my_dummi_pic_map.put("timestamp", Functions.currentTimeSecsUTC());
 
         HashMap dummy_push = new HashMap<>();
         dummy_push.put(current_user_ref + "/" + key, my_dummi_pic_map);
@@ -826,7 +764,6 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                 imagepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-
                         uploadingImageId = "none";
                         HashMap message_user_map = new HashMap<>();
                         message_user_map.put("receiver_id", receiverId);
@@ -836,9 +773,8 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                         message_user_map.put("type", "image");
                         message_user_map.put("pic_url", uri.toString());
                         message_user_map.put("status", "0");
-                        message_user_map.put("time", "");
                         message_user_map.put("sender_name", Functions.getSharedPreference(context).getString(Variables.U_NAME, ""));
-                        message_user_map.put("timestamp", formattedDate);
+                        message_user_map.put("timestamp", Functions.currentTimeSecsUTC());
 
                         HashMap user_map = new HashMap<>();
 
@@ -857,8 +793,8 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                                 sendermap.put("pic", Functions.getSharedPreference(context).getString(Variables.U_PIC, ""));
                                 sendermap.put("msg", "Send an image...");
                                 sendermap.put("status", "0");
-                                sendermap.put("timestamp", -1 * System.currentTimeMillis());
-                                sendermap.put("date", formattedDate);
+                                sendermap.put("type", "image");
+                                sendermap.put("timestamp", Functions.currentTimeSecsUTC());
 
                                 HashMap receivermap = new HashMap<>();
                                 receivermap.put("rid", receiverId);
@@ -866,8 +802,8 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                                 receivermap.put("pic", receiverPic);
                                 receivermap.put("msg", "Send an image...");
                                 receivermap.put("status", "1");
-                                receivermap.put("timestamp", -1 * System.currentTimeMillis());
-                                receivermap.put("date", formattedDate);
+                                receivermap.put("type", "image");
+                                receivermap.put("timestamp", Functions.currentTimeSecsUTC());
 
                                 HashMap both_user_map = new HashMap<>();
                                 both_user_map.put(inbox_sender_ref, receivermap);
@@ -876,31 +812,22 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                                 adduserInbox.updateChildren(both_user_map).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-
                                         ChatA.sendPushNotification(ChatA.this, Functions.getSharedPreference(context).getString(Variables.U_NAME, ""), "Send an Image....",
                                                 receiverId, senderId);
-
                                     }
                                 });
-
-
                             }
                         });
-
-
                     }
                 });
-
             }
         });
     }
 
-
-    // this method will upload the image in chhat
+    // this method will upload the image in chat
     public void sendGif(String url) {
         Date c = Calendar.getInstance().getTime();
         final String formattedDate = Variables.df.format(c);
-
 
         DatabaseReference dref = rootref.child("chat").child(senderId + "-" + receiverId).push();
         final String key = dref.getKey();
@@ -916,9 +843,8 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
         message_user_map.put("type", "gif");
         message_user_map.put("pic_url", url);
         message_user_map.put("status", "0");
-        message_user_map.put("time", "");
         message_user_map.put("sender_name", Functions.getSharedPreference(context).getString(Variables.U_NAME, ""));
-        message_user_map.put("timestamp", formattedDate);
+        message_user_map.put("timestamp", Functions.currentTimeSecsUTC());
         HashMap user_map = new HashMap<>();
 
         user_map.put(current_user_ref + "/" + key, message_user_map);
@@ -930,15 +856,14 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                 String inbox_sender_ref = "Inbox" + "/" + senderId + "/" + receiverId;
                 String inbox_receiver_ref = "Inbox" + "/" + receiverId + "/" + senderId;
 
-
                 HashMap sendermap = new HashMap<>();
                 sendermap.put("rid", senderId);
                 sendermap.put("name", Functions.getSharedPreference(context).getString(Variables.U_NAME, ""));
                 sendermap.put("pic", Functions.getSharedPreference(context).getString(Variables.U_PIC, ""));
                 sendermap.put("msg", "Send an gif image...");
                 sendermap.put("status", "0");
-                sendermap.put("timestamp", -1 * System.currentTimeMillis());
-                sendermap.put("date", formattedDate);
+                sendermap.put("type", "gif");
+                sendermap.put("timestamp", Functions.currentTimeSecsUTC());
 
                 HashMap receivermap = new HashMap<>();
                 receivermap.put("rid", receiverId);
@@ -946,8 +871,8 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                 receivermap.put("pic", receiverPic);
                 receivermap.put("msg", "Send an gif image...");
                 receivermap.put("status", "1");
-                receivermap.put("timestamp", -1 * System.currentTimeMillis());
-                receivermap.put("date", formattedDate);
+                receivermap.put("type", "gif");
+                receivermap.put("timestamp", Functions.currentTimeSecsUTC());
 
                 HashMap both_user_map = new HashMap<>();
                 both_user_map.put(inbox_sender_ref, receivermap);
@@ -956,17 +881,13 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                 adduserInbox.updateChildren(both_user_map).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-
                         ChatA.sendPushNotification(ChatA.this, Functions.getSharedPreference(context).getString(Variables.U_NAME, ""), "Send an gif image....",
                                 receiverId, senderId);
-
                     }
                 });
-
             }
         });
     }
-
 
     // this method will change the status to ensure that
     // user is seen all the message or not (in both chat node and Chatinbox node)
@@ -988,7 +909,7 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                         String path = "chat" + "/" + dataSnapshot.getKey() + "/" + key;
                         HashMap<String, Object> result = new HashMap<>();
                         result.put("status", "1");
-                        result.put("time", Variables.df2.format(c));
+                        result.put("timestamp", Functions.currentTimeSecsUTC());
                         reference.child(path).updateChildren(result);
                     }
                 }
@@ -1009,7 +930,7 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                         String path = "chat" + "/" + dataSnapshot.getKey() + "/" + key;
                         HashMap<String, Object> result = new HashMap<>();
                         result.put("status", "1");
-                        result.put("time", Variables.df2.format(c));
+                        result.put("timestamp", Functions.currentTimeSecsUTC());
                         reference.child(path).updateChildren(result);
                     }
                 }
@@ -1029,9 +950,7 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                         HashMap<String, Object> result = new HashMap<>();
                         result.put("status", "1");
                         inbox_change_status_1.updateChildren(result);
-
                     }
-
                 }
             }
 
@@ -1049,7 +968,6 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                         HashMap<String, Object> result = new HashMap<>();
                         result.put("status", "1");
                         inbox_change_status_2.updateChildren(result);
-
                     }
                 }
             }
@@ -1059,9 +977,7 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
 
             }
         });
-
     }
-
 
     public void downloadAudio(final ProgressBar p_bar, ChatModel item) {
         p_bar.setVisibility(View.VISIBLE);
@@ -1078,13 +994,10 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                     public void onError(Error error) {
 
                     }
-
                 });
-
     }
 
-
-    // this is the delete message diloge which will show after long press in chat message
+    // this is the delete message dialog which will show after long press in chat message
     private void deleteMessage(final ChatModel chat_model) {
 
         final CharSequence[] options = {getString(R.string.delete_this_message), getString(R.string.cancel_)};
@@ -1101,27 +1014,19 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
 
                 if (options[item].equals(getString(R.string.delete_this_message))) {
                     updateMessage(chat_model);
-
                 } else if (options[item].equals(getString(R.string.cancel_))) {
-
                     dialog.dismiss();
-
                 }
-
             }
-
         });
 
         builder.show();
-
     }
 
-
-    // we will update the privious message means we will tells the other user that we have seen your message
+    // we will update the previous message means we will tells the other user that we have seen your message
     public void updateMessage(ChatModel item) {
         final String current_user_ref = "chat" + "/" + senderId + "-" + receiverId;
         final String chat_user_ref = "chat" + "/" + receiverId + "-" + senderId;
-
 
         final HashMap message_user_map = new HashMap<>();
         message_user_map.put("receiver_id", item.getReceiver_id());
@@ -1131,7 +1036,6 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
         message_user_map.put("type", "delete");
         message_user_map.put("pic_url", "");
         message_user_map.put("status", "0");
-        message_user_map.put("time", "");
         message_user_map.put("sender_name", Functions.getSharedPreference(context).getString(Variables.U_NAME, ""));
         message_user_map.put("timestamp", item.getTimestamp());
 
@@ -1140,9 +1044,7 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
         user_map.put(chat_user_ref + "/" + item.getChat_id(), message_user_map);
 
         rootref.updateChildren(user_map);
-
     }
-
 
     // this is the block dialog which will be show when user click on alert buttom of Top right in screen
     private void blockUserDialog() {
@@ -1159,40 +1061,29 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
         builder.setItems(options, new DialogInterface.OnClickListener() {
 
             @Override
-
             public void onClick(DialogInterface dialog, int item) {
 
                 String text = (String) options[item];
 
                 if (text.equals(getString(R.string.block_this_user))) {
-
                     blockUser();
                 } else if (text.equals(getString(R.string.unblock_this_user))) {
-
                     unBlockUser();
                 } else if (text.equalsIgnoreCase(getString(R.string.report_user))) {
                     openUserReport();
                 } else if (options[item].equals(getString(R.string.cancel_))) {
-
                     dialog.dismiss();
-
                 }
-
             }
-
         });
-
         builder.show();
-
     }
-
 
     public void blockUser() {
         rootref.child("Inbox")
                 .child(receiverId)
                 .child(Functions.getSharedPreference(ChatA.this).getString(Variables.U_ID, "0")).child("block").setValue("1");
         Functions.showToast(ChatA.this, getString(R.string.user_blocked));
-
     }
 
     public void unBlockUser() {
@@ -1200,13 +1091,11 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                 .child(receiverId)
                 .child(Functions.getSharedPreference(ChatA.this).getString(Variables.U_ID, "0")).child("block").setValue("0");
         Functions.showToast(ChatA.this, getString(R.string.user_unblocked));
-
     }
-
 
     public void openUserReport() {
         onPause();
-        Intent intent=new Intent(ChatA.this, ReportTypeA.class);
+        Intent intent = new Intent(ChatA.this, ReportTypeA.class);
         intent.putExtra("user_id", receiverId);
         intent.putExtra("isFrom",false);
         startActivity(intent);
@@ -1228,7 +1117,6 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
         try {
             d = f.parse(date);
             databasedate = d.getTime();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1268,15 +1156,11 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                 } else if (options[item].equals(getString(R.string.cancel_))) {
                     dialog.dismiss();
                 }
-
             }
-
         });
 
         builder.show();
-
     }
-
 
     ActivityResultLauncher<Intent> resultCallbackForGallery = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
@@ -1362,7 +1246,6 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                             e.printStackTrace();
                         }
 
-
                         final Bitmap imagebitmap = BitmapFactory.decodeStream(imageStream);
                         Bitmap rotatedBitmap = Bitmap.createBitmap(imagebitmap, 0, 0, imagebitmap.getWidth(), imagebitmap.getHeight(), matrix, true);
                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -1371,11 +1254,6 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                     }
                 }
             });
-
-
-
-
-
 
     // below three method is related with taking the picture from camera
     private void openCameraIntent() {
@@ -1388,7 +1266,6 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                 photoFile = createImageFile();
             } catch (Exception ex) {
                 // Error occurred while creating the File
-
             }
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(context.getApplicationContext(), getPackageName() + ".fileprovider", photoFile);
@@ -1416,7 +1293,6 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
         return image;
     }
 
-
     public String getPath(Uri uri) {
         String result = null;
         String[] proj = {MediaStore.Images.Media.DATA};
@@ -1434,10 +1310,9 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
         return result;
     }
 
-
     // send the type indicator if the user is typing message
     public void sendTypingIndicator(boolean indicate) {
-        // if the type incator is present then we remove it if not then we create the typing indicator
+        // if the type indicator is present then we remove it if not then we create the typing indicator
         if (indicate) {
             final HashMap message_user_map = new HashMap<>();
             message_user_map.put("receiver_id", receiverId);
@@ -1456,16 +1331,11 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
             sendTypingIndication.child(senderId + "-" + receiverId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-
                     sendTypingIndication.child(receiverId + "-" + senderId).removeValue();
-
                 }
             });
-
         }
-
     }
-
 
     // receive the type indication to show that your friend is typing or not
     LinearLayout mainlayout;
@@ -1494,10 +1364,7 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
         });
     }
 
-
-
-    public void openVideo(ChatModel item){
-
+    public void openVideo(ChatModel item) {
         Intent intent = new Intent(ChatA.this, WatchVideosA.class);
         intent.putExtra("video_id", item.video_id);
         intent.putExtra("position", 0);
@@ -1533,9 +1400,7 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
         intent.putExtra("chat_id", item.getChat_id());
         startActivity(intent);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-
     }
-
 
     // this is related with the list of Gifs that is show in the list below
     GifAdapter gif_adapter;
@@ -1543,7 +1408,7 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
     RecyclerView gips_list;
     GPHApi client;
 
-    public void getGipy() {
+    public void getGiphy() {
         url_list.clear();
         gips_list = findViewById(R.id.gif_recylerview);
         gips_list.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
@@ -1603,7 +1468,6 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
         });
     }
 
-
     // slide the view from below itself to the current position
     public void slideUp() {
         message.setHint(getString(R.string.search_gift));
@@ -1619,7 +1483,6 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
         animate.setFillAfter(true);
         gifLayout.startAnimation(animate);
     }
-
 
     // slide the view from its current position to below itself
     public void slideDown() {
@@ -1653,7 +1516,6 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
         gifLayout.startAnimation(animate);
     }
 
-
     // this mehtos the will add a node of notification in to database
     // then our firebase cloud function will listen node and send the notification to spacific user
     public static void sendPushNotification(Activity context,
@@ -1661,7 +1523,6 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                                             String receiverid, String senderid) {
 
         if (pushNotificationSetting_model != null && pushNotificationSetting_model.getDirectmessage().equalsIgnoreCase("1")) {
-
             JSONObject notimap = new JSONObject();
             try {
                 notimap.put("title", name);
@@ -1676,7 +1537,6 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
-
     // this will get the user data and parse the data and show the data into views
     public void callApiForUserDetails() {
         Functions.callApiForGetUserData(ChatA.this,
@@ -1688,24 +1548,23 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                     }
 
                     @Override
-                    public void onSuccess(String responce) {
-                        parseUserData(responce);
+                    public void onSuccess(String response) {
+                        parseUserData(response);
                     }
 
                     @Override
-                    public void onFail(String responce) {
+                    public void onFail(String response) {
 
                     }
                 });
     }
 
-
     public static PushNotificationSettingModel pushNotificationSetting_model;
     PrivacyPolicySettingModel privacyPolicySetting_model;
 
-    public void parseUserData(String responce) {
+    public void parseUserData(String response) {
         try {
-            JSONObject jsonObject = new JSONObject(responce);
+            JSONObject jsonObject = new JSONObject(response);
 
             String code = jsonObject.optString("code");
 
@@ -1715,7 +1574,6 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                 JSONObject push_notification_setting = msg.optJSONObject("PushNotification");
                 JSONObject privacy_policy_setting = msg.optJSONObject("PrivacySetting");
                 UserModel userDetailModel= DataParsing.getUserDataModel(msg.optJSONObject("User"));
-
 
                 receiverName = userDetailModel.getUsername();
                 userName.setText(receiverName);
@@ -1730,13 +1588,11 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                     profileimage.setImageURI(uri);
                 }
 
-
                 pushNotificationSetting_model = new PushNotificationSettingModel();
                 pushNotificationSetting_model.setDirectmessage("" + push_notification_setting.optString("direct_messages"));
 
                 privacyPolicySetting_model = new PrivacyPolicySettingModel();
                 privacyPolicySetting_model.setDirect_message("" + privacy_policy_setting.optString("direct_message"));
-
 
                 isPrivacyfollow = true;
                 tabChat.setVisibility(View.VISIBLE);
@@ -1752,16 +1608,14 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
 
             } else {
                 Functions.showToast(ChatA.this, jsonObject.optString("msg"));
-
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void playAudio(int postion, ChatModel item) {
-
-        audioPostion = postion;
+    public void playAudio(int position, ChatModel item) {
+        audioPosition = position;
         mediaPlayerProgress = 0;
 
         stopPlaying();
@@ -1785,7 +1639,6 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                 playingId = item.chat_id;
                 mAdapter.notifyDataSetChanged();
             }
-
         }
     }
 
@@ -1818,23 +1671,19 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                         countdownTimer(false);
                         mediaPlayerProgress = 0;
                     }
-                    mAdapter.notifyItemChanged(audioPostion);
+                    mAdapter.notifyItemChanged(audioPosition);
                 }
 
                 @Override
                 public void onFinish() {
                     mediaPlayerProgress = 0;
                     countdownTimer(false);
-                    mAdapter.notifyItemChanged(audioPostion);
+                    mAdapter.notifyItemChanged(audioPosition);
                 }
             };
             countDownTimer.start();
-
-
         }
-
     }
-
 
     private ActivityResultLauncher<String[]> mPermissionCameraStorageResult = registerForActivityResult(
             new ActivityResultContracts.RequestMultiplePermissions(), new ActivityResultCallback<Map<String, Boolean>>() {
@@ -1842,31 +1691,23 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                 @Override
                 public void onActivityResult(Map<String, Boolean> result) {
 
-                    boolean allPermissionClear=true;
-                    List<String> blockPermissionCheck=new ArrayList<>();
-                    for (String key : result.keySet())
-                    {
-                        if (!(result.get(key)))
-                        {
-                            allPermissionClear=false;
+                    boolean allPermissionClear = true;
+                    List<String> blockPermissionCheck = new ArrayList<>();
+                    for (String key : result.keySet()) {
+                        if (!(result.get(key))) {
+                            allPermissionClear = false;
                             blockPermissionCheck.add(Functions.getPermissionStatus(ChatA.this,key));
                         }
                     }
-                    if (blockPermissionCheck.contains("blocked"))
-                    {
+                    if (blockPermissionCheck.contains("blocked")) {
                         Functions.showPermissionSetting(ChatA.this,getString(R.string.we_need_storage_permission_for_upload_media_file));
                     }
-                    else
-                    if (allPermissionClear)
-                    {
+                    else if (allPermissionClear) {
                         selectImage();
                     }
 
                 }
             });
-
-
-
 
     private ActivityResultLauncher<String[]> mPermissionStorageRecordingResult = registerForActivityResult(
             new ActivityResultContracts.RequestMultiplePermissions(), new ActivityResultCallback<Map<String, Boolean>>() {
@@ -1874,38 +1715,25 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
                 @Override
                 public void onActivityResult(Map<String, Boolean> result) {
 
-                    boolean allPermissionClear=true;
-                    List<String> blockPermissionCheck=new ArrayList<>();
-                    for (String key : result.keySet())
-                    {
-                        if (!(result.get(key)))
-                        {
+                    boolean allPermissionClear = true;
+                    List<String> blockPermissionCheck = new ArrayList<>();
+                    for (String key : result.keySet()) {
+                        if (!(result.get(key))) {
                             allPermissionClear=false;
                             blockPermissionCheck.add(Functions.getPermissionStatus(ChatA.this,key));
                         }
                     }
-                    if (blockPermissionCheck.contains("blocked"))
-                    {
+                    if (blockPermissionCheck.contains("blocked")) {
                         Functions.showPermissionSetting(ChatA.this,getString(R.string.we_need_recording_permission_for_upload_sound));
-                    }
-                    else
-                    if (allPermissionClear)
-                    {
-                        if (audioPermissionCheck.equalsIgnoreCase("playing"))
-                        {
+                    } else if (allPermissionClear) {
+                        if (audioPermissionCheck.equalsIgnoreCase("playing")) {
                             audioPlaying(selectedAudioView,selectedChatModel,selectedAudioPosition);
-                        }
-                        else
-                        {
+                        } else {
                             sendAudio.startRecording();
                         }
                     }
-
                 }
             });
-
-
-
 
     @Override
     protected void onResume() {
@@ -1926,6 +1754,4 @@ public class ChatA extends AppCompatActivity implements View.OnClickListener {
         super.onPause();
         Functions.unRegisterConnectivity(getApplicationContext());
     }
-
-
 }

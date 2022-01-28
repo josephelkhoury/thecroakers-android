@@ -255,6 +255,7 @@
                         android:id="@+id/username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:shadowColor="@color/black"
                         android:shadowDx="1"
                         android:shadowDy="1"

@@ -219,14 +219,13 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-
     private void callApiForSingleVideos(String videoId) {
         try {
             JSONObject parameters = new JSONObject();
             parameters.put("user_id", userId);
             parameters.put("video_id", videoId);
 
-            VolleyRequest.JsonPostRequest(this, ApiLinks.showVideoDetail, parameters,Functions.getHeaders(this), new Callback() {
+            VolleyRequest.JsonPostRequest(this, ApiLinks.showVideoDetail, parameters, Functions.getHeaders(this), new Callback() {
                 @Override
                 public void onResponce(String resp) {
                     swiperefresh.setRefreshing(false);
@@ -239,10 +238,10 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void singleVideoParseData(String responce) {
+    public void singleVideoParseData(String response) {
 
         try {
-            JSONObject jsonObject = new JSONObject(responce);
+            JSONObject jsonObject = new JSONObject(response);
             String code = jsonObject.optString("code");
             if (code.equals("200")) {
                 JSONObject msg = jsonObject.optJSONObject("msg");

@@ -88,6 +88,8 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
     private ProgressDialog mProgressDialog;
 
     String main_video_id;
+    String topic_id, topic_name;
+    String country_id, country_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +99,10 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_video_recoder);
 
         main_video_id = getIntent().getStringExtra("main_video_id");
+        topic_id = getIntent().getStringExtra("topic_id");
+        topic_name = getIntent().getStringExtra("topic_name");
+        country_id = getIntent().getStringExtra("country_id");
+        country_name = getIntent().getStringExtra("country_name");
 
         Variables.selectedSoundId = "null";
         Constants.RECORDING_DURATION = Constants.MAX_RECORDING_DURATION;
@@ -787,6 +793,10 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
         intent.putExtra("fromWhere", "video_recording");
         intent.putExtra("isSoundSelected", isSelected);
         intent.putExtra("main_video_id", main_video_id);
+        intent.putExtra("topic_id", topic_id);
+        intent.putExtra("topic_name", topic_name);
+        intent.putExtra("country_id", country_id);
+        intent.putExtra("country_name", country_name);
 
         startActivity(intent);
         overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);

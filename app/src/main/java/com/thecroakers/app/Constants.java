@@ -2,7 +2,7 @@ package com.thecroakers.app;
 
 public class Constants {
 
-    public static final String BASE_URL = "https://app.thecroakers.com/mobileapp_api/";
+    public static final String BASE_URL = "https://app.thecroakers.com/";
     public static final String API_KEY = "156c4675-9608-4591-1111-00000";
 
     public static final String privacy_policy = "https://thecroakers.com/privacy-policy/";
@@ -30,16 +30,16 @@ public class Constants {
     public static final int DEMO_APP_VIDEOS_COUNT = 6;
 
     // maximum time to record the video for now it is 30 sec
-    public static int MAX_RECORDING_DURATION = 60000;
+    public static int MAX_RECORDING_DURATION = 24000;
     public static int RECORDING_DURATION = 24000;
 
     // minimum time of recode a video for now it is 5 sec
     public static int MIN_TIME_RECORDING = 5000;
 
     // minimum trim chunk time span of a video for now it is 5 sec
-    public static int MIN_TRIM_TIME = 24;
+    public static int MIN_TRIM_TIME = 5;
     // maximum trim chunk time span of a video for now it is 30 sec
-    public static int MAX_TRIM_TIME = 60;
+    public static int MAX_TRIM_TIME = 24;
 
     //video description char limit during posting the video
     public final static int VIDEO_DESCRIPTION_CHAR_LIMIT = 150;

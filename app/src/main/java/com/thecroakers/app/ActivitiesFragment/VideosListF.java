@@ -431,6 +431,10 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                     } else {
                         Intent intent = new Intent(getActivity(), VideoRecoderA.class);
                         intent.putExtra("main_video_id", item.video_id);
+                        intent.putExtra("topic_id", item.topic_id);
+                        intent.putExtra("topic_name", item.topic_name);
+                        intent.putExtra("country_id", item.country_id);
+                        intent.putExtra("country_name", item.country_name);
                         startActivity(intent);
                         getActivity().overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
                     }
@@ -1342,10 +1346,10 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
     }
 
     // parse the data for a video
-    public void singalVideoParseData(String responce) {
+    public void singalVideoParseData(String response) {
 
         try {
-            JSONObject jsonObject = new JSONObject(responce);
+            JSONObject jsonObject = new JSONObject(response);
             String code = jsonObject.optString("code");
             if (code.equals("200")) {
                 JSONObject msg = jsonObject.optJSONObject("msg");
@@ -1366,7 +1370,6 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
             }
 
         } catch (Exception e) {
-
             e.printStackTrace();
         }
 

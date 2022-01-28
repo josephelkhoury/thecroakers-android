@@ -1,11 +1,14 @@
 package com.thecroakers.app.ActivitiesFragment.Chat;
 
+import com.thecroakers.app.SimpleClasses.Functions;
+
 /**
  * Created by thecroakers on 3/20/2018.
  */
 
 public class ChatModel {
-    String receiver_id, sender_id, chat_id, video_id, sender_name, text, pic_url, status, time, timestamp, type;
+    String receiver_id, sender_id, chat_id, video_id, sender_name, text, pic_url, status, time, type;
+    Long timestamp;
 
     public ChatModel() {
 
@@ -43,11 +46,11 @@ public class ChatModel {
         this.sender_name = sender_name;
     }
 
-    public String getTimestamp() {
+    public Long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -97,5 +100,9 @@ public class ChatModel {
 
     public void setVideo_id(String video_id) {
         this.video_id = video_id;
+    }
+
+    public String getDate() {
+        return Functions.getDate(getTimestamp());
     }
 }

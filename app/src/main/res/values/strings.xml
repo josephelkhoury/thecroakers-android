@@ -378,6 +378,7 @@
     <string name="friends_">Friends</string>
     <string name="yesterday">yesterday</string>
     <string name="day_ago">day ago</string>
+    <string name="days_ago">days ago</string>
     <string name="added_to_favourite">Added to favourite</string>
     <string name="add_to_favourite">Add to favourite</string>
     <string name="your_video_is_uploaded_successfully">Your Video is uploaded Successfully</string>

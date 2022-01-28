@@ -48,6 +48,8 @@ public class PreviewVideoA extends AppCompatActivity implements Player.Listener 
 
     String draftFile;
     String main_video_id;
+    String topic_id, topic_name;
+    String country_id, country_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +68,10 @@ public class PreviewVideoA extends AppCompatActivity implements Player.Listener 
                 draftFile = intent.getStringExtra("draft_file");
             }
             main_video_id = intent.getStringExtra("main_video_id");
+            topic_id = intent.getStringExtra("topic_id");
+            topic_name = intent.getStringExtra("topic_name");
+            country_id = intent.getStringExtra("country_id");
+            country_name = intent.getStringExtra("country_name");
         }
 
         selectPostion = 0;
@@ -309,6 +315,10 @@ public class PreviewVideoA extends AppCompatActivity implements Player.Listener 
         Intent intent = new Intent(PreviewVideoA.this, PostVideoA.class);
         intent.putExtra("draft_file", draftFile);
         intent.putExtra("main_video_id", main_video_id);
+        intent.putExtra("topic_id", topic_id);
+        intent.putExtra("topic_name", topic_name);
+        intent.putExtra("country_id", country_id);
+        intent.putExtra("country_name", country_name);
         startActivity(intent);
         overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
     }

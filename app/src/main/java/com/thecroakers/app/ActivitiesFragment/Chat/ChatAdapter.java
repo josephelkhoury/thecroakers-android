@@ -69,11 +69,9 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         void onItemClick(ChatModel item, View view, int postion);
     }
 
-
     public interface OnLongClickListener {
         void onLongclick(ChatModel item, View view);
     }
-
 
     ChatAdapter(List<ChatModel> dataSet, String id, Context context, ChatAdapter.OnItemClickListener listener, ChatAdapter.OnLongClickListener long_listener) {
         mDataSet = dataSet;
@@ -83,9 +81,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.long_listener = long_listener;
         Calendar cal = Calendar.getInstance();
         todayDay = cal.get(Calendar.DAY_OF_MONTH);
-
     }
-
 
     // this is the all types of view that is used in the chat
     @Override
@@ -118,7 +114,6 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_chat_audio_other, viewGroup, false);
                 Chataudioviewholder other = new Chataudioviewholder(v);
                 return other;
-
 
             case my_video_message:
                 v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_chat_video_my, viewGroup, false);
@@ -157,7 +152,6 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return mDataSet.size();
     }
 
-
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ChatModel chat = mDataSet.get(position);
@@ -170,7 +164,6 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     chatviewholder.messageSeen.setText(context.getString(R.string.seen_at)+" " + changeDateTime(chat.getTime()));
                 else
                     chatviewholder.messageSeen.setText(context.getString(R.string.sent));
-
             } else {
                 chatviewholder.messageSeen.setText("");
             }
@@ -178,24 +171,22 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             // means message send with in 1 min will show as a group
             if (position != 0) {
                 ChatModel chat2 = mDataSet.get(position - 1);
-                if (chat2.getTimestamp().substring(14, 16).equals(chat.getTimestamp().substring(14, 16))) {
+                if (chat2.getDate().substring(14, 16).equals(chat.getDate().substring(14, 16))) {
                     chatviewholder.datetxt.setVisibility(View.GONE);
                 } else {
                     chatviewholder.datetxt.setVisibility(View.VISIBLE);
-                    chatviewholder.datetxt.setText(changeDate(chat.getTimestamp()));
+                    chatviewholder.datetxt.setText(changeDate(chat.getDate()));
                 }
                 chatviewholder.message.setText(chat.getText());
             } else {
                 chatviewholder.datetxt.setVisibility(View.VISIBLE);
-                chatviewholder.datetxt.setText(changeDate(chat.getTimestamp()));
+                chatviewholder.datetxt.setText(changeDate(chat.getDate()));
                 chatviewholder.message.setText(chat.getText());
             }
 
             chatviewholder.bind(chat, long_listener);
-
         }
-        else
-        if (chat.getType().equals("profileShare")) {
+        else if (chat.getType().equals("profileShare")) {
             ChatShareProfileViewholder shareProfileviewholder = (ChatShareProfileViewholder) holder;
             // check if the message is from sender or receiver
             if (chat.getSender_id().equals(myID)) {
@@ -211,50 +202,44 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             // means message send with in 1 min will show as a group
             if (position != 0) {
                 ChatModel chat2 = mDataSet.get(position - 1);
-                if (chat2.getTimestamp().substring(14, 16).equals(chat.getTimestamp().substring(14, 16))) {
+                if (chat2.getDate().substring(14, 16).equals(chat.getDate().substring(14, 16))) {
                     shareProfileviewholder.datetxt.setVisibility(View.GONE);
                 } else {
                     shareProfileviewholder.datetxt.setVisibility(View.VISIBLE);
-                    shareProfileviewholder.datetxt.setText(changeDate(chat.getTimestamp()));
+                    shareProfileviewholder.datetxt.setText(changeDate(chat.getDate()));
                 }
                 try {
-                    JSONObject jsonObject=new JSONObject(chat.getText());
-                    String userId=jsonObject.optString("id");
-                    String fullName=jsonObject.optString("fullName");
-                    String username=jsonObject.optString("username");
-                    String pic=jsonObject.optString("pic");
+                    JSONObject jsonObject = new JSONObject(chat.getText());
+                    String userId = jsonObject.optString("id");
+                    String fullName = jsonObject.optString("fullName");
+                    String username = jsonObject.optString("username");
+                    String pic = jsonObject.optString("pic");
                     shareProfileviewholder.tvFullName.setText(fullName);
                     shareProfileviewholder.tvUsername.setText(Functions.showUsername(username));
-
                     shareProfileviewholder.userProfile.setController(Functions.frescoImageLoad(pic,shareProfileviewholder.userProfile,false));
-
                 }
                 catch (Exception e){}
 
             } else {
                 shareProfileviewholder.datetxt.setVisibility(View.VISIBLE);
-                shareProfileviewholder.datetxt.setText(changeDate(chat.getTimestamp()));
+                shareProfileviewholder.datetxt.setText(changeDate(chat.getDate()));
                 try {
-                    JSONObject jsonObject=new JSONObject(chat.getText());
-                    String userId=jsonObject.optString("id");
-                    String fullName=jsonObject.optString("fullName");
-                    String username=jsonObject.optString("username");
-                    String pic=jsonObject.optString("pic");
+                    JSONObject jsonObject = new JSONObject(chat.getText());
+                    String userId = jsonObject.optString("id");
+                    String fullName = jsonObject.optString("fullName");
+                    String username = jsonObject.optString("username");
+                    String pic = jsonObject.optString("pic");
 
                     shareProfileviewholder.tvFullName.setText(fullName);
                     shareProfileviewholder.tvUsername.setText(username);
 
                     shareProfileviewholder.userProfile.setController(Functions.frescoImageLoad(pic,shareProfileviewholder.userProfile,false));
-
                 }
                 catch (Exception e){}
             }
 
             shareProfileviewholder.bind(chat, listener,position);
-
-        }
-
-        else if (chat.getType().equals("image")) {
+        } else if (chat.getType().equals("image")) {
             final Chatimageviewholder chatimageholder = (Chatimageviewholder) holder;
             // check if the message is from sender or receiver
             if (chat.getSender_id().equals(myID)) {
@@ -284,11 +269,11 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             // means message send with in 1 min will show as a group
             if (position != 0) {
                 ChatModel chat2 = mDataSet.get(position - 1);
-                if (chat2.getTimestamp().substring(14, 16).equals(chat.getTimestamp().substring(14, 16))) {
+                if (chat2.getDate().substring(14, 16).equals(chat.getDate().substring(14, 16))) {
                     chatimageholder.datetxt.setVisibility(View.GONE);
                 } else {
                     chatimageholder.datetxt.setVisibility(View.VISIBLE);
-                    chatimageholder.datetxt.setText(changeDate(chat.getTimestamp()));
+                    chatimageholder.datetxt.setText(changeDate(chat.getDate()));
                 }
 
                 if (chat.getPic_url() != null && !chat.getPic_url().equals("")) {
@@ -298,15 +283,12 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             } else {
                 chatimageholder.datetxt.setVisibility(View.VISIBLE);
-                chatimageholder.datetxt.setText(changeDate(chat.getTimestamp()));
-
+                chatimageholder.datetxt.setText(changeDate(chat.getDate()));
 
                 if (chat.getPic_url() != null && !chat.getPic_url().equals("")) {
                     Uri uri = Uri.parse(chat.getPic_url());
                     chatimageholder.chatimage.setImageURI(uri);
                 }
-
-
             }
 
             chatimageholder.bind(mDataSet.get(position), position, listener, long_listener);
@@ -324,7 +306,6 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             } else {
                 chataudioviewholder.message_seen.setText("");
             }
-
 
             if (chat.getPic_url().equals("none")) {
                 if (ChatA.uploadingAudioId.equals(chat.getChat_id())) {
@@ -344,15 +325,15 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             // means message send with in 1 min will show as a group
             if (position != 0) {
                 ChatModel chat2 = mDataSet.get(position - 1);
-                if (chat2.getTimestamp().substring(14, 16).equals(chat.getTimestamp().substring(14, 16))) {
+                if (chat2.getDate().substring(14, 16).equals(chat.getDate().substring(14, 16))) {
                     chataudioviewholder.datetxt.setVisibility(View.GONE);
                 } else {
                     chataudioviewholder.datetxt.setVisibility(View.VISIBLE);
-                    chataudioviewholder.datetxt.setText(changeDate(chat.getTimestamp()));
+                    chataudioviewholder.datetxt.setText(changeDate(chat.getDate()));
                 }
             } else {
                 chataudioviewholder.datetxt.setVisibility(View.VISIBLE);
-                chataudioviewholder.datetxt.setText(changeDate(chat.getTimestamp()));
+                chataudioviewholder.datetxt.setText(changeDate(chat.getDate()));
 
             }
 
@@ -377,9 +358,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 chataudioviewholder.totalTime.setText(null);
             }
 
-
             chataudioviewholder.bind(mDataSet.get(position), position, listener, long_listener);
-
         }
 
         else if(chat.getType().equals("video")){
@@ -388,11 +367,11 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             if (position != 0) {
                 ChatModel chat2 = mDataSet.get(position - 1);
-                if (chat2.getTimestamp().substring(14, 16).equals(chat.getTimestamp().substring(14, 16))) {
+                if (chat2.getDate().substring(14, 16).equals(chat.getDate().substring(14, 16))) {
                     chatVideoviewholder.datetxt.setVisibility(View.GONE);
                 } else {
                     chatVideoviewholder.datetxt.setVisibility(View.VISIBLE);
-                    chatVideoviewholder.datetxt.setText(changeDate(chat.getTimestamp()));
+                    chatVideoviewholder.datetxt.setText(changeDate(chat.getDate()));
                 }
 
                 if(chat.getPic_url()!= null && !chat.getPic_url().equals("")){
@@ -402,7 +381,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
             else {
                 chatVideoviewholder.datetxt.setVisibility(View.VISIBLE);
-                chatVideoviewholder.datetxt.setText(changeDate(chat.getTimestamp()));
+                chatVideoviewholder.datetxt.setText(changeDate(chat.getDate()));
 
                 if(chat.getPic_url()!= null && !chat.getPic_url().equals("")){
                     Uri uri = Uri.parse(chat.getPic_url());
@@ -412,10 +391,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
 
             chatVideoviewholder.bind(position,mDataSet.get(position),listener);
-        }
-
-
-        else if (chat.getType().equals("gif")) {
+        } else if (chat.getType().equals("gif")) {
             final Chatimageviewholder chatimageholder = (Chatimageviewholder) holder;
             // check if the message is from sender or receiver
             if (chat.getSender_id().equals(myID)) {
@@ -431,11 +407,11 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             // means message send with in 1 min will show as a group
             if (position != 0) {
                 ChatModel chat2 = mDataSet.get(position - 1);
-                if (chat2.getTimestamp().substring(14, 16).equals(chat.getTimestamp().substring(14, 16))) {
+                if (chat2.getDate().substring(14, 16).equals(chat.getDate().substring(14, 16))) {
                     chatimageholder.datetxt.setVisibility(View.GONE);
                 } else {
                     chatimageholder.datetxt.setVisibility(View.VISIBLE);
-                    chatimageholder.datetxt.setText(changeDate(chat.getTimestamp()));
+                    chatimageholder.datetxt.setText(changeDate(chat.getDate()));
                 }
 
                 chatimageholder.chatimage.setController(
@@ -446,22 +422,17 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             } else {
                 chatimageholder.datetxt.setVisibility(View.VISIBLE);
-                chatimageholder.datetxt.setText(changeDate(chat.getTimestamp()));
+                chatimageholder.datetxt.setText(changeDate(chat.getDate()));
 
                 chatimageholder.chatimage.setController(
                         Fresco.newDraweeControllerBuilder()
                                 .setUri(Uri.parse(Variables.GIF_FIRSTPART + chat.getPic_url() + Variables.GIF_SECONDPART))
                                 .setAutoPlayAnimations(true)
                                 .build());
-
-
             }
 
             chatimageholder.bind(mDataSet.get(position), position, listener, long_listener);
-        }
-
-
-        else if (chat.getType().equals("delete")) {
+        } else if (chat.getType().equals("delete")) {
             Alertviewholder alertviewholder = (Alertviewholder) holder;
             alertviewholder.message.setTextColor(context.getResources().getColor(R.color.delete_message_text));
             alertviewholder.message.setBackground(context.getResources().getDrawable(R.drawable.d_round_gray_background_2));
@@ -470,37 +441,28 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             if (position != 0) {
                 ChatModel chat2 = mDataSet.get(position - 1);
-                if (chat2.getTimestamp().substring(11, 13).equals(chat.getTimestamp().substring(11, 13))) {
+                if (chat2.getDate().substring(11, 13).equals(chat.getDate().substring(11, 13))) {
                     alertviewholder.datetxt.setVisibility(View.GONE);
                 } else {
                     alertviewholder.datetxt.setVisibility(View.VISIBLE);
-                    alertviewholder.datetxt.setText(changeDate(chat.getTimestamp()));
+                    alertviewholder.datetxt.setText(changeDate(chat.getDate()));
                 }
-
             } else {
                 alertviewholder.datetxt.setVisibility(View.VISIBLE);
-                alertviewholder.datetxt.setText(changeDate(chat.getTimestamp()));
-
+                alertviewholder.datetxt.setText(changeDate(chat.getDate()));
             }
-
         }
-
-
     }
 
     @Override
     public int getItemViewType(int position) {
-
         if (mDataSet.get(position).sender_id.equals(myID)) {
-            return   mymessageviewtype(position);
+            return mymessageviewtype(position);
         }
         else {
-            return   othermessageviewtype(position);
+            return othermessageviewtype(position);
         }
-
     }
-
-
 
     public int mymessageviewtype(int position){
         switch (mDataSet.get(position).getType()){
@@ -522,10 +484,8 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 return my_profile_share;
             default:
                 return ALERT_MESSAGE;
-
         }
     }
-
 
     public int othermessageviewtype(int position){
 
@@ -550,14 +510,10 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 return ALERT_MESSAGE;
 
         }
-
     }
 
-
-
-    // change the date into (today ,yesterday and date)
+    // change the date into (today, yesterday and date)
     private String changeDate(String date) {
-
         try {
             long currenttime = System.currentTimeMillis();
             long databasedate = 0;
@@ -565,7 +521,6 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             try {
                 d = Variables.df.parse(date);
                 databasedate = d.getTime();
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -579,19 +534,17 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     return "Yesterday " + sdf.format(d);
             } else if (difference < 172800000) {
                 int chatday = Functions.parseInterger(date.substring(0, 2));
-                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a",Locale.ENGLISH);
+                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
                 if ((todayDay - chatday) == 1)
                     return "Yesterday " + sdf.format(d);
             }
 
-            SimpleDateFormat sdf = new SimpleDateFormat("MMM-dd-yyyy hh:mm a",Locale.ENGLISH);
+            SimpleDateFormat sdf = new SimpleDateFormat("MMM-dd-yyyy hh:mm a", Locale.ENGLISH);
             return sdf.format(d);
         } catch (Exception e) {
             return date;
         }
-
     }
-
 
     // change the date into (today ,yesterday and date)
     private String changeDateTime(String date) {
@@ -603,7 +556,6 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } catch (Exception e) {
             return date;
         }
-
     }
 
     // get the audio file duration that is store in our directory
@@ -624,6 +576,4 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
         return null;
     }
-
-
 }
