@@ -157,4 +157,8 @@ public class ApiLinks {
     public static final String showFeaturedHashtags = API_BASE_URL+"showFeaturedHashtags";
 
     public static final String showCountries = API_BASE_URL+"showCountries";
+
+    public static final String generateShareLink = API_BASE_URL+"generateShareLink";
+
+    public static final String showShareLink = API_BASE_URL+"showShareLink";
 }

@@ -204,10 +204,10 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         final TextView tvMessage,tvDone;
-        tvDone=dialog.findViewById(R.id.tvDone);
-        tvMessage=dialog.findViewById(R.id.tvMessage);
+        tvDone = dialog.findViewById(R.id.tvDone);
+        tvMessage = dialog.findViewById(R.id.tvMessage);
 
-        tvMessage.setText(username.getText()+" "+view.getContext().getString(R.string.received_a_total_of)+" "+totalLikes+" "+view.getContext().getString(R.string.likes_across_all_video));
+        tvMessage.setText(username.getText()+" "+getString(R.string.received_a_total_of)+" "+totalLikes+" "+view.getContext().getString(R.string.likes_across_all_video));
         tvDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

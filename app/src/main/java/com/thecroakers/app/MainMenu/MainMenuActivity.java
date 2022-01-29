@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.thecroakers.app.ActivitiesFragment.Chat.ChatA;
+import com.thecroakers.app.ActivitiesFragment.DiscoverF;
 import com.thecroakers.app.ActivitiesFragment.Profile.ProfileA;
 import com.thecroakers.app.ActivitiesFragment.Profile.Setting.NoInternetA;
 import com.thecroakers.app.ActivitiesFragment.WatchVideosA;
@@ -43,6 +44,7 @@ import com.thecroakers.app.SimpleClasses.PermissionUtils;
 import com.thecroakers.app.SimpleClasses.Variables;
 import com.rilixtech.widget.countrycodepicker.CountryCodePicker;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -99,9 +101,45 @@ public class MainMenuActivity extends AppCompatActivity {
         try {
             Uri uri = intent.getData();
             String linkUri = ""+uri;
-            String userId = "";
-            String videoId = "";
-            String profileURL = Variables.http+"://"+getString(R.string.share_profile_domain_second)+getString(R.string.share_profile_endpoint_second);
+            //String userId = "";
+            //String videoId = "";
+            String link = linkUri.replaceAll(Constants.BASE_URL, "");
+
+            JSONObject parameters = new JSONObject();
+            try {
+                parameters.put("link", link);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            VolleyRequest.JsonPostRequest(MainMenuActivity.this, ApiLinks.showShareLink, parameters, Functions.getHeaders(this), new Callback() {
+                @Override
+                public void onResponce(String resp) {
+                    Functions.checkStatus(MainMenuActivity.this, resp);
+                    try {
+                        JSONObject jsonObject = new JSONObject(resp);
+                        String code = jsonObject.optString("code");
+                        if (code.equals("200")) {
+                            JSONObject shareLink = jsonObject.getJSONObject("msg");
+
+                            String type = shareLink.optString("type");
+                            String entity_id = shareLink.optString("entity_id");
+
+                            if (type.equals("user")) {
+                                OpenProfileScreen(entity_id);
+                            } else if (type.equals("video")) {
+                                openWatchVideo(entity_id);
+                            }
+                        } else {
+                            Functions.showToast(context, jsonObject.optString("msg"));
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            /*String profileURL = Variables.http+"://"+getString(R.string.share_profile_domain_second)+getString(R.string.share_profile_endpoint_second);
             if (linkUri.contains(profileURL)) {
                 String[] parts = linkUri.split(profileURL);
                 userId = parts[1];
@@ -111,7 +149,7 @@ public class MainMenuActivity extends AppCompatActivity {
                 String[] parts = linkUri.split(Constants.BASE_URL);
                 videoId = parts[1].substring(4, (parts[1].length()-3));
                 openWatchVideo(videoId);
-            }
+            }*/
         }
         catch (Exception e) {
             Log.d(Constants.tag,"Exception Link : "+e);

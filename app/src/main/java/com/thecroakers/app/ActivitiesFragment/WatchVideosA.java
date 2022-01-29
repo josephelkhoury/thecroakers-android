@@ -46,22 +46,22 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
 
     Context context;
     ArrayList<HomeModel> dataList=new ArrayList<>();
-    SwipeRefreshLayout swiperefresh;
+    SwipeRefreshLayout swipeRefresh;
     int pageCount = 0;
-    boolean isApiRuning = false;
+    boolean isApiRunning = false;
     Handler handler;
     RelativeLayout uploadVideoLayout;
     ImageView uploadingThumb;
     UploadingVideoBroadCast mReceiver;
     String whereFrom = "";
     String userId = "";
-    int currentPositon = 0;
+    int currentPosition = 0;
 
     private static ProgressBar progressBar;
     private static TextView tvProgressCount;
 
     //this is use for use same class functionality from different activities
-    int fragmentConainerId;
+    int fragmentContainerId;
 
     @Override
     public void onResponse(Bundle bundle) {
@@ -95,7 +95,7 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
         Functions.setLocale(Functions.getSharedPreference(WatchVideosA.this).getString(Variables.APP_LANGUAGE_CODE,Variables.DEFAULT_LANGUAGE_CODE)
                 , this, WatchVideosA.class,false);
         setContentView(R.layout.activity_watch_videos);
-        fragmentConainerId = R.id.watchVideo_F;
+        fragmentContainerId = R.id.watchVideo_F;
         context = WatchVideosA.this;
 
         tvProgressCount = findViewById(R.id.tvProgressCount);
@@ -103,7 +103,7 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
         whereFrom = getIntent().getStringExtra("whereFrom");
         userId = getIntent().getStringExtra("userId");
         pageCount = getIntent().getIntExtra("pageCount",0);
-        currentPositon = getIntent().getIntExtra("position",0);
+        currentPosition = getIntent().getIntExtra("position",0);
         if (whereFrom.equalsIgnoreCase("IdVideo")) {
             dataList = new ArrayList<>();
             callApiForSingleVideos(getIntent().getStringExtra("video_id"));
@@ -113,11 +113,11 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
 
         handler = new Handler(Looper.getMainLooper());
         findViewById(R.id.goBack).setOnClickListener(this);
-        swiperefresh = findViewById(R.id.swiperefresh);
-        swiperefresh.setProgressViewOffset(false, 0, 200);
+        swipeRefresh = findViewById(R.id.swiperefresh);
+        swipeRefresh.setProgressViewOffset(false, 0, 200);
 
-        swiperefresh.setColorSchemeResources(R.color.black);
-        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        swipeRefresh.setColorSchemeResources(R.color.black);
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 pageCount = 0;
@@ -144,12 +144,12 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
 
     private void setUpPreviousScreenData() {
         for (HomeModel item : dataList) {
-            pagerSatetAdapter.addFragment(new VideosListF(false, item, menuPager, this,fragmentConainerId), "");
+            pagerStatAdapter.addFragment(new VideosListF(false, item, menuPager, this,fragmentContainerId), "");
         }
-        pagerSatetAdapter.refreshStateSet(false);
-        pagerSatetAdapter.notifyDataSetChanged();
+        pagerStatAdapter.refreshStateSet(false);
+        pagerStatAdapter.notifyDataSetChanged();
 
-        menuPager.setCurrentItem(currentPositon,true);
+        menuPager.setCurrentItem(currentPosition,true);
     }
 
     public static FragmentCallBack uploadingCallback=new FragmentCallBack() {
@@ -167,7 +167,7 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
 
     // set the fragments for all the videos list
     protected VerticalViewPager menuPager;
-    ViewPagerStatAdapter pagerSatetAdapter;
+    ViewPagerStatAdapter pagerStatAdapter;
 
     public void setTabs(boolean isListSet) {
 
@@ -175,9 +175,9 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
             dataList = new ArrayList<>();
         }
 
-        pagerSatetAdapter = new ViewPagerStatAdapter(getSupportFragmentManager(), menuPager, false, this);
+        pagerStatAdapter = new ViewPagerStatAdapter(getSupportFragmentManager(), menuPager, false, this);
         menuPager =  findViewById(R.id.viewpager);
-        menuPager.setAdapter(pagerSatetAdapter);
+        menuPager.setAdapter(pagerStatAdapter);
         menuPager.setOffscreenPageLimit(1);
         menuPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -186,13 +186,13 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onPageSelected(int position) {
-                if (position==0) {
-                    swiperefresh.setEnabled(true);
+                if (position == 0) {
+                    swipeRefresh.setEnabled(true);
                 } else {
-                    swiperefresh.setEnabled(false);
+                    swipeRefresh.setEnabled(false);
                 }
-                if (position == 0 && (pagerSatetAdapter !=null && pagerSatetAdapter.getCount()>0)) {
-                    VideosListF fragment = (VideosListF) pagerSatetAdapter.getItem(menuPager.getCurrentItem());
+                if (position == 0 && (pagerStatAdapter !=null && pagerStatAdapter.getCount()>0)) {
+                    VideosListF fragment = (VideosListF) pagerStatAdapter.getItem(menuPager.getCurrentItem());
                     fragment.setData();
                     new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                         @Override
@@ -205,7 +205,7 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
                 Log.d(Constants.tag,"Check : check "+(position+1)+"    "+(dataList.size()-1)+"      "+(dataList.size() > 2 && (dataList.size() - 1) == position));
                 Log.d(Constants.tag,"Test : Test "+(position+1)+"    "+(dataList.size()-5)+"      "+(dataList.size() > 5 && (dataList.size() - 5) == (position+1)));
                 if (dataList.size() > 5 && (dataList.size() -5) == (position+1)) {
-                    if(!isApiRuning) {
+                    if (!isApiRunning) {
                         pageCount++;
                         callVideoApi();
                     }
@@ -228,7 +228,7 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
             VolleyRequest.JsonPostRequest(this, ApiLinks.showVideoDetail, parameters, Functions.getHeaders(this), new Callback() {
                 @Override
                 public void onResponce(String resp) {
-                    swiperefresh.setRefreshing(false);
+                    swipeRefresh.setRefreshing(false);
                     singleVideoParseData(resp);
                 }
             });
@@ -267,20 +267,20 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
                 }
 
                 for (HomeModel item : temp_list) {
-                    pagerSatetAdapter.addFragment(new VideosListF(false, item, menuPager, this,fragmentConainerId), "");
+                    pagerStatAdapter.addFragment(new VideosListF(false, item, menuPager, this,fragmentContainerId), "");
                 }
-                pagerSatetAdapter.refreshStateSet(false);
-                pagerSatetAdapter.notifyDataSetChanged();
+                pagerStatAdapter.refreshStateSet(false);
+                pagerStatAdapter.notifyDataSetChanged();
             }
 
         } catch (Exception e) {
             e.printStackTrace();
 
-            if (pageCount >0)
+            if (pageCount > 0)
                 pageCount--;
 
         } finally {
-            isApiRuning = false;
+            isApiRunning = false;
         }
 
     }
@@ -296,7 +296,7 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
     }
 
     public void callVideoApi() {
-        isApiRuning = true;
+        isApiRunning = true;
 
         if (whereFrom.equalsIgnoreCase("userVideo")) {
             callApiForUserVideos();
@@ -330,7 +330,7 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
         VolleyRequest.JsonPostRequest(WatchVideosA.this, ApiLinks.showVideosAgainstSound, parameters,Functions.getHeaders(this), new Callback() {
             @Override
             public void onResponce(String resp) {
-                swiperefresh.setRefreshing(false);
+                swipeRefresh.setRefreshing(false);
                 parseSoundVideoData(resp);
             }
         });
@@ -368,10 +368,10 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
                 dataList.addAll(temp_list);
 
                 for (HomeModel item : temp_list) {
-                    pagerSatetAdapter.addFragment(new VideosListF(false, item, menuPager,this,fragmentConainerId), "");
+                    pagerStatAdapter.addFragment(new VideosListF(false, item, menuPager,this,fragmentContainerId), "");
                 }
-                pagerSatetAdapter.refreshStateSet(false);
-                pagerSatetAdapter.notifyDataSetChanged();
+                pagerStatAdapter.refreshStateSet(false);
+                pagerStatAdapter.notifyDataSetChanged();
             }
 
         } catch (Exception e) {
@@ -381,9 +381,8 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
                 pageCount--;
 
         } finally {
-            isApiRuning = false;
+            isApiRunning = false;
         }
-
     }
 
     // api for get the videos list from server
@@ -400,7 +399,7 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
         VolleyRequest.JsonPostRequest(WatchVideosA.this, ApiLinks.showVideosAgainstHashtag, parameters,Functions.getHeaders(this), new Callback() {
             @Override
             public void onResponce(String resp) {
-                swiperefresh.setRefreshing(false);
+                swipeRefresh.setRefreshing(false);
                 parseHashtagVideoData(resp);
             }
         });
@@ -436,10 +435,10 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
                 dataList.addAll(temp_list);
 
                 for (HomeModel item : temp_list) {
-                    pagerSatetAdapter.addFragment(new VideosListF(false, item, menuPager, this,fragmentConainerId), "");
+                    pagerStatAdapter.addFragment(new VideosListF(false, item, menuPager, this,fragmentContainerId), "");
                 }
-                pagerSatetAdapter.refreshStateSet(false);
-                pagerSatetAdapter.notifyDataSetChanged();
+                pagerStatAdapter.refreshStateSet(false);
+                pagerStatAdapter.notifyDataSetChanged();
             }
 
         } catch (Exception e) {
@@ -447,7 +446,7 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
             if (pageCount > 0)
                 pageCount--;
         } finally {
-            isApiRuning = false;
+            isApiRunning = false;
         }
     }
 
@@ -483,26 +482,25 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
                 dataList.addAll(temp_list);
 
                 for (HomeModel item : temp_list) {
-                    pagerSatetAdapter.addFragment(new VideosListF(false, item, menuPager,this,fragmentConainerId), "");
+                    pagerStatAdapter.addFragment(new VideosListF(false, item, menuPager,this,fragmentContainerId), "");
                 }
-                pagerSatetAdapter.refreshStateSet(false);
-                pagerSatetAdapter.notifyDataSetChanged();
+                pagerStatAdapter.refreshStateSet(false);
+                pagerStatAdapter.notifyDataSetChanged();
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             if (pageCount >0)
                 pageCount--;
 
         } finally {
-            isApiRuning = false;
+            isApiRunning = false;
         }
     }
 
-    public void parseLikedVideoData(String responce) {
+    public void parseLikedVideoData(String response) {
 
         try {
-            JSONObject jsonObject = new JSONObject(responce);
+            JSONObject jsonObject = new JSONObject(response);
             String code = jsonObject.optString("code");
             if (code.equals("200")) {
                 JSONArray msgArray = jsonObject.getJSONArray("msg");
@@ -529,10 +527,10 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
                 dataList.addAll(temp_list);
 
                 for (HomeModel item : temp_list) {
-                    pagerSatetAdapter.addFragment(new VideosListF(false, item, menuPager,this,fragmentConainerId), "");
+                    pagerStatAdapter.addFragment(new VideosListF(false, item, menuPager,this,fragmentContainerId), "");
                 }
-                pagerSatetAdapter.refreshStateSet(false);
-                pagerSatetAdapter.notifyDataSetChanged();
+                pagerStatAdapter.refreshStateSet(false);
+                pagerStatAdapter.notifyDataSetChanged();
             }
 
         } catch (Exception e) {
@@ -542,7 +540,7 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
                 pageCount--;
 
         } finally {
-            isApiRuning = false;
+            isApiRunning = false;
         }
 
     }
@@ -580,10 +578,10 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
                 dataList.addAll(temp_list);
 
                 for (HomeModel item : temp_list) {
-                    pagerSatetAdapter.addFragment(new VideosListF(false, item, menuPager,this,fragmentConainerId), "");
+                    pagerStatAdapter.addFragment(new VideosListF(false, item, menuPager,this,fragmentContainerId), "");
                 }
-                pagerSatetAdapter.refreshStateSet(false);
-                pagerSatetAdapter.notifyDataSetChanged();
+                pagerStatAdapter.refreshStateSet(false);
+                pagerStatAdapter.notifyDataSetChanged();
             }
 
         } catch (Exception e) {
@@ -593,7 +591,7 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
                 pageCount--;
 
         } finally {
-            isApiRuning = false;
+            isApiRunning = false;
         }
     }
 
@@ -615,7 +613,7 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
         VolleyRequest.JsonPostRequest(WatchVideosA.this, ApiLinks.showVideosAgainstUserID, parameters,Functions.getHeaders(this), new Callback() {
             @Override
             public void onResponce(String resp) {
-                swiperefresh.setRefreshing(false);
+                swipeRefresh.setRefreshing(false);
                 parseMyVideoData(resp);
             }
         });
@@ -634,7 +632,7 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
         VolleyRequest.JsonPostRequest(WatchVideosA.this, ApiLinks.showUserLikedVideos, parameters,Functions.getHeaders(this), new Callback() {
             @Override
             public void onResponce(String resp) {
-                swiperefresh.setRefreshing(false);
+                swipeRefresh.setRefreshing(false);
                 parseLikedVideoData(resp);
             }
         });
@@ -653,7 +651,7 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
         VolleyRequest.JsonPostRequest(WatchVideosA.this, ApiLinks.showVideosAgainstUserID, parameters,Functions.getHeaders(this), new Callback() {
             @Override
             public void onResponce(String resp) {
-                swiperefresh.setRefreshing(false);
+                swipeRefresh.setRefreshing(false);
                 parsePrivateVideoData(resp);
             }
         });
@@ -674,8 +672,8 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onStart() {
         super.onStart();
-        if (pagerSatetAdapter != null && pagerSatetAdapter.getCount() > 0) {
-            VideosListF fragment = (VideosListF) pagerSatetAdapter.getItem(menuPager.getCurrentItem());
+        if (pagerStatAdapter != null && pagerStatAdapter.getCount() > 0) {
+            VideosListF fragment = (VideosListF) pagerStatAdapter.getItem(menuPager.getCurrentItem());
             fragment.mainMenuVisibility(true);
         }
     }
@@ -716,9 +714,9 @@ public class WatchVideosA extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onPause() {
         super.onPause();
-        if (pagerSatetAdapter !=null && pagerSatetAdapter.getCount()>0) {
+        if (pagerStatAdapter !=null && pagerStatAdapter.getCount() > 0) {
 
-            VideosListF fragment = (VideosListF) pagerSatetAdapter.getItem(menuPager.getCurrentItem());
+            VideosListF fragment = (VideosListF) pagerStatAdapter.getItem(menuPager.getCurrentItem());
             fragment.mainMenuVisibility(false);
         }
         Functions.unRegisterConnectivity(getApplicationContext());

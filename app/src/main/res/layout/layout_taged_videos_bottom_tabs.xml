@@ -47,7 +47,6 @@
                 android:theme="@style/Progressbar_style"
                 android:layout_centerHorizontal="true"/>
 
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -62,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:text=""
+                    android:text="@string/whoops"
                     android:gravity="center"
                     android:textColor="@color/black"
                     android:id="@+id/tvTitleNoData"

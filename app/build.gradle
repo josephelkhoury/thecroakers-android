@@ -8,6 +8,14 @@ enigma.enabled = false
 enigma.injectFakeKeys = false
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('/Users/josephelkhoury/.android/debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+    }
     compileSdkVersion 30
     buildToolsVersion "18.1.1"
 

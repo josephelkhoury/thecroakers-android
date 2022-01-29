@@ -185,12 +185,7 @@
 
                         </LinearLayout>
 
-
-
-
-
                     </LinearLayout>
-
 
                 </androidx.appcompat.widget.Toolbar>
 
@@ -202,7 +197,6 @@
 
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
 
     </RelativeLayout>
 

@@ -48,6 +48,7 @@ public class TagedVideosA extends AppCompatActivity implements View.OnClickListe
     TextView tagTxtView, tagTitleTxt, videoCountTxt;
     ProgressBar progressBar;
     Toolbar toolbarLayout;
+    TextView tvMessageNoData;
 
     TextView favTxt;
     ImageView favBtn;
@@ -72,11 +73,13 @@ public class TagedVideosA extends AppCompatActivity implements View.OnClickListe
         refreshLayout = findViewById(R.id.refreshLayout);
         tagTxtView = findViewById(R.id.tag_txt_view);
         tagTitleTxt = findViewById(R.id.tag_title_txt);
+        tvMessageNoData = findViewById(R.id.tvMessageNoData);
 
         if (main_video_id != null) {
             tagTitleTxt.setText(R.string.croaks);
             toolbarLayout = findViewById(R.id.toolbar_layout);
             toolbarLayout.setVisibility(View.GONE);
+            tvMessageNoData.setText(context.getString(R.string.no_croaks));
         } else {
             tagTitleTxt.setText(tagTxt);
             tagTxtView.setText(tagTxt);
@@ -86,6 +89,7 @@ public class TagedVideosA extends AppCompatActivity implements View.OnClickListe
             favBtn = findViewById(R.id.fav_btn);
             favTxt = findViewById(R.id.fav_txt);
             findViewById(R.id.fav_layout).setOnClickListener(this::onClick);
+            tvMessageNoData.setText(context.getString(R.string.no_videos));
         }
 
         loadMoreProgress = findViewById(R.id.load_more_progress);

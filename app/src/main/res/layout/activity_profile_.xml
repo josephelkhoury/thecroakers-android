@@ -69,11 +69,12 @@
                 android:id="@+id/notification_btn"
                 android:layout_width="@dimen/_22sdp"
                 android:layout_height="@dimen/_22sdp"
-                android:layout_toStartOf="@+id/message_btn"
                 android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/message_btn"
                 android:background="@color/transparent"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_normal_notification" />
+                android:src="@drawable/ic_normal_notification"
+                android:visibility="gone"/>
 
 
             <ImageButton

@@ -88,7 +88,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
     LinearLayout tabSuggestion,tabAllSuggestion,tabLink,tabAccount;
     LinearLayout tabFollowOtherUser,tabFollowSelfUser;
     LikedVideoF likedFragment;
-    String notificationType="1";
+    String notificationType = "1";
 
     DatabaseReference rootref;
 
@@ -334,8 +334,8 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         final TextView tvMessage,tvDone;
-        tvDone=dialog.findViewById(R.id.tvDone);
-        tvMessage=dialog.findViewById(R.id.tvMessage);
+        tvDone = dialog.findViewById(R.id.tvDone);
+        tvMessage = dialog.findViewById(R.id.tvMessage);
 
         tvMessage.setText(username.getText()+" "+getString(R.string.received_a_total_of)+" "+totalLikes+" "+getString(R.string.likes_across_all_video));
         tvDone.setOnClickListener(new View.OnClickListener() {
@@ -499,7 +499,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
 
     private void setupProfileIcon() {
         if (userId.equalsIgnoreCase(Functions.getSharedPreference(ProfileA.this).getString(Variables.U_ID,"0"))) {
-            notificationBtn.setVisibility(View.GONE);
+            //notificationBtn.setVisibility(View.GONE);
             messageBtn.setVisibility(View.GONE);
             tabFollowSelfUser.setVisibility(View.VISIBLE);
             tabFollowOtherUser.setVisibility(View.GONE);
@@ -507,7 +507,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
             tabAccount=findViewById(R.id.tabAccount);
             tabAccount.setOnClickListener(this);
         } else {
-            notificationBtn.setVisibility(View.VISIBLE);
+            //notificationBtn.setVisibility(View.VISIBLE);
             messageBtn.setVisibility(View.VISIBLE);
             tabFollowSelfUser.setVisibility(View.GONE);
             tabFollowOtherUser.setVisibility(View.VISIBLE);
@@ -524,10 +524,10 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
         rvSuggestion.setLayoutManager(layoutManager);
         adapterSuggestion = new SuggestionAdapter(suggestionList, new SuggestionAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int postion, FollowingModel item) {
+            public void onItemClick(View view, int position, FollowingModel item) {
                 if (view.getId() == R.id.tvFollowBtn) {
                     if (Functions.checkLoginUser(ProfileA.this))
-                        followSuggestedUser(item.fb_id,postion);
+                        followSuggestedUser(item.fb_id,position);
                 } else if (view.getId() == R.id.user_image) {
                     Intent intent = new Intent(view.getContext(), ProfileA.class);
                     intent.putExtra("user_id", item.fb_id);
@@ -535,8 +535,8 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
                     intent.putExtra("user_pic", item.profile_pic);
                     startActivity(intent);
                     overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-                } else if (view.getId()==R.id.ivCross) {
-                    suggestionList.remove(postion);
+                } else if (view.getId() == R.id.ivCross) {
+                    suggestionList.remove(position);
                     adapterSuggestion.notifyDataSetChanged();
                 }
             }
@@ -771,17 +771,17 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
                 privacyPolicySetting_model.setVideo_comment("" + privacy_policy_setting.optString("video_comment"));
 
                 if (privacyPolicySetting_model.getLiked_videos().toLowerCase().equalsIgnoreCase("only_me")) {
-                    isLikeVideoShow=false;
+                    isLikeVideoShow = false;
                 } else {
-                    isLikeVideoShow=true;
+                    isLikeVideoShow = true;
                 }
                 likedFragment.updateLikeVideoState(isLikeVideoShow);
 
                 if (Functions.isShowContentPrivacy(context, privacyPolicySetting_model.getDirect_message(),
                         userDetailModel.getButton().toLowerCase().equalsIgnoreCase("friends"))) {
-                    isDirectMessage=true;
+                    isDirectMessage = true;
                 } else {
-                    isDirectMessage=false;
+                    isDirectMessage = false;
                 }
 
                 String follow_status = userDetailModel.getButton().toLowerCase();
@@ -830,7 +830,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
     }
 
     private void shareProfile() {
-        boolean fromSetting=false;
+        boolean fromSetting = false;
         if (userId.equalsIgnoreCase(Functions.getSharedPreference(ProfileA.this).getString(Variables.U_ID,""))) {
             fromSetting=true;
         } else {

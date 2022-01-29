@@ -523,7 +523,7 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
 
                 Collections.shuffle(temp_list);
 
-                if(dataList.isEmpty()) {
+                if (dataList.isEmpty()) {
                     setTabs(false);
                 }
                 dataList.addAll(temp_list);
