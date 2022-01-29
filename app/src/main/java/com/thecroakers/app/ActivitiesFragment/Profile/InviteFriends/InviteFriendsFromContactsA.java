@@ -547,7 +547,6 @@ public class InviteFriendsFromContactsA extends AppCompatActivity implements Vie
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-
             }
 
             @Override

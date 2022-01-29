@@ -45,7 +45,7 @@ public class HashTagFavouriteAdapter extends RecyclerView.Adapter<HashTagFavouri
 
     @Override
     public void onBindViewHolder(final CustomViewHolder holder, final int i) {
-        holder.setIsRecyclable(false);
+        holder.setIsRecyclable(true);
         HashTagModel item = datalist.get(i);
         holder.nameTxt.setText(item.name);
         holder.viewsTxt.setText(Functions.getSuffix(item.videos_count)+" "+(holder.itemView.getContext().getString(R.string.views)).toLowerCase());

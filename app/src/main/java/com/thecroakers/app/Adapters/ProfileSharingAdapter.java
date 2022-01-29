@@ -45,16 +45,11 @@ public class ProfileSharingAdapter extends RecyclerView.Adapter<ProfileSharingAd
     @Override
     public void onBindViewHolder(final CustomViewHolder holder, final int i) {
         final ShareAppModel item = dataList.get(i);
-        holder.setIsRecyclable(false);
+        holder.setIsRecyclable(true);
 
         try {
-
-
-
             holder.name_txt.setText(item.getName());
             holder.image.setImageDrawable(ContextCompat.getDrawable(holder.itemView.getContext(),item.getIcon()));
-
-
         } catch (Exception e) {
 
         }

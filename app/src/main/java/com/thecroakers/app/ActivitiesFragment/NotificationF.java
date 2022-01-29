@@ -187,13 +187,12 @@ public class NotificationF extends RootFragment implements View.OnClickListener 
         }
     }
 
-
     // get the all notification from the server against the profile id
     public void callApi() {
         if (isApiCall) {
             return;
         }
-        isApiCall=true;
+        isApiCall = true;
 
         if (datalist == null)
             datalist = new ArrayList<>();
@@ -227,8 +226,12 @@ public class NotificationF extends RootFragment implements View.OnClickListener 
             JSONObject jsonObject = new JSONObject(resp);
             String code = jsonObject.optString("code");
             if (code.equals("200")) {
+                if (pageCount == 0) {
+                    datalist.clear();
+                    adapter.notifyDataSetChanged();
+                }
+
                 JSONArray msg = jsonObject.getJSONArray("msg");
-                ArrayList<NotificationModel> temp_list = new ArrayList<>();
 
                 for (int i = 0; i < msg.length(); i++) {
                     JSONObject data = msg.getJSONObject(i);
@@ -266,18 +269,12 @@ public class NotificationF extends RootFragment implements View.OnClickListener 
                     item.string = notification.optString("string");
                     item.created = notification.optString("created");
 
-                    temp_list.add(item);
+                    datalist.add(item);
+                    adapter.notifyItemInserted(datalist.size());
                 }
-
-                if (pageCount == 0) {
-                    datalist.clear();
-                    datalist.addAll(temp_list);
-                } else {
-                    datalist.addAll(temp_list);
-                }
-
+            } else if (pageCount == 0) {
+                datalist.clear();
                 adapter.notifyDataSetChanged();
-
             }
 
             if (datalist.isEmpty()) {

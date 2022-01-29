@@ -55,7 +55,7 @@ public class ReportTypeAdapter extends RecyclerView.Adapter<ReportTypeAdapter.Cu
     @Override
     public void onBindViewHolder(final CustomViewHolder holder, final int i) {
         ReportTypeModel item = dataList.get(i);
-        holder.setIsRecyclable(false);
+        holder.setIsRecyclable(true);
 
         holder.bind(i, item, listener);
         holder.reportName.setText(item.title);

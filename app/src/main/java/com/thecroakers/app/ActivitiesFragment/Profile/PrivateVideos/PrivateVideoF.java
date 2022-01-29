@@ -220,16 +220,18 @@ public class PrivateVideoF extends Fragment {
     }
 
     // parse the video list data
-    public void parseData(String responce) {
-
+    public void parseData(String response) {
         try {
-            JSONObject jsonObject = new JSONObject(responce);
+            if (pageCount == 0) {
+                dataList.clear();
+                adapter.notifyDataSetChanged();
+            }
+
+            JSONObject jsonObject = new JSONObject(response);
             String code = jsonObject.optString("code");
             if (code.equals("200")) {
                 JSONObject msg = jsonObject.optJSONObject("msg");
                 JSONArray public_array = msg.optJSONArray("private");
-
-                ArrayList<HomeModel> temp_list = new ArrayList<>();
 
                 for (int i = 0; i < public_array.length(); i++) {
                     JSONObject itemdata = public_array.optJSONObject(i);
@@ -244,28 +246,12 @@ public class PrivateVideoF extends Fragment {
 
                     HomeModel item = Functions.parseVideoData(user, sound, video, topic, country, userPrivacy, userPushNotification);
 
-
-                    temp_list.add(item);
+                    dataList.add(item);
+                    adapter.notifyItemInserted(dataList.size());
                 }
-
-                if (pageCount == 0) {
-                    dataList.clear();
-                    dataList.addAll(temp_list);
-                } else {
-                    dataList.addAll(temp_list);
-                }
-
+            } else if (pageCount == 0) {
+                dataList.clear();
                 adapter.notifyDataSetChanged();
-            }
-            else
-            {
-                if (pageCount==0)
-                {
-                    pageCount=0;
-                    dataList.clear();
-                    adapter.notifyDataSetChanged();
-                }
-
             }
 
             if (dataList.isEmpty()) {

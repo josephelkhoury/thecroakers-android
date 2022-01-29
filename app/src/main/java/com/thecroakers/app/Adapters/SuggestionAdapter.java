@@ -73,15 +73,12 @@ public class SuggestionAdapter extends RecyclerView.Adapter<SuggestionAdapter.Cu
                 listener.onItemClick(v, pos, item);
 
             });
-
         }
-
-
     }
 
     @Override
     public void onBindViewHolder(final CustomViewHolder holder, final int i) {
-        holder.setIsRecyclable(false);
+        holder.setIsRecyclable(true);
 
         FollowingModel item = datalist.get(i);
 

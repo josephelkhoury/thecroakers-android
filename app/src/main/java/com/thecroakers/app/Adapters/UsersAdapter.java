@@ -46,10 +46,9 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.CustomViewHo
         return datalist.size();
     }
 
-
     @Override
     public void onBindViewHolder(final UsersAdapter.CustomViewHolder holder, final int i) {
-        holder.setIsRecyclable(false);
+        holder.setIsRecyclable(true);
         UsersModel item = (UsersModel) datalist.get(i);
 
         if (item.profile_pic != null && !item.profile_pic.equals("")) {

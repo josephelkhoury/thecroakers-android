@@ -51,7 +51,7 @@ public class SoundListAdapter extends RecyclerView.Adapter<SoundListAdapter.Cust
 
     @Override
     public void onBindViewHolder(final SoundListAdapter.CustomViewHolder holder, final int i) {
-        holder.setIsRecyclable(false);
+        holder.setIsRecyclable(true);
 
         SoundsModel item = (SoundsModel) datalist.get(i);
 

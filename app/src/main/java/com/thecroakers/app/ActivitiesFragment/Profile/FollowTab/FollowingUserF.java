@@ -363,21 +363,23 @@ public class FollowingUserF extends Fragment {
     }
 
     // parse the list of user that follow the profile
-    public void parseFollowingData(String responce) {
+    public void parseFollowingData(String response) {
 
         try {
-            JSONObject jsonObject = new JSONObject(responce);
+            JSONObject jsonObject = new JSONObject(response);
             String code = jsonObject.optString("code");
             if (code.equals("200")) {
-                JSONArray msgArray = jsonObject.getJSONArray("msg");
+                if (pageCount == 0) {
+                    datalist.clear();
+                    adapter.notifyDataSetChanged();
+                }
 
-                ArrayList<FollowingModel> temp_list = new ArrayList<>();
+                JSONArray msgArray = jsonObject.getJSONArray("msg");
 
                 for (int i = 0; i < msgArray.length(); i++) {
 
                     JSONObject object = msgArray.optJSONObject(i);
                     JSONObject followingList = object.optJSONObject("FollowingList");
-
 
                     FollowingModel item = new FollowingModel();
                     item.fb_id = followingList.optString("id");
@@ -408,16 +410,11 @@ public class FollowingUserF extends Fragment {
                     }
                     item.notificationType=followingList.optString("notification","1");
 
-                    temp_list.add(item);
+                    datalist.add(item);
+                    adapter.notifyItemInserted(datalist.size());
                 }
-
-                if (pageCount == 0) {
-                    datalist.clear();
-                    datalist.addAll(temp_list);
-                } else {
-                    datalist.addAll(temp_list);
-                }
-
+            } else if (pageCount == 0) {
+                datalist.clear();
                 adapter.notifyDataSetChanged();
             }
 

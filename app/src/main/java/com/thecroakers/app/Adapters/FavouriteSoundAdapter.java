@@ -57,7 +57,7 @@ public class FavouriteSoundAdapter extends RecyclerView.Adapter<FavouriteSoundAd
 
     @Override
     public void onBindViewHolder(final FavouriteSoundAdapter.CustomViewHolder holder, final int i) {
-        holder.setIsRecyclable(false);
+        holder.setIsRecyclable(true);
 
         SoundsModel item = datalist.get(i);
         try {

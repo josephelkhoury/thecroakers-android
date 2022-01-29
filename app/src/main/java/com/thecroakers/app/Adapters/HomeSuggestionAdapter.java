@@ -78,7 +78,7 @@ public class HomeSuggestionAdapter extends RecyclerView.Adapter<HomeSuggestionAd
 
     @Override
     public void onBindViewHolder(final CustomViewHolder holder, final int i) {
-        holder.setIsRecyclable(false);
+        holder.setIsRecyclable(true);
 
         FollowingModel item = datalist.get(i);
 

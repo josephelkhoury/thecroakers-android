@@ -56,10 +56,9 @@ public class VideoSharingAppsAdapter extends RecyclerView.Adapter<VideoSharingAp
     @Override
     public void onBindViewHolder(final CustomViewHolder holder, final int i) {
         final ResolveInfo item = dataList.get(i);
-        holder.setIsRecyclable(false);
+        holder.setIsRecyclable(true);
 
         try {
-
             holder.bind(i, item, listener);
 
             holder.name_txt.setText(item.loadLabel(context.getPackageManager()));

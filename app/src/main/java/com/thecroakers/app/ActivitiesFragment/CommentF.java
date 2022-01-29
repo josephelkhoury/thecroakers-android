@@ -400,11 +400,14 @@ public class CommentF extends RootFragment {
                 Functions.checkStatus(getActivity(),resp);
                 noDataLoader.setVisibility(View.GONE);
 
-                ArrayList<CommentModel> temp_list = new ArrayList<>();
                 try {
                     JSONObject response = new JSONObject(resp);
                     String code = response.optString("code");
                     if (code.equals("200")) {
+                        if (pageCount == 0) {
+                            dataList.clear();
+                            adapter.notifyDataSetChanged();
+                        }
 
                         JSONArray msgArray = response.getJSONArray("msg");
 
@@ -412,7 +415,7 @@ public class CommentF extends RootFragment {
                             JSONObject itemdata = msgArray.optJSONObject(i);
 
                             JSONObject videoComment = itemdata.optJSONObject("VideoComment");
-                            UserModel userDetailModel= DataParsing.getUserDataModel(itemdata.optJSONObject("User"));
+                            UserModel userDetailModel = DataParsing.getUserDataModel(itemdata.optJSONObject("User"));
 
                             JSONArray videoCommentReply = itemdata.optJSONArray("VideoCommentReply");
 
@@ -456,16 +459,11 @@ public class CommentF extends RootFragment {
                             item.comment_id = videoComment.optString("id");
                             item.created = videoComment.optString("created");
 
-                            temp_list.add(item);
+                            dataList.add(item);
+                            adapter.notifyItemInserted(dataList.size());
                         }
-
-                        if (pageCount == 0) {
-                            dataList.clear();
-                            dataList.addAll(temp_list);
-                        } else {
-                            dataList.addAll(temp_list);
-                        }
-
+                    } else if (pageCount == 0) {
+                        dataList.clear();
                         adapter.notifyDataSetChanged();
                     }
 

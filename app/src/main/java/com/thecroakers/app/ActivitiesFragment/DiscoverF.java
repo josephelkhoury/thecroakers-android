@@ -321,17 +321,17 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
     }
 
     public void parseData(String response) {
-
         try {
             JSONObject jsonObject = new JSONObject(response);
             String code = jsonObject.optString("code");
             if (code.equals("200")) {
-
-                ArrayList<DiscoverModel> temp_list = new ArrayList<>();
+                if (pageCount == 0) {
+                    datalist.clear();
+                    adapter.notifyDataSetChanged();
+                }
 
                 JSONArray msgArray = jsonObject.getJSONArray("msg");
                 for (int d = 0; d < msgArray.length(); d++) {
-
                     JSONObject discover_object = msgArray.optJSONObject(d);
                     JSONObject entity_obj;
                     String entity_name = "";
@@ -395,19 +395,12 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
                     discover_model.image = entity_img;
                     discover_model.arrayList = video_list;
 
-                    temp_list.add(discover_model);
+                    datalist.add(discover_model);
+                    adapter.notifyItemInserted(datalist.size());
                 }
-
-                if (pageCount == 0) {
-                    datalist.clear();
-                    datalist.addAll(temp_list);
-                } else {
-                    datalist.addAll(temp_list);
-                }
-
-                adapter.notifyDataSetChanged();
             } else if (code.equals("201") && pageCount == 0) {
                 datalist.clear();
+                adapter.notifyDataSetChanged();
             }
 
             if (datalist.isEmpty()) {

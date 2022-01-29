@@ -70,7 +70,6 @@ import io.paperdb.Paper;
 
 public class LoginA extends AppCompatActivity implements View.OnClickListener {
 
-
     FirebaseAuth mAuth;
     FirebaseUser firebaseUser;
     SharedPreferences sharedPreferences;
@@ -86,11 +85,11 @@ public class LoginA extends AppCompatActivity implements View.OnClickListener {
                 , this, LoginA.class,false);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        if (Build.VERSION.SDK_INT == 26) {
+        /*if (Build.VERSION.SDK_INT == 26) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
-        }
+        }*/
 
         getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
@@ -101,7 +100,7 @@ public class LoginA extends AppCompatActivity implements View.OnClickListener {
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
 
-        // if the user is already login trought facebook then we will logout the user automatically
+        // if the user is already login through facebook then we will logout the user automatically
         LoginManager.getInstance().logOut();
 
         sharedPreferences = getSharedPreferences(Variables.PREF_NAME, MODE_PRIVATE);

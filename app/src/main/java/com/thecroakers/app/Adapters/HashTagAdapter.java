@@ -48,7 +48,7 @@ public class HashTagAdapter extends RecyclerView.Adapter<HashTagAdapter.CustomVi
 
     @Override
     public void onBindViewHolder(final HashTagAdapter.CustomViewHolder holder, final int i) {
-        holder.setIsRecyclable(false);
+        holder.setIsRecyclable(true);
         HashTagModel item = datalist.get(i);
         holder.nameTxt.setText(item.name);
 

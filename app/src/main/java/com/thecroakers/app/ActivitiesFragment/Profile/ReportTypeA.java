@@ -102,14 +102,12 @@ public class ReportTypeA extends AppCompatActivity implements View.OnClickListen
             Functions.cancelLoader();
             e.printStackTrace();
         }
-
     }
-
 
     private void setAdapter() {
         adapter = new ReportTypeAdapter(ReportTypeA.this, dataList, new ReportTypeAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(int positon, ReportTypeModel item, View view) {
+            public void onItemClick(int position, ReportTypeModel item, View view) {
                 switch (view.getId()) {
                     case R.id.rlt_report:
                         if (isFromRegister) {
@@ -126,7 +124,6 @@ public class ReportTypeA extends AppCompatActivity implements View.OnClickListen
                         }
 
                         break;
-
                 }
             }
         });
@@ -136,9 +133,7 @@ public class ReportTypeA extends AppCompatActivity implements View.OnClickListen
         recyclerview.setLayoutManager(new LinearLayoutManager(ReportTypeA.this, LinearLayoutManager.VERTICAL, false));
         recyclerview.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-
     }
-
 
     ActivityResultLauncher<Intent> resultCallback = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {

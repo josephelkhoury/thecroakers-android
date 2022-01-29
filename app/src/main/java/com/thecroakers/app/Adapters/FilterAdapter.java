@@ -113,7 +113,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.CustomView
 
     @Override
     public void onBindViewHolder(final FilterAdapter.CustomViewHolder holder, final int i) {
-        holder.setIsRecyclable(false);
+        holder.setIsRecyclable(true);
 
         String s = datalist.get(i).name();
         holder.fiterTxt.setText(s);

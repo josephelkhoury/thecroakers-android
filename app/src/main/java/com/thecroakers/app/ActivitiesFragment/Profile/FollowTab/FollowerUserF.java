@@ -330,8 +330,12 @@ public class FollowerUserF extends Fragment {
             JSONObject jsonObject = new JSONObject(response);
             String code = jsonObject.optString("code");
             if (code.equals("200")) {
+                if (pageCount == 0) {
+                    datalist.clear();
+                    adapter.notifyDataSetChanged();
+                }
+
                 JSONArray msgArray = jsonObject.getJSONArray("msg");
-                ArrayList<FollowingModel> temp_list = new ArrayList<>();
 
                 for (int i = 0; i < msgArray.length(); i++) {
                     JSONObject object = msgArray.optJSONObject(i);
@@ -360,16 +364,11 @@ public class FollowerUserF extends Fragment {
 
                     item.notificationType = "normal";
 
-                    temp_list.add(item);
+                    datalist.add(item);
+                    adapter.notifyItemInserted(datalist.size());
                 }
-
-                if (pageCount == 0) {
-                    datalist.clear();
-                    datalist.addAll(temp_list);
-                } else {
-                    datalist.addAll(temp_list);
-                }
-
+            } else if (pageCount == 0) {
+                datalist.clear();
                 adapter.notifyDataSetChanged();
             }
 

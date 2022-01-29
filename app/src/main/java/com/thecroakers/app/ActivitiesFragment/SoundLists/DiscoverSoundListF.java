@@ -222,15 +222,17 @@ public class DiscoverSoundListF extends RootFragment implements Player.Listener 
     }
 
     // parse the data of sound list
-    public void parseData(String responce) {
+    public void parseData(String response) {
         try {
-            JSONObject jsonObject = new JSONObject(responce);
+            JSONObject jsonObject = new JSONObject(response);
             String code = jsonObject.optString("code");
             if (code.equals("200")) {
+                if (pageCount == 0) {
+                    datalist.clear();
+                    adapter.notifyDataSetChanged();
+                }
 
                 JSONArray msg = jsonObject.optJSONArray("msg");
-
-                ArrayList<SoundCatagoryModel> temp_list = new ArrayList<>();
 
                 for (int i = 0; i < msg.length(); i++) {
 
@@ -241,7 +243,6 @@ public class DiscoverSoundListF extends RootFragment implements Player.Listener 
                     ArrayList<SoundsModel> sound_list = new ArrayList<>();
                     for (int j = 0; j < soundObj.length(); j++) {
                         JSONObject sound = soundObj.optJSONObject(j);
-
 
                         SoundsModel item = new SoundsModel();
 
@@ -270,23 +271,19 @@ public class DiscoverSoundListF extends RootFragment implements Player.Listener 
                         sound_list.add(item);
                     }
 
-                    SoundCatagoryModel sound_catagoryModel = new SoundCatagoryModel();
-                    sound_catagoryModel.id = soundSection.optString("id");
-                    sound_catagoryModel.catagory = soundSection.optString("name");
-                    sound_catagoryModel.sound_list = sound_list;
+                    SoundCatagoryModel sound_categoryModel = new SoundCatagoryModel();
+                    sound_categoryModel.id = soundSection.optString("id");
+                    sound_categoryModel.catagory = soundSection.optString("name");
+                    sound_categoryModel.sound_list = sound_list;
 
-                    temp_list.add(sound_catagoryModel);
-
+                    datalist.add(sound_categoryModel);
+                    adapter.notifyItemInserted(datalist.size());
                 }
-
+            } else {
                 if (pageCount == 0) {
                     datalist.clear();
+                    adapter.notifyDataSetChanged();
                 }
-
-                datalist.addAll(temp_list);
-                adapter.notifyDataSetChanged();
-
-            } else {
                 noDataLayout.setVisibility(View.VISIBLE);
             }
 

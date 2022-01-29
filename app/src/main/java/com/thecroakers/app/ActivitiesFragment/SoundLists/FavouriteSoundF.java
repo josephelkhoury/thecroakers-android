@@ -224,15 +224,18 @@ public class FavouriteSoundF extends RootFragment implements Player.Listener {
     }
 
 
-    public void parseData(String responce) {
+    public void parseData(String response) {
 
         try {
-            JSONObject jsonObject = new JSONObject(responce);
+            JSONObject jsonObject = new JSONObject(response);
             String code = jsonObject.optString("code");
             if (code.equals("200")) {
+                if (pageCount == 0) {
+                    datalist.clear();
+                    adapter.notifyDataSetChanged();
+                }
 
                 JSONArray msgArray = jsonObject.getJSONArray("msg");
-                ArrayList<SoundsModel> temp_list = new ArrayList<>();
 
                 for (int i = 0; i < msgArray.length(); i++) {
                     JSONObject itemdata = msgArray.optJSONObject(i).optJSONObject("Sound");
@@ -241,13 +244,11 @@ public class FavouriteSoundF extends RootFragment implements Player.Listener {
 
                     item.id = itemdata.optString("id");
 
-
                     String accpath = itemdata.optString("audio");
                     if (accpath != null && accpath.contains("http"))
                         item.acc_path = itemdata.optString("audio");
                     else
                         item.acc_path = Constants.BASE_URL + itemdata.optString("audio");
-
 
                     item.sound_name = itemdata.optString("name");
                     item.description = itemdata.optString("description");
@@ -263,18 +264,11 @@ public class FavouriteSoundF extends RootFragment implements Player.Listener {
                     item.duration = itemdata.optString("duration");
                     item.date_created = itemdata.optString("created");
 
-                    temp_list.add(item);
-
-
+                    datalist.add(item);
+                    adapter.notifyItemInserted(datalist.size());
                 }
-
-                if (pageCount == 0) {
-                    datalist.clear();
-                    datalist.addAll(temp_list);
-                } else {
-                    datalist.addAll(temp_list);
-                }
-
+            } else if (pageCount == 0) {
+                datalist.clear();
                 adapter.notifyDataSetChanged();
             }
 

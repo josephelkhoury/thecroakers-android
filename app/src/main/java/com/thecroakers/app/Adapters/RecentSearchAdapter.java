@@ -51,7 +51,7 @@ public class RecentSearchAdapter extends RecyclerView.Adapter<RecentSearchAdapte
 
     @Override
     public void onBindViewHolder(final RecentSearchAdapter.CustomViewHolder holder, final int i) {
-        holder.setIsRecyclable(false);
+        holder.setIsRecyclable(true);
         holder.nameTxt.setText(datalistFilter.get(i));
 
         holder.bind(i, datalistFilter.get(i), adapterClickListener);

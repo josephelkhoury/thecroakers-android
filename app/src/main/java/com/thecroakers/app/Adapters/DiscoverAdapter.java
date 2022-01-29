@@ -185,7 +185,7 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Custom
 
         @Override
         public void onBindViewHolder(final HorizontalAdapter.CustomViewHolder holder, final int i) {
-            holder.setIsRecyclable(false);
+            holder.setIsRecyclable(true);
             HomeModel item = datalist.get(i);
             holder.bind(i, datalist);
 

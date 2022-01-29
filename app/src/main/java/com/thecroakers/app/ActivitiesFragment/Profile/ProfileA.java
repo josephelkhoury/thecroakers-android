@@ -518,18 +518,18 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
 
     ArrayList<FollowingModel> suggestionList=new ArrayList<>();
     private void setUpSuggestionRecyclerview() {
-        rvSuggestion=findViewById(R.id.rvSuggestion);
-        LinearLayoutManager layoutManager=new LinearLayoutManager(ProfileA.this);
+        rvSuggestion = findViewById(R.id.rvSuggestion);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(ProfileA.this);
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
         rvSuggestion.setLayoutManager(layoutManager);
-        adapterSuggestion=new SuggestionAdapter(suggestionList, new SuggestionAdapter.OnItemClickListener() {
+        adapterSuggestion = new SuggestionAdapter(suggestionList, new SuggestionAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int postion, FollowingModel item) {
                 if (view.getId() == R.id.tvFollowBtn) {
                     if (Functions.checkLoginUser(ProfileA.this))
                         followSuggestedUser(item.fb_id,postion);
-                } else if (view.getId()==R.id.user_image) {
-                    Intent intent=new Intent(view.getContext(), ProfileA.class);
+                } else if (view.getId() == R.id.user_image) {
+                    Intent intent = new Intent(view.getContext(), ProfileA.class);
                     intent.putExtra("user_id", item.fb_id);
                     intent.putExtra("user_name", item.username);
                     intent.putExtra("user_pic", item.profile_pic);

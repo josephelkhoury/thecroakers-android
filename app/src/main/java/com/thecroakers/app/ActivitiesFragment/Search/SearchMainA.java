@@ -34,12 +34,9 @@ import io.paperdb.Paper;
 
 public class SearchMainA extends AppCompatActivity implements View.OnClickListener {
 
-
     Context context;
     public static EditText searchEdit;
     TextView search_btn;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +50,6 @@ public class SearchMainA extends AppCompatActivity implements View.OnClickListen
 
         search_btn = findViewById(R.id.search_btn);
         search_btn.setOnClickListener(this::onClick);
-
 
         showRecentSearch();
 
@@ -119,7 +115,6 @@ public class SearchMainA extends AppCompatActivity implements View.OnClickListen
     ViewPagerAdapter adapter;
 
     public void setTabs() {
-
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         menuPager = (ViewPager) findViewById(R.id.viewpager);
         menuPager.setOffscreenPageLimit(3);
@@ -128,21 +123,17 @@ public class SearchMainA extends AppCompatActivity implements View.OnClickListen
         adapter.addFrag(new SearchUserF("user"), "Users");
         adapter.addFrag(new SearchVideoF("video"), "Videos");
         adapter.addFrag(new SearchSoundF("sound"), "Sounds");
-        adapter.addFrag(new SearchHashTagsF("hashtag"), "HashTags");
+        adapter.addFrag(new SearchHashTagsF("hashtag"), "Hashtags");
 
         menuPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(menuPager);
-
     }
-
 
     public void addSearchKey(String search_key) {
         ArrayList<String> search_list = (ArrayList<String>) Paper.book().read("recent_search", new ArrayList<String>());
         search_list.add(search_key);
         Paper.book().write("recent_search", search_list);
-
     }
-
 
     // this method will get the recent searched list from local db
 

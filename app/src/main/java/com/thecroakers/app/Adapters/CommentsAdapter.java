@@ -81,7 +81,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Custom
     public void onBindViewHolder(final CommentsAdapter.CustomViewHolder holder, final int i) {
         final CommentModel item = dataList.get(i);
 
-        holder.setIsRecyclable(false);
+        holder.setIsRecyclable(true);
         holder.username.setText(item.user_name);
 
 
@@ -216,7 +216,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Custom
         @Override
         public void onBindViewHolder(final Comments_Reply_Adapter.CustomViewHolder holder, final int i) {
             final CommentModel item = dataList.get(i);
-            holder.setIsRecyclable(false);
+            holder.setIsRecyclable(true);
             holder.username.setText(item.replay_user_name);
 
 

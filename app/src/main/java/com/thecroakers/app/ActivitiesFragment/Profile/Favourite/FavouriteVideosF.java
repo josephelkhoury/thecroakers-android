@@ -157,14 +157,18 @@ public class FavouriteVideosF extends Fragment {
 
     // parse the video list in data model
 
-    public void parseVideo(String responce) {
+    public void parseVideo(String response) {
 
         try {
-            JSONObject jsonObject = new JSONObject(responce);
+            JSONObject jsonObject = new JSONObject(response);
             String code = jsonObject.optString("code");
             if (code.equals("200")) {
+                if (pageCount == 0) {
+                    dataList.clear();
+                    adapter.notifyDataSetChanged();
+                }
+
                 JSONArray msgArray = jsonObject.getJSONArray("msg");
-                ArrayList<HomeModel> temp_list = new ArrayList<>();
 
                 for (int i = 0; i < msgArray.length(); i++) {
                     JSONObject itemdata = msgArray.optJSONObject(i);
@@ -178,16 +182,11 @@ public class FavouriteVideosF extends Fragment {
 
                     HomeModel item = Functions.parseVideoData(user, sound, video, topic, country, userPrivacy, userPushNotification);
 
-                    temp_list.add(item);
+                    dataList.add(item);
+                    adapter.notifyItemInserted(dataList.size());
                 }
-
-                if (pageCount == 0) {
-                    dataList.clear();
-                    dataList.addAll(temp_list);
-                } else {
-                    dataList.addAll(temp_list);
-                }
-
+            } else if (pageCount == 0) {
+                dataList.clear();
                 adapter.notifyDataSetChanged();
             }
 

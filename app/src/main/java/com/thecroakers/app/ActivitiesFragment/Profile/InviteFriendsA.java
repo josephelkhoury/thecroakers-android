@@ -181,20 +181,22 @@ public class InviteFriendsA extends AppCompatActivity implements View.OnClickLis
     }
 
     // parse the list of user that follow the profile
-    public void parseSuggestData(String responce) {
+    public void parseSuggestData(String response) {
         try {
-            JSONObject jsonObject = new JSONObject(responce);
+            JSONObject jsonObject = new JSONObject(response);
             String code = jsonObject.optString("code");
             if (code.equals("200")) {
-                JSONArray msgArray = jsonObject.getJSONArray("msg");
+                if (pageCount == 0) {
+                    datalist.clear();
+                    adapter.notifyDataSetChanged();
+                }
 
-                ArrayList<FollowingModel> temp_list = new ArrayList<>();
+                JSONArray msgArray = jsonObject.getJSONArray("msg");
 
                 for (int i = 0; i < msgArray.length(); i++) {
 
                     JSONObject object = msgArray.optJSONObject(i);
                     UserModel userDetailModel=DataParsing.getUserDataModel(object.optJSONObject("User"));
-
 
                     FollowingModel item = new FollowingModel();
                     item.fb_id = userDetailModel.getId();
@@ -206,38 +208,22 @@ public class InviteFriendsA extends AppCompatActivity implements View.OnClickLis
                     item.profile_pic = userDetailModel.getProfilePic();
 
                     String userStatus=userDetailModel.getButton().toLowerCase();
-                    if (userStatus.equalsIgnoreCase("following"))
-                    {
+                    if (userStatus.equalsIgnoreCase("following")) {
                         item.follow_status_button = "Following";
-                    }
-                    else
-                    if (userStatus.equalsIgnoreCase("friends"))
-                    {
+                    } else if (userStatus.equalsIgnoreCase("friends")) {
                         item.follow_status_button = "Friends";
-                    }
-                    else
-                    if (userStatus.equalsIgnoreCase("follow back"))
-                    {
+                    } else if (userStatus.equalsIgnoreCase("follow back")) {
                         item.follow_status_button = "Follow back";
-                    }
-                    else
-                    {
+                    } else {
                         item.follow_status_button = "Follow";
                     }
-                    item.notificationType=userDetailModel.getNotification();
+                    item.notificationType = userDetailModel.getNotification();
 
-                    temp_list.add(item);
-
-
+                    datalist.add(item);
+                    adapter.notifyItemInserted(datalist.size());
                 }
-
-                if (pageCount == 0) {
-                    datalist.clear();
-                    datalist.addAll(temp_list);
-                } else {
-                    datalist.addAll(temp_list);
-                }
-
+            } else if (pageCount == 0) {
+                datalist.clear();
                 adapter.notifyDataSetChanged();
             }
 

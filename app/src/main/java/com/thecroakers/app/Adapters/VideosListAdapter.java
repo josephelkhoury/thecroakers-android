@@ -70,16 +70,12 @@ public class VideosListAdapter extends RecyclerView.Adapter<VideosListAdapter.Cu
                 listener.onItemClick(v, pos, item);
 
             });
-
-
         }
-
-
     }
 
     @Override
     public void onBindViewHolder(final VideosListAdapter.CustomViewHolder holder, final int i) {
-        holder.setIsRecyclable(false);
+        holder.setIsRecyclable(true);
 
         final HomeModel item = (HomeModel) datalist.get(i);
 

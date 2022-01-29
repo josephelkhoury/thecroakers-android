@@ -73,7 +73,7 @@ public class FollowingShareAdapter extends RecyclerView.Adapter<FollowingShareAd
 
     @Override
     public void onBindViewHolder(final FollowingShareAdapter.CustomViewHolder holder, final int i) {
-        holder.setIsRecyclable(false);
+        holder.setIsRecyclable(true);
 
         FollowingModel item=datalist.get(i);
 

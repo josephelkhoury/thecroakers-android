@@ -64,7 +64,7 @@ public class SoundsAdapter extends RecyclerView.Adapter<SoundsAdapter.CustomView
 
     @Override
     public void onBindViewHolder(final SoundsAdapter.CustomViewHolder holder, final int i) {
-        holder.setIsRecyclable(false);
+        holder.setIsRecyclable(true);
 
 
         SoundCatagoryModel item = datalist_filter.get(i);
@@ -205,10 +205,9 @@ class SoundItemsAdapter extends RecyclerView.Adapter<SoundItemsAdapter.CustomVie
         return datalist.size();
     }
 
-
     @Override
     public void onBindViewHolder(final SoundItemsAdapter.CustomViewHolder holder, final int i) {
-        holder.setIsRecyclable(false);
+        holder.setIsRecyclable(true);
 
         SoundsModel item = datalist.get(i);
         try {

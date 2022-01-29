@@ -81,7 +81,6 @@ public class UserVideoF extends Fragment {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-
             Variables.reloadMyVideosInner = false;
             pageCount = 0;
             callApiMyVideos();
@@ -107,7 +106,6 @@ public class UserVideoF extends Fragment {
         adapter = new MyVideosAdapter(context, dataList, (view, pos, object) -> {
             HomeModel item = (HomeModel) object;
             openWatchVideo(pos);
-
         });
 
         recyclerView.setAdapter(adapter);
@@ -153,7 +151,6 @@ public class UserVideoF extends Fragment {
         tvMessageNoData = view.findViewById(R.id.tvMessageNoData);
         Log.d(Constants.tag,"Exception : "+userId);
         Log.d(Constants.tag,"Exception : "+Functions.getSharedPreference(context).getString(Variables.U_ID, ""));
-
 
         if (is_my_profile) {
             tvTitleNoData.setVisibility(View.GONE);
@@ -226,8 +223,12 @@ public class UserVideoF extends Fragment {
             JSONObject jsonObject = new JSONObject(response);
             String code = jsonObject.optString("code");
             if (code.equals("200")) {
+                if (pageCount == 0) {
+                    dataList.clear();
+                    adapter.notifyDataSetChanged();
+                }
+
                 JSONObject msg = jsonObject.optJSONObject("msg");
-                ArrayList<HomeModel> temp_list = new ArrayList<>();
 
                 JSONArray public_array = msg.optJSONArray("public");
 
@@ -244,23 +245,12 @@ public class UserVideoF extends Fragment {
 
                     HomeModel item = Functions.parseVideoData(user, sound, video, topic, country, userPrivacy, userPushNotification);
 
-                    temp_list.add(item);
+                    dataList.add(item);
+                    adapter.notifyItemInserted(dataList.size());
                 }
-
-                if (pageCount == 0) {
-                    dataList.clear();
-                    dataList.addAll(temp_list);
-                } else {
-                    dataList.addAll(temp_list);
-                }
-
+            } else if (pageCount == 0) {
+                dataList.clear();
                 adapter.notifyDataSetChanged();
-            } else {
-                if (pageCount == 0) {
-                    pageCount = 0;
-                    dataList.clear();
-                    adapter.notifyDataSetChanged();
-                }
             }
 
             if (dataList.isEmpty()) {
@@ -297,7 +287,7 @@ public class UserVideoF extends Fragment {
                             Log.d(Constants.tag,"notify data : "+dataList.size());
                             dataList.clear();
                             dataList.addAll((ArrayList<HomeModel>) data.getSerializableExtra("arraylist"));
-                            pageCount=data.getIntExtra("pageCount",0);
+                            pageCount = data.getIntExtra("pageCount",0);
                             adapter.notifyDataSetChanged();
 
                             Log.d(Constants.tag,"notify data : "+dataList.size());

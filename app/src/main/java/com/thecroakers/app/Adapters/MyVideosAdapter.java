@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,11 +35,10 @@ public class MyVideosAdapter extends RecyclerView.Adapter<MyVideosAdapter.Custom
         this.context = context;
         this.dataList = dataList;
         this.adapterClickListener = adapterClickListener;
-
     }
 
     @Override
-    public MyVideosAdapter.CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewtype) {
+    public MyVideosAdapter.CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_myvideo_layout, null);
         view.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
         MyVideosAdapter.CustomViewHolder viewHolder = new MyVideosAdapter.CustomViewHolder(view);
@@ -50,7 +50,6 @@ public class MyVideosAdapter extends RecyclerView.Adapter<MyVideosAdapter.Custom
         return dataList.size();
     }
 
-
     class CustomViewHolder extends RecyclerView.ViewHolder {
         SimpleDraweeView thumbImage;
         TextView viewTxt;
@@ -60,51 +59,33 @@ public class MyVideosAdapter extends RecyclerView.Adapter<MyVideosAdapter.Custom
 
             thumbImage = view.findViewById(R.id.thumb_image);
             viewTxt = view.findViewById(R.id.view_txt);
-
         }
 
         public void bind(final int position, final HomeModel item, final AdapterClickListener listener) {
             itemView.setOnClickListener(v -> {
                 adapterClickListener.onItemClick(v, position, item);
-
             });
-
         }
-
     }
-
 
     @Override
     public void onBindViewHolder(final MyVideosAdapter.CustomViewHolder holder, final int i) {
         final HomeModel item = dataList.get(i);
-        holder.setIsRecyclable(false);
-
-
+        holder.setIsRecyclable(true);
         try {
-
             if (Constants.IS_SHOW_GIF) {
-
-                holder.thumbImage.setController(Functions.frescoImageLoad(item.gif,holder.thumbImage,true));
-
-
+                holder.thumbImage.setController(Functions.frescoImageLoad(item.gif, holder.thumbImage,true));
             } else {
                 if (item.thum != null && !item.thum.equals("")) {
-
-                    holder.thumbImage.setController(Functions.frescoImageLoad(item.thum,holder.thumbImage,false));
-
+                    holder.thumbImage.setController(Functions.frescoImageLoad(item.thum, holder.thumbImage,false));
                 }
             }
         } catch (Exception e) {
             Functions.printLog(Constants.tag, e.toString());
         }
 
-
-        holder.viewTxt.setText(item.views);
+        //holder.viewTxt.setText(item.views);
         holder.viewTxt.setText(Functions.getSuffix(item.views));
-
-
         holder.bind(i, item, adapterClickListener);
-
     }
-
 }

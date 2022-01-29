@@ -44,7 +44,7 @@ public class SearchHashTagsF extends RootFragment {
     LinearLayoutManager linearLayoutManager;
     ProgressBar loadMoreProgress;
     int pageCount = 0;
-    boolean ispostFinsh;
+    boolean ispostFinish;
     ArrayList<HashTagModel> dataList;
     HashTagFavouriteAdapter adapter;
     SwipeRefreshLayout refreshLayout;
@@ -107,7 +107,7 @@ public class SearchHashTagsF extends RootFragment {
                 if (userScrolled && (scrollOutitems == dataList.size() - 1)) {
                     userScrolled = false;
 
-                    if (loadMoreProgress.getVisibility() != View.VISIBLE && !ispostFinsh) {
+                    if (loadMoreProgress.getVisibility() != View.VISIBLE && !ispostFinish) {
                         loadMoreProgress.setVisibility(View.VISIBLE);
                         pageCount = pageCount + 1;
 
