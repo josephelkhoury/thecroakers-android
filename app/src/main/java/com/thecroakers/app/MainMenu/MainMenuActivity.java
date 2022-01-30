@@ -132,8 +132,6 @@ public class MainMenuActivity extends AppCompatActivity {
                             } else if (type.equals("video")) {
                                 openWatchVideo(entity_id);
                             }
-                        } else {
-                            Functions.showToast(context, jsonObject.optString("msg"));
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
