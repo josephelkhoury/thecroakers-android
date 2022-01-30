@@ -101,9 +101,10 @@ public class MainMenuActivity extends AppCompatActivity {
         try {
             Uri uri = intent.getData();
             String linkUri = ""+uri;
-            //String userId = "";
-            //String videoId = "";
             String link = linkUri.replaceAll(Constants.BASE_URL, "");
+
+            if (link.equals(""))
+                return;
 
             JSONObject parameters = new JSONObject();
             try {
@@ -120,7 +121,8 @@ public class MainMenuActivity extends AppCompatActivity {
                         JSONObject jsonObject = new JSONObject(resp);
                         String code = jsonObject.optString("code");
                         if (code.equals("200")) {
-                            JSONObject shareLink = jsonObject.getJSONObject("msg");
+                            JSONObject msg = jsonObject.getJSONObject("msg");
+                            JSONObject shareLink = msg.getJSONObject("ShareLink");
 
                             String type = shareLink.optString("type");
                             String entity_id = shareLink.optString("entity_id");

@@ -38,6 +38,7 @@ import com.thecroakers.app.ActivitiesFragment.Chat.ChatA;
 import com.thecroakers.app.Adapters.FollowingShareAdapter;
 import com.thecroakers.app.Adapters.ProfileSharingAdapter;
 import com.thecroakers.app.ApiClasses.ApiLinks;
+import com.thecroakers.app.MainMenu.MainMenuActivity;
 import com.volley.plus.VPackages.VolleyRequest;
 import com.thecroakers.app.Constants;
 import com.thecroakers.app.Interfaces.AdapterClickListener;
@@ -65,7 +66,7 @@ public class ShareUserProfileF extends BottomSheetDialogFragment implements View
     RecyclerView recyclerView,recylerviewFollowing;
     String userId,userName,fullName,userPic,buttonStatus;
 
-    boolean isDirectMessage=false,fromSetting;
+    boolean isDirectMessage = false,fromSetting;
     TextView bottomBtn,sendBtn;
     LinearLayout tabSendMsgToFollower,tabMessageSend;
     DatabaseReference rootref,adduserInbox;
@@ -80,6 +81,7 @@ public class ShareUserProfileF extends BottomSheetDialogFragment implements View
     FollowingShareAdapter followingShareAdapter;
     ArrayList<FollowingModel> selectedUserList=new ArrayList<>();
     String senderId="",receiverId="";
+    String link = "";
 
     public ShareUserProfileF() {
     }
@@ -87,13 +89,13 @@ public class ShareUserProfileF extends BottomSheetDialogFragment implements View
 
     public ShareUserProfileF(String id,String name,String fullName,String pic, String buttonStatus, boolean isDirectMessage, boolean fromSetting, FragmentCallBack callback) {
         userId = id;
-        this.fullName=fullName;
+        this.fullName = fullName;
         userName = name;
         userPic = pic;
-        this.buttonStatus=buttonStatus;
-        this.fromSetting=fromSetting;
+        this.buttonStatus = buttonStatus;
+        this.fromSetting = fromSetting;
         this.callback = callback;
-        this.isDirectMessage=isDirectMessage;
+        this.isDirectMessage = isDirectMessage;
     }
 
 
@@ -105,68 +107,53 @@ public class ShareUserProfileF extends BottomSheetDialogFragment implements View
         senderId=Functions.getSharedPreference(context).getString(Variables.U_ID, "");
         rootref = FirebaseDatabase.getInstance().getReference();
         adduserInbox = FirebaseDatabase.getInstance().getReference();
-        edtMessage=view.findViewById(R.id.edtMessage);
-        tabSendMsgToFollower=view.findViewById(R.id.tabSendMsgToFollower);
-        tabMessageSend=view.findViewById(R.id.tabMessageSend);
-        tabSendTo=view.findViewById(R.id.tabSendTo);
+        edtMessage = view.findViewById(R.id.edtMessage);
+        tabSendMsgToFollower = view.findViewById(R.id.tabSendMsgToFollower);
+        tabMessageSend = view.findViewById(R.id.tabMessageSend);
+        tabSendTo = view.findViewById(R.id.tabSendTo);
         progressBarFollowing = view.findViewById(R.id.progressBarFollowing);
-        ivUserPic=view.findViewById(R.id.ivUserPic);
-        tabSelfScroll=view.findViewById(R.id.tabSelfScroll);
-        viewSelfScroll=view.findViewById(R.id.viewSelfScroll);
+        ivUserPic = view.findViewById(R.id.ivUserPic);
+        tabSelfScroll = view.findViewById(R.id.tabSelfScroll);
+        viewSelfScroll = view.findViewById(R.id.viewSelfScroll);
 
-        messageTab=view.findViewById(R.id.send_message_layout);
+        messageTab = view.findViewById(R.id.send_message_layout);
         messageTab.setOnClickListener(this);
 
-        removeFollowerTab=view.findViewById(R.id.remove_follower_layout);
+        removeFollowerTab = view.findViewById(R.id.remove_follower_layout);
         removeFollowerTab.setOnClickListener(this);
 
-        reportTab=view.findViewById(R.id.report_layout);
+        reportTab = view.findViewById(R.id.report_layout);
         reportTab.setOnClickListener(this);
 
-        blockTab=view.findViewById(R.id.block_layout);
+        blockTab = view.findViewById(R.id.block_layout);
         blockTab.setOnClickListener(this);
 
-        bottomBtn =view.findViewById(R.id.bottom_btn);
+        bottomBtn = view.findViewById(R.id.bottom_btn);
         bottomBtn.setOnClickListener(this);
-        sendBtn=view.findViewById(R.id.sendBtn);
+        sendBtn = view.findViewById(R.id.sendBtn);
         sendBtn.setOnClickListener(this);
 
-
-
-
-        if (Functions.getSharedPreference(context).getBoolean(Variables.IS_LOGIN,false))
-        {
-            if (fromSetting)
-            {
+        if (Functions.getSharedPreference(context).getBoolean(Variables.IS_LOGIN,false)) {
+            if (fromSetting) {
                 tabSelfScroll.setVisibility(View.GONE);
                 viewSelfScroll.setVisibility(View.GONE);
-            }
-            else
-            {
+            } else {
                 tabSelfScroll.setVisibility(View.VISIBLE);
                 viewSelfScroll.setVisibility(View.VISIBLE);
             }
             blockTab.setVisibility(View.VISIBLE);
-            if (getFriendStatus())
-            {
+            if (getFriendStatus()) {
                 removeFollowerTab.setVisibility(View.VISIBLE);
-            }
-            else
-            {
+            } else {
                 removeFollowerTab.setVisibility(View.GONE);
             }
 
-            if (isDirectMessage)
-            {
+            if (isDirectMessage) {
                 messageTab.setVisibility(View.VISIBLE);
-            }
-            else
-            {
+            } else {
                 messageTab.setVisibility(View.GONE);
             }
-        }
-        else
-        {
+        } else {
             messageTab.setVisibility(View.GONE);
             removeFollowerTab.setVisibility(View.GONE);
             blockTab.setVisibility(View.GONE);
@@ -174,7 +161,7 @@ public class ShareUserProfileF extends BottomSheetDialogFragment implements View
 
         if(Functions.getSharedPreference(context).getBoolean(Variables.IS_LOGIN,false)) {
             setFollowingAdapter();
-            callApiForGetAllfollowing();
+            callApiForGetAllFollowing();
             getOwnSharedApp();
         }
 
@@ -217,7 +204,7 @@ public class ShareUserProfileF extends BottomSheetDialogFragment implements View
     }
 
 
-    private void callApiForGetAllfollowing() {
+    private void callApiForGetAllFollowing() {
 
         JSONObject parameters = new JSONObject();
         try {
@@ -239,10 +226,10 @@ public class ShareUserProfileF extends BottomSheetDialogFragment implements View
 
     }
 
-    public void parseFollowingData(String responce) {
+    public void parseFollowingData(String response) {
 
         try {
-            JSONObject jsonObject = new JSONObject(responce);
+            JSONObject jsonObject = new JSONObject(response);
             String code = jsonObject.optString("code");
             if (code.equals("200")) {
                 JSONArray msgArray = jsonObject.getJSONArray("msg");
@@ -298,36 +285,30 @@ public class ShareUserProfileF extends BottomSheetDialogFragment implements View
     }
 
 
-    public void clickedUsers(int postion){
-        FollowingModel itemUpdate= followingList.get(postion);
-        selectedUserList=new ArrayList<>();
+    public void clickedUsers(int position){
+        FollowingModel itemUpdate= followingList.get(position);
+        selectedUserList = new ArrayList<>();
         if (itemUpdate.is_select)
         {
-            itemUpdate.is_select=false;
-            followingList.set(postion,itemUpdate);
-        }
-        else
-        {
-            itemUpdate.is_select=true;
-            followingList.set(postion,itemUpdate);
+            itemUpdate.is_select = false;
+            followingList.set(position,itemUpdate);
+        } else {
+            itemUpdate.is_select = true;
+            followingList.set(position,itemUpdate);
         }
         followingShareAdapter.notifyDataSetChanged();
 
         for (int i = 0; i< followingList.size(); i++){
-
-            if (followingList.get(i).is_select)
-            {
+            if (followingList.get(i).is_select) {
                 selectedUserList.add(followingList.get(i));
             }
         }
 
-
-        if(selectedUserList.size()>0){
+        if (selectedUserList.size() > 0){
             sendBtn.setText(selectedUserList.size()+" "+view.getContext().getString(R.string.send));
             tabSendMsgToFollower.setVisibility(View.GONE);
             tabMessageSend.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             tabSendMsgToFollower.setVisibility(View.VISIBLE);
             tabMessageSend.setVisibility(View.GONE);
             sendBtn.setText(view.getContext().getString(R.string.send));
@@ -340,8 +321,7 @@ public class ShareUserProfileF extends BottomSheetDialogFragment implements View
 
     // this method will share user profile
     public void profileShare() {
-
-        Intent intent=new Intent(view.getContext(),SendDirectMsg.class);
+        Intent intent = new Intent(view.getContext(), SendDirectMsg.class);
         intent.putExtra("userId",userId);
         intent.putExtra("userName",userName);
         intent.putExtra("userPic",userPic);
@@ -350,7 +330,6 @@ public class ShareUserProfileF extends BottomSheetDialogFragment implements View
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
         dismiss();
-
     }
 
     ProfileSharingAdapter adapter;
@@ -364,9 +343,8 @@ public class ShareUserProfileF extends BottomSheetDialogFragment implements View
         adapter = new ProfileSharingAdapter(context, getAppShareDataList(), new AdapterClickListener() {
             @Override
             public void onItemClick(View view, int pos, Object object) {
-                ShareAppModel item= (ShareAppModel) object;
-
-                shareProfile(item);
+                ShareAppModel item = (ShareAppModel) object;
+                generateShareLink(item);
             }
         });recyclerView.setAdapter(adapter);
 
@@ -438,22 +416,49 @@ public class ShareUserProfileF extends BottomSheetDialogFragment implements View
         return dataList;
     }
 
+    public void generateShareLink(ShareAppModel item) {
+        JSONObject parameters = new JSONObject();
+        try {
+            parameters.put("type", "user");
+            parameters.put("entity_id", userId);
+            parameters.put("user_id", Functions.getSharedPreference(getActivity()).getString(Variables.U_ID,""));
+            parameters.put("device_id", Functions.getSharedPreference(getActivity()).getString(Variables.DEVICE_ID,""));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        VolleyRequest.JsonPostRequest(ShareUserProfileF.this.getActivity(), ApiLinks.generateShareLink, parameters, Functions.getHeaders(context), new Callback() {
+            @Override
+            public void onResponce(String resp) {
+                Functions.checkStatus(ShareUserProfileF.this.getActivity(), resp);
+                try {
+                    JSONObject jsonObject = new JSONObject(resp);
+                    String code = jsonObject.optString("code");
+                    if (code.equals("200")) {
+                        String shareLink = jsonObject.optString("msg");
+                        link = Constants.BASE_URL+shareLink;
+                        shareProfile(item);
+                    } else {
+                        Functions.showToast(context, jsonObject.optString("msg"));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
     public void shareProfile(ShareAppModel item) {
-        String profielLink = Variables.http+"://"+getString(R.string.share_profile_domain_second)+getString(R.string.share_profile_endpoint_second) + Functions.getSharedPreference(getActivity()).getString(Variables.U_ID,"");
-        if (item.getName().equalsIgnoreCase(view.getContext().getString(R.string.messenge)))
-        {
+        //String profielLink = Variables.http+"://"+getString(R.string.share_profile_domain_second)+getString(R.string.share_profile_endpoint_second) + Functions.getSharedPreference(getActivity()).getString(Variables.U_ID,"");
+        if (item.getName().equalsIgnoreCase(view.getContext().getString(R.string.messenge))) {
             moveToDirectMsg();
         }
-        else
-        if (item.getName().equalsIgnoreCase(view.getContext().getString(R.string.whatsapp)))
-        {
-
+        else if (item.getName().equalsIgnoreCase(view.getContext().getString(R.string.whatsapp))) {
             try {
                 Intent sendIntent = new Intent("android.intent.action.MAIN");
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_TEXT, profielLink);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, link);
                 sendIntent.setPackage("com.whatsapp");
                 startActivity(sendIntent);
             } catch(Exception e) {
@@ -467,7 +472,7 @@ public class ShareUserProfileF extends BottomSheetDialogFragment implements View
                 Intent sendIntent = new Intent("android.intent.action.MAIN");
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_TEXT, profielLink);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, link);
                 sendIntent.setPackage("com.facebook.katana");
                 startActivity(sendIntent);
             } catch(Exception e) {
@@ -481,7 +486,7 @@ public class ShareUserProfileF extends BottomSheetDialogFragment implements View
                 Intent sendIntent = new Intent("android.intent.action.MAIN");
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_TEXT, profielLink);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, link);
                 sendIntent.setPackage("com.facebook.orca");
                 startActivity(sendIntent);
             } catch(Exception e) {
@@ -494,7 +499,7 @@ public class ShareUserProfileF extends BottomSheetDialogFragment implements View
             try {
                 Intent smsIntent = new Intent(Intent.ACTION_VIEW);
                 smsIntent.setType("vnd.android-dir/mms-sms");
-                smsIntent.putExtra("sms_body",""+profielLink);
+                smsIntent.putExtra("sms_body",""+link);
                 startActivity(smsIntent);
             } catch(Exception e) {
                 Log.d(Constants.tag,"Exception : "+e);
@@ -505,7 +510,7 @@ public class ShareUserProfileF extends BottomSheetDialogFragment implements View
         {
             try {
                 ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("Copied Text", profielLink);
+                ClipData clip = ClipData.newPlainText("Copied Text", link);
                 clipboard.setPrimaryClip(clip);
 
                 Toast.makeText(context, context.getString(R.string.link_copy_in_clipboard), Toast.LENGTH_SHORT).show();
@@ -520,7 +525,7 @@ public class ShareUserProfileF extends BottomSheetDialogFragment implements View
                 Intent sendIntent = new Intent("android.intent.action.MAIN");
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_TEXT, profielLink);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, link);
                 sendIntent.setPackage("com.google.android.gm");
                 startActivity(sendIntent);
             } catch(Exception e) {
@@ -534,7 +539,7 @@ public class ShareUserProfileF extends BottomSheetDialogFragment implements View
                 Intent sendIntent = new Intent("android.intent.action.MAIN");
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_TEXT, profielLink);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, link);
                 startActivity(sendIntent);
             } catch(Exception e) {
                 Log.d(Constants.tag,"Exception : "+e);

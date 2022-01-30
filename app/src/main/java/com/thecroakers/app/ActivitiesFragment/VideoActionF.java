@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.thecroakers.app.ActivitiesFragment.Profile.SendDirectMsg;
+import com.thecroakers.app.ActivitiesFragment.Profile.ShareAndViewProfileF;
 import com.thecroakers.app.Adapters.FollowingShareAdapter;
 import com.thecroakers.app.Adapters.ProfileSharingAdapter;
 import com.volley.plus.VPackages.VolleyRequest;
@@ -82,6 +83,7 @@ public class VideoActionF extends BottomSheetDialogFragment implements View.OnCl
     String senderId="",receiverId="";
     ArrayList<FollowingModel> selectedUserList=new ArrayList<>();
     TextView bottomBtn;
+    String link;
 
 
     PermissionUtils takePermissionUtils;
@@ -99,7 +101,6 @@ public class VideoActionF extends BottomSheetDialogFragment implements View.OnCl
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
 
         view = inflater.inflate(R.layout.fragment_video_action, container, false);
         context = getContext();
@@ -136,18 +137,12 @@ public class VideoActionF extends BottomSheetDialogFragment implements View.OnCl
         } else
             view.findViewById(R.id.save_video_layout).setVisibility(View.GONE);
 
-
         if (Constants.IS_DEMO_APP) {
             progressBar.setVisibility(View.GONE);
             view.findViewById(R.id.copy_layout).setVisibility(View.GONE);
         } else {
-
             getSharedApp();
-
         }
-
-
-
 
         if (Functions.getSharedPreference(context).getBoolean(Variables.IsExtended,false) && (item.allow_duet != null && item.allow_duet.equalsIgnoreCase("1"))
                 && Functions.isShowContentPrivacy(context, item.apply_privacy_model.getDuet(), item.follow_status_button.equalsIgnoreCase("friends"))) {
@@ -173,7 +168,7 @@ public class VideoActionF extends BottomSheetDialogFragment implements View.OnCl
 
         if(Functions.getSharedPreference(context).getBoolean(Variables.IS_LOGIN,false)) {
             setFollowingAdapter();
-            callApiForGetAllfollowing();
+            callApiForGetAllFollowing();
         }
 
 
@@ -210,7 +205,7 @@ public class VideoActionF extends BottomSheetDialogFragment implements View.OnCl
         recylerviewFollowing.setAdapter(followingShareAdapter);
     }
 
-    private void callApiForGetAllfollowing() {
+    private void callApiForGetAllFollowing() {
 
         JSONObject parameters = new JSONObject();
         try {
@@ -232,10 +227,10 @@ public class VideoActionF extends BottomSheetDialogFragment implements View.OnCl
 
     }
 
-    public void parseFollowingData(String responce) {
+    public void parseFollowingData(String response) {
 
         try {
-            JSONObject jsonObject = new JSONObject(responce);
+            JSONObject jsonObject = new JSONObject(response);
             String code = jsonObject.optString("code");
             if (code.equals("200")) {
                 JSONArray msgArray = jsonObject.getJSONArray("msg");
@@ -275,18 +270,18 @@ public class VideoActionF extends BottomSheetDialogFragment implements View.OnCl
     }
 
 
-    public void clickedUsers(int postion){
-        FollowingModel itemUpdate= followingList.get(postion);
+    public void clickedUsers(int position){
+        FollowingModel itemUpdate= followingList.get(position);
         selectedUserList=new ArrayList<>();
         if (itemUpdate.is_select)
         {
             itemUpdate.is_select=false;
-            followingList.set(postion,itemUpdate);
+            followingList.set(position,itemUpdate);
         }
         else
         {
             itemUpdate.is_select=true;
-            followingList.set(postion,itemUpdate);
+            followingList.set(position,itemUpdate);
         }
         followingShareAdapter.notifyDataSetChanged();
 
@@ -413,9 +408,8 @@ public class VideoActionF extends BottomSheetDialogFragment implements View.OnCl
         adapter = new ProfileSharingAdapter(context, getAppShareDataList(), new AdapterClickListener() {
             @Override
             public void onItemClick(View view, int pos, Object object) {
-                ShareAppModel item= (ShareAppModel) object;
-
-                shareProfile(item);
+                ShareAppModel item = (ShareAppModel) object;
+                generateShareLink(item);
             }
         });
 
@@ -428,9 +422,48 @@ public class VideoActionF extends BottomSheetDialogFragment implements View.OnCl
         });
     }
 
+    public void generateShareLink(ShareAppModel item) {
+        JSONObject parameters = new JSONObject();
+        try {
+            parameters.put("type", "video");
+            parameters.put("entity_id", videoId);
+            parameters.put("user_id", Functions.getSharedPreference(getActivity()).getString(Variables.U_ID,""));
+            parameters.put("device_id", Functions.getSharedPreference(getActivity()).getString(Variables.DEVICE_ID,""));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        VolleyRequest.JsonPostRequest(VideoActionF.this.getActivity(), ApiLinks.generateShareLink, parameters, Functions.getHeaders(context), new Callback() {
+            @Override
+            public void onResponce(String resp) {
+                Functions.checkStatus(VideoActionF.this.getActivity(), resp);
+                try {
+                    JSONObject jsonObject = new JSONObject(resp);
+                    String code = jsonObject.optString("code");
+                    if (code.equals("200")) {
+                        String shareLink = jsonObject.optString("msg");
+                        link = Constants.BASE_URL+shareLink;
+                        if (item != null)
+                            shareProfile(item);
+                        else {
+                            ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                            ClipData clip = ClipData.newPlainText("Copied Text", link);
+                            clipboard.setPrimaryClip(clip);
+
+                            Toast.makeText(context, context.getString(R.string.link_copy_in_clipboard), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Functions.showToast(context, jsonObject.optString("msg"));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
     public void shareProfile(ShareAppModel item) {
-        String videoLink = Constants.BASE_URL + "?" + Functions.getRandomString(3) + videoId + Functions.getRandomString(3);
+        //String videoLink = Constants.BASE_URL + "?" + Functions.getRandomString(3) + videoId + Functions.getRandomString(3);
         if (item.getName().equalsIgnoreCase(view.getContext().getString(R.string.messenge)))
         {
             moveToDirectMsg();
@@ -443,7 +476,7 @@ public class VideoActionF extends BottomSheetDialogFragment implements View.OnCl
                 Intent sendIntent = new Intent("android.intent.action.MAIN");
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_TEXT, videoLink);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, link);
                 sendIntent.setPackage("com.whatsapp");
                 startActivity(sendIntent);
             } catch(Exception e) {
@@ -457,7 +490,7 @@ public class VideoActionF extends BottomSheetDialogFragment implements View.OnCl
                 Intent sendIntent = new Intent("android.intent.action.MAIN");
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_TEXT, videoLink);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, link);
                 sendIntent.setPackage("com.facebook.katana");
                 startActivity(sendIntent);
             } catch(Exception e) {
@@ -471,7 +504,7 @@ public class VideoActionF extends BottomSheetDialogFragment implements View.OnCl
                 Intent sendIntent = new Intent("android.intent.action.MAIN");
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_TEXT, videoLink);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, link);
                 sendIntent.setPackage("com.facebook.orca");
                 startActivity(sendIntent);
             } catch(Exception e) {
@@ -484,7 +517,7 @@ public class VideoActionF extends BottomSheetDialogFragment implements View.OnCl
             try {
                 Intent smsIntent = new Intent(Intent.ACTION_VIEW);
                 smsIntent.setType("vnd.android-dir/mms-sms");
-                smsIntent.putExtra("sms_body",""+videoLink);
+                smsIntent.putExtra("sms_body",""+link);
                 startActivity(smsIntent);
             } catch(Exception e) {
                 Log.d(Constants.tag,"Exception : "+e);
@@ -495,7 +528,7 @@ public class VideoActionF extends BottomSheetDialogFragment implements View.OnCl
         {
             try {
                 ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("Copied Text", videoLink);
+                ClipData clip = ClipData.newPlainText("Copied Text", link);
                 clipboard.setPrimaryClip(clip);
 
                 Toast.makeText(context, context.getString(R.string.link_copy_in_clipboard), Toast.LENGTH_SHORT).show();
@@ -510,7 +543,7 @@ public class VideoActionF extends BottomSheetDialogFragment implements View.OnCl
                 Intent sendIntent = new Intent("android.intent.action.MAIN");
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_TEXT, videoLink);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, link);
                 sendIntent.setPackage("com.google.android.gm");
                 startActivity(sendIntent);
             } catch(Exception e) {
@@ -524,7 +557,7 @@ public class VideoActionF extends BottomSheetDialogFragment implements View.OnCl
                 Intent sendIntent = new Intent("android.intent.action.MAIN");
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_TEXT, videoLink);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, link);
                 startActivity(sendIntent);
             } catch(Exception e) {
                 Log.d(Constants.tag,"Exception : "+e);
@@ -688,11 +721,7 @@ public class VideoActionF extends BottomSheetDialogFragment implements View.OnCl
                 break;
 
             case R.id.copy_layout:
-                ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("Copied Text", Constants.BASE_URL + "?" + Functions.getRandomString(3) + videoId + Functions.getRandomString(3));
-                clipboard.setPrimaryClip(clip);
-
-                Toast.makeText(context, context.getString(R.string.link_copy_in_clipboard), Toast.LENGTH_SHORT).show();
+                generateShareLink(null);
                 break;
 
             case R.id.delete_layout:

@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.thecroakers.app.Adapters.ProfileSharingAdapter;
+import com.thecroakers.app.ApiClasses.ApiLinks;
 import com.thecroakers.app.Constants;
 import com.thecroakers.app.Interfaces.AdapterClickListener;
 import com.thecroakers.app.Interfaces.FragmentCallBack;
@@ -26,6 +27,10 @@ import com.thecroakers.app.Models.ShareAppModel;
 import com.thecroakers.app.R;
 import com.thecroakers.app.SimpleClasses.Functions;
 import com.thecroakers.app.SimpleClasses.Variables;
+import com.volley.plus.VPackages.VolleyRequest;
+import com.volley.plus.interfaces.Callback;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -41,6 +46,7 @@ public class ShareAndViewProfileF extends BottomSheetDialogFragment implements V
     TextView bottomBtn;
     String picUrl="";
     SimpleDraweeView userImage;
+    String link;
 
     public ShareAndViewProfileF() {
     }
@@ -85,23 +91,52 @@ public class ShareAndViewProfileF extends BottomSheetDialogFragment implements V
         adapter = new ProfileSharingAdapter(context, getAppShareDataList(), new AdapterClickListener() {
             @Override
             public void onItemClick(View view, int pos, Object object) {
-                ShareAppModel item= (ShareAppModel) object;
-
-                shareProfile(item);
+                ShareAppModel item = (ShareAppModel) object;
+                generateShareLink(item);
             }
         });recyclerView.setAdapter(adapter);
+    }
 
+    public void generateShareLink(ShareAppModel item) {
+        JSONObject parameters = new JSONObject();
+        try {
+            parameters.put("type", "user");
+            parameters.put("entity_id", userId);
+            parameters.put("user_id", Functions.getSharedPreference(getActivity()).getString(Variables.U_ID,""));
+            parameters.put("device_id", Functions.getSharedPreference(getActivity()).getString(Variables.DEVICE_ID,""));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        VolleyRequest.JsonPostRequest(ShareAndViewProfileF.this.getActivity(), ApiLinks.generateShareLink, parameters, Functions.getHeaders(context), new Callback() {
+            @Override
+            public void onResponce(String resp) {
+                Functions.checkStatus(ShareAndViewProfileF.this.getActivity(), resp);
+                try {
+                    JSONObject jsonObject = new JSONObject(resp);
+                    String code = jsonObject.optString("code");
+                    if (code.equals("200")) {
+                        String shareLink = jsonObject.optString("msg");
+                        link = Constants.BASE_URL+shareLink;
+                        shareProfile(item);
+                    } else {
+                        Functions.showToast(context, jsonObject.optString("msg"));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public void shareProfile(ShareAppModel item) {
-        String profileLink = Variables.http+"://"+getString(R.string.share_profile_domain_second)+getString(R.string.share_profile_endpoint_second) + Functions.getSharedPreference(getActivity()).getString(Variables.U_ID,"");
+        //String profileLink = Variables.http+"://"+getString(R.string.share_profile_domain_second)+getString(R.string.share_profile_endpoint_second) + Functions.getSharedPreference(getActivity()).getString(Variables.U_ID,"");
         if (item.getName().equalsIgnoreCase(view.getContext().getString(R.string.whatsapp))) {
             try {
                 Intent sendIntent = new Intent("android.intent.action.MAIN");
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_TEXT, profileLink);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, link);
                 sendIntent.setPackage("com.whatsapp");
                 startActivity(sendIntent);
             } catch(Exception e) {
@@ -112,7 +147,7 @@ public class ShareAndViewProfileF extends BottomSheetDialogFragment implements V
                 Intent sendIntent = new Intent("android.intent.action.MAIN");
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_TEXT, profileLink);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, link);
                 sendIntent.setPackage("com.facebook.katana");
                 startActivity(sendIntent);
             } catch(Exception e) {
@@ -123,7 +158,7 @@ public class ShareAndViewProfileF extends BottomSheetDialogFragment implements V
                 Intent sendIntent = new Intent("android.intent.action.MAIN");
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_TEXT, profileLink);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, link);
                 sendIntent.setPackage("com.facebook.orca");
                 startActivity(sendIntent);
             } catch(Exception e) {
@@ -133,7 +168,7 @@ public class ShareAndViewProfileF extends BottomSheetDialogFragment implements V
             try {
                 Intent smsIntent = new Intent(Intent.ACTION_VIEW);
                 smsIntent.setType("vnd.android-dir/mms-sms");
-                smsIntent.putExtra("sms_body",""+profileLink);
+                smsIntent.putExtra("sms_body",""+link);
                 startActivity(smsIntent);
             } catch(Exception e) {
                 Log.d(Constants.tag,"Exception : "+e);
@@ -141,7 +176,7 @@ public class ShareAndViewProfileF extends BottomSheetDialogFragment implements V
         } else if (item.getName().equalsIgnoreCase(view.getContext().getString(R.string.copy_link))) {
             try {
                 ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("Copied Text", profileLink);
+                ClipData clip = ClipData.newPlainText("Copied Text", link);
                 clipboard.setPrimaryClip(clip);
 
                 Toast.makeText(context, context.getString(R.string.link_copy_in_clipboard), Toast.LENGTH_SHORT).show();
@@ -153,7 +188,7 @@ public class ShareAndViewProfileF extends BottomSheetDialogFragment implements V
                 Intent sendIntent = new Intent("android.intent.action.MAIN");
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_TEXT, profileLink);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, link);
                 sendIntent.setPackage("com.google.android.gm");
                 startActivity(sendIntent);
             } catch(Exception e) {
@@ -164,7 +199,7 @@ public class ShareAndViewProfileF extends BottomSheetDialogFragment implements V
                 Intent sendIntent = new Intent("android.intent.action.MAIN");
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_TEXT, profileLink);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, link);
                 startActivity(sendIntent);
             } catch(Exception e) {
                 Log.d(Constants.tag,"Exception : "+e);

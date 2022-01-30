@@ -74,6 +74,7 @@ public class ShareItemViaIntentA extends BottomSheetDialogFragment implements Vi
 
 
 
+
     public void shareProfile(ShareAppModel item) {
         File file = new File(Functions.getAppFolder(getActivity())+"Screenshots","QrScreenshot.png");
         Uri uri = FileProvider.getUriForFile(getActivity(), getActivity().getPackageName() + ".fileprovider", file);
