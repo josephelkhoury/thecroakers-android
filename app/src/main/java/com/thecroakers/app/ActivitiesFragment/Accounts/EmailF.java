@@ -40,6 +40,7 @@ import com.thecroakers.app.SimpleClasses.DataParsing;
 import com.thecroakers.app.SimpleClasses.Functions;
 import com.thecroakers.app.SimpleClasses.Variables;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -70,7 +71,6 @@ public class EmailF extends Fragment implements View.OnClickListener {
         this.userRegisterModel = userRegisterModel;
         this.fromWhere = fromWhere;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -228,24 +228,12 @@ public class EmailF extends Fragment implements View.OnClickListener {
                         Functions.printLog(Constants.tag,"next button Login");
                         callApiForLogin();
                     } else {
-                        if (chBox.isChecked())
-                        {
-                            VerifySignupEmailF fragment = new VerifySignupEmailF();
-                            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                            transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
-                            Bundle bundle = new Bundle();
-                            userRegisterModel.email = emailEdit.getText().toString();
-                            bundle.putSerializable("user_model", userRegisterModel);
-                            fragment.setArguments(bundle);
-                            transaction.addToBackStack(null);
-                            transaction.replace(R.id.sign_up_fragment, fragment).commit();
-                        }
-                        else
-                        {
+                        if (chBox.isChecked()) {
+                            callApiCodeVerification();
+                        } else {
                             loginTermsConditionTxt.setError(view.getContext().getString(R.string.please_confirm_terms_and_condition));
                             loginTermsConditionTxt.setTextColor(ContextCompat.getColor(view.getContext(),R.color.redcolor));
                         }
-
                     }
                 }
                 break;
@@ -256,10 +244,48 @@ public class EmailF extends Fragment implements View.OnClickListener {
 
     }
 
+    // this method will call the api for code verification
+    private void callApiCodeVerification() {
+        JSONObject parameters = new JSONObject();
+        try {
+            parameters.put("email", emailEdit.getText().toString());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Functions.showLoader(getActivity(), false, false);
+        VolleyRequest.JsonPostRequest(getActivity(), ApiLinks.verifyRegisterEmailCode, parameters,Functions.getHeaders(getActivity()), new Callback() {
+            @Override
+            public void onResponce(String resp) {
+                Functions.checkStatus(getActivity(),resp);
+                Functions.cancelLoader();
+                try {
+                    JSONObject jsonObject = new JSONObject(resp);
+                    String code = jsonObject.optString("code");
+                    if (code.equals("200")) {
+                        VerifySignupEmailF fragment = new VerifySignupEmailF();
+                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
+                        Bundle bundle = new Bundle();
+                        userRegisterModel.email = emailEdit.getText().toString();
+                        bundle.putSerializable("user_model", userRegisterModel);
+                        fragment.setArguments(bundle);
+                        transaction.addToBackStack(null);
+                        transaction.replace(R.id.sign_up_fragment, fragment).commit();
+                    } else {
+                        Functions.showToast(getContext(), jsonObject.optString("msg"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     private void callApiForLogin() {
         JSONObject parameters = new JSONObject();
         try {
-
             parameters.put("email", emailEdit.getText().toString());
             parameters.put("password", "" + passwordEdt.getText().toString());
         } catch (Exception e) {
@@ -273,10 +299,8 @@ public class EmailF extends Fragment implements View.OnClickListener {
                 Functions.checkStatus(getActivity(),resp);
                 Functions.cancelLoader();
                 parseLoginData(resp);
-
             }
         });
-
     }
 
     public void parseLoginData(String loginData) {

@@ -1195,7 +1195,7 @@ public class Functions {
 
     //store single account record
     public static void setUpMultipleAccount(Context context) {
-        MultipleAccountModel accountModel=new MultipleAccountModel();
+        MultipleAccountModel accountModel = new MultipleAccountModel();
         accountModel.setId(Functions.getSharedPreference(context).getString(Variables.U_ID, "0"));
         accountModel.setfName(Functions.getSharedPreference(context).getString(Variables.F_NAME, ""));
         accountModel.setlName(Functions.getSharedPreference(context).getString(Variables.L_NAME, ""));
@@ -1206,6 +1206,7 @@ public class Functions {
         accountModel.setEmail(Functions.getSharedPreference(context).getString(Variables.U_EMAIL, ""));
         accountModel.setSocialId(Functions.getSharedPreference(context).getString(Variables.U_SOCIAL_ID, ""));
         accountModel.setGender(Functions.getSharedPreference(context).getString(Variables.GENDER, ""));
+        accountModel.setRole(Functions.getSharedPreference(context).getString(Variables.U_ROLE, ""));
         accountModel.setuPic(Functions.getSharedPreference(context).getString(Variables.U_PIC, ""));
         accountModel.setuWallet(Functions.getSharedPreference(context).getString(Variables.U_WALLET, "0"));
         accountModel.setuPayoutId(Functions.getSharedPreference(context).getString(Variables.U_PAYOUT_ID, ""));
@@ -1223,8 +1224,7 @@ public class Functions {
     }
 
     //store single account record
-    public static void setUpNewSelectedAccount(Context context,MultipleAccountModel item) {
-
+    public static void setUpNewSelectedAccount(Context context, MultipleAccountModel item) {
         SharedPreferences.Editor editor = getSharedPreference(context).edit();
         editor.putString(Variables.U_ID, item.getId());
         editor.putString(Variables.F_NAME, item.getfName());
@@ -1236,6 +1236,7 @@ public class Functions {
         editor.putString(Variables.U_EMAIL, item.getEmail());
         editor.putString(Variables.U_SOCIAL_ID, item.getSocialId());
         editor.putString(Variables.GENDER, item.getGender());
+        editor.putString(Variables.U_ROLE, item.getRole());
         editor.putString(Variables.U_PIC, item.getuPic());
         editor.putString(Variables.U_WALLET, item.getuWallet());
         editor.putString(Variables.U_PAYOUT_ID, item.getuPayoutId());
@@ -1250,11 +1251,11 @@ public class Functions {
         context.startActivity(intent);
     }
 
-    // use this method for lod muliple account in case one one account logout and other one can logout
+    // use this method for lod multiple account in case one one account logout and other one can logout
     public static void setUpExistingAccountLogin(Context context) {
         if (!(Functions.getSharedPreference(context).getBoolean(Variables.IS_LOGIN, false))) {
             if (Paper.book(Variables.MultiAccountKey).getAllKeys().size()>0) {
-                MultipleAccountModel account=Paper.book(Variables.MultiAccountKey).read(Paper.book(Variables.MultiAccountKey).getAllKeys().get(0));
+                MultipleAccountModel account = Paper.book(Variables.MultiAccountKey).read(Paper.book(Variables.MultiAccountKey).getAllKeys().get(0));
                 setUpNewSelectedAccount(context,account);
             }
         }
@@ -1263,7 +1264,7 @@ public class Functions {
 
     public static void setUpSwitchOtherAccount(Context context,String userId) {
         for(String key:Paper.book(Variables.MultiAccountKey).getAllKeys()) {
-            MultipleAccountModel account=Paper.book(Variables.MultiAccountKey).read(key);
+            MultipleAccountModel account = Paper.book(Variables.MultiAccountKey).read(key);
             if (userId.equalsIgnoreCase(account.getId())) {
                 setUpNewSelectedAccount(context,account);
                 return;

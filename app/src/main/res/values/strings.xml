@@ -75,7 +75,7 @@
     <string name="live_users">Live Users</string>
     <string name="no_other_user_is_live_at_that_time_n_click_of_go_live_for_live_video_streaming">No other user is live at that time.\n click of \'Go Live\' for live video streaming.</string>
     <string name="notifications">Notifications</string>
-    <string name="enter_4_digit_code">Enter 4 digit Code</string>
+    <string name="enter_4_digit_code">Enter the 4 digits code that was sent to your email address</string>
     <string name="your_code_was_sent_to">Your code was sent to</string>
     <string name="reset">Reset</string>
     <string name="forgot_password">Forgot password</string>
@@ -94,7 +94,7 @@
     <string name="continue_with_facebook">Continue With Facebook</string>
     <string name="continue_with_google">Continue With Google</string>
     <string name="don_t_have_a_account">Don\'t have a account?</string>
-    <string name="by_signing_up_you_confirm_that_you_agree_to_our_terms_of_nuse_and_have_read_and_understood_our_privacy_policy_nif_you_signup_with_sms_sms_fee_may_apply">By signing up, you confirm that you agree to our \nTerms of Use and have read and understood \nour Privacy Policy.\nif you signup with SMS. SMS fee may apply</string>
+    <string name="by_signing_up_you_confirm_that_you_agree_to_our_terms_of_nuse_and_have_read_and_understood_our_privacy_policy_nif_you_signup_with_sms_sms_fee_may_apply">By signing up, you confirm that you agree to our \nTerms of Use and have read and understood \nour Privacy Policy.</string>
     <string name="send_code">Send Code</string>
     <string name="inbox">Inbox</string>
     <string name="didn_t_get_a_code_request_phone_call">Didn\'t get a code? Request phone call</string>

@@ -44,12 +44,11 @@ public class VerifySignupEmailF extends Fragment implements View.OnClickListener
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view= inflater.inflate(R.layout.fragment_verify_signup_email, container, false);
+        view = inflater.inflate(R.layout.fragment_verify_signup_email, container, false);
         Bundle bundle = getArguments();
         userRegisterModel = (UserRegisterModel) bundle.getSerializable("user_model");
         sharedPreferences = Functions.getSharedPreference(getContext());
@@ -57,14 +56,10 @@ public class VerifySignupEmailF extends Fragment implements View.OnClickListener
         initViews();
         addClicklistner();
 
-        callApiCodeVerification(false);
-
-
         etCode.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
@@ -131,18 +126,14 @@ public class VerifySignupEmailF extends Fragment implements View.OnClickListener
 
     }
 
-    // this method will call the api for code varification
+    // this method will call the api for code verification
     private void callApiCodeVerification(boolean isVerify) {
         JSONObject parameters = new JSONObject();
         try {
-
-            if(isVerify)
-            {
+            if (isVerify) {
                 parameters.put("email", userRegisterModel.email);
                 parameters.put("code", etCode.getText().toString());
-            }
-            else
-            {
+            } else {
                 parameters.put("email", userRegisterModel.email);
             }
 
@@ -157,12 +148,12 @@ public class VerifySignupEmailF extends Fragment implements View.OnClickListener
             public void onResponce(String resp) {
                 Functions.checkStatus(getActivity(),resp);
                 Functions.cancelLoader();
-                parseOptData(resp,isVerify);
+                parseOptData(resp, isVerify);
             }
         });
     }
 
-    // this method will parse the api responce
+    // this method will parse the api response
     public void parseOptData(String loginData,boolean isVerify) {
         try {
             JSONObject jsonObject = new JSONObject(loginData);
@@ -186,7 +177,6 @@ public class VerifySignupEmailF extends Fragment implements View.OnClickListener
         }
     }
 
-
     private void openCreatePasswordF() {
         CreatePasswordF create_password_f = new CreatePasswordF("fromEmail");
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -196,9 +186,7 @@ public class VerifySignupEmailF extends Fragment implements View.OnClickListener
         create_password_f.setArguments(bundle);
         transaction.addToBackStack(null);
         transaction.replace(R.id.email_verify_container, create_password_f).commit();
-
     }
-
 
     @Override
     public void onClick(View view) {

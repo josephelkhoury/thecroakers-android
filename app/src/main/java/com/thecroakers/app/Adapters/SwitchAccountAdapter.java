@@ -61,15 +61,10 @@ public class SwitchAccountAdapter extends RecyclerView.Adapter<SwitchAccountAdap
         holder.bind(position, model, click);
     }
 
-
-
     @Override
     public int getItemCount() {
         return list.size();
     }
-
-
-
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -88,7 +83,6 @@ public class SwitchAccountAdapter extends RecyclerView.Adapter<SwitchAccountAdap
             mainLayout=itemView.findViewById(R.id.mainLayout);
         }
 
-
         public void bind(final int pos, final Object model,
                          final AdapterClickListener listener) {
             mainLayout.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +90,6 @@ public class SwitchAccountAdapter extends RecyclerView.Adapter<SwitchAccountAdap
                 public void onClick(View v) {
                     listener.onItemClick(v,pos,model);
                 }
-
             });
 
         }

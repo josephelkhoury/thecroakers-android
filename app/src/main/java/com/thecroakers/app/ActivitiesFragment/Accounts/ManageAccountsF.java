@@ -95,7 +95,7 @@ public class ManageAccountsF extends BottomSheetDialogFragment implements View.O
         {
             for (String key: Paper.book(Variables.MultiAccountKey).getAllKeys())
             {
-                MultipleAccountModel item=Paper.book(Variables.MultiAccountKey).read(key);
+                MultipleAccountModel item = Paper.book(Variables.MultiAccountKey).read(key);
                 if (item.getId().equalsIgnoreCase(Functions.getSharedPreference(view.getContext()).getString(Variables.U_ID, "")))
                 {
                     item.setCheck(true);
@@ -127,7 +127,7 @@ public class ManageAccountsF extends BottomSheetDialogFragment implements View.O
     }
 
     private void openAddNewAccount() {
-        Bundle bundle=new Bundle();
+        Bundle bundle = new Bundle();
         bundle.putBoolean("isShow",true);
         callback.onResponse(bundle);
         dismiss();

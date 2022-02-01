@@ -169,7 +169,6 @@ public class LoginA extends AppCompatActivity implements View.OnClickListener {
                 Loginwith_FB();
                 break;
         }
-
     }
 
     public void openPrivacyPolicy() {
@@ -212,9 +211,8 @@ public class LoginA extends AppCompatActivity implements View.OnClickListener {
     // Bottom two function are related to Fb implimentation
     private CallbackManager mCallbackManager;
 
-    //facebook implimentation
+    //facebook implementation
     public void Loginwith_FB() {
-
         try {
             LoginManager.getInstance().logOut();
         } catch (Exception e){}
@@ -241,10 +239,7 @@ public class LoginA extends AppCompatActivity implements View.OnClickListener {
                 Functions.printLog("resp", "" + error.toString());
                 Functions.showToast(LoginA.this, getString(R.string.login_error) + error.toString());
             }
-
         });
-
-
     }
 
     private void handleFacebookAccessToken(final AccessToken token) {
