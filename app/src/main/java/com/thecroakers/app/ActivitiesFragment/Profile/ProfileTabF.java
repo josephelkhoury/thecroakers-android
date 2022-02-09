@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.android.exoplayer2.util.Log;
 import com.thecroakers.app.ActivitiesFragment.Accounts.LoginA;
 import com.thecroakers.app.ActivitiesFragment.Accounts.ManageAccountsF;
 import com.thecroakers.app.ActivitiesFragment.LiveStreaming.activities.StreamingMain_A;
@@ -71,12 +72,12 @@ import io.paperdb.Paper;
 public class ProfileTabF extends RootFragment implements View.OnClickListener {
     View view;
     Context context;
-    private TextView username, username2Txt,tvBio,tvLink,tvEditProfile;
+    private TextView username, username2Txt, tvBio, tvLink, tvEditProfile, tvLocation;
     private SimpleDraweeView imageView;
     private TextView followCountTxt, fansCountTxt, heartCountTxt;
     String totalLikes = "";
-    private LinearLayout tabAccount,tabLink;
-    ImageView settingBtn,favBtn;
+    private LinearLayout tabAccount, tabLink, tabLocation;
+    ImageView settingBtn, favBtn;
 
     protected TabLayout tabLayout;
 
@@ -175,7 +176,7 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
     }
 
     private void openInviteFriends() {
-        Intent intent=new Intent(view.getContext(), InviteFriendsA.class);
+        Intent intent = new Intent(view.getContext(), InviteFriendsA.class);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
     }
@@ -186,12 +187,10 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
             @Override
             public void onResponse(Bundle bundle) {
                 if (bundle.getString("action").equals("profileShareMessage")) {
-                    if (Functions.checkLoginUser(getActivity()))
-                    {
+                    if (Functions.checkLoginUser(getActivity())) {
                         // firebase sharing
                     }
                 }
-
             }
         });
         fragment.show(getChildFragmentManager(), "");
@@ -218,7 +217,7 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
     }
 
     public void openWebUrl(String title, String url) {
-        Intent intent=new Intent(view.getContext(), WebviewA.class);
+        Intent intent = new Intent(view.getContext(), WebviewA.class);
         intent.putExtra("url", url);
         intent.putExtra("title", title);
         startActivity(intent);
@@ -229,8 +228,7 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
         ManageAccountsF f = new ManageAccountsF(new FragmentCallBack() {
             @Override
             public void onResponse(Bundle bundle) {
-                if (bundle.getBoolean("isShow",false))
-                {
+                if (bundle.getBoolean("isShow",false)) {
                     Functions.hideSoftKeyboard(getActivity());
                     Intent intent = new Intent(getActivity(), LoginA.class);
                     startActivity(intent);
@@ -255,7 +253,6 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
                 }
             }, 200);
         }
-
     }
 
     @Override
@@ -272,6 +269,7 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
         username2Txt = view.findViewById(R.id.username2_txt);
         tvLink = view.findViewById(R.id.tvLink);
         tvBio = view.findViewById(R.id.tvBio);
+        tvLocation = view.findViewById(R.id.tvLocation);
         imageView = view.findViewById(R.id.user_image);
         imageView.setOnClickListener(this);
 
@@ -281,22 +279,24 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
 
         showDraftCount();
 
-        tvEditProfile=view.findViewById(R.id.edit_profile_btn);
+        tvEditProfile = view.findViewById(R.id.edit_profile_btn);
         tvEditProfile.setOnClickListener(this);
 
-        tabAccount=view.findViewById(R.id.tabAccount);
+        tabAccount = view.findViewById(R.id.tabAccount);
         tabAccount.setOnClickListener(this);
 
-        tabLink=view.findViewById(R.id.tabLink);
+        tabLink = view.findViewById(R.id.tabLink);
         tabLink.setOnClickListener(this);
+
+        tabLocation = view.findViewById(R.id.tabLocation);
 
         settingBtn = view.findViewById(R.id.message_btn);
         settingBtn.setOnClickListener(this);
 
-        favBtn=view.findViewById(R.id.favBtn);
+        favBtn = view.findViewById(R.id.favBtn);
         favBtn.setOnClickListener(this);
 
-        tabPrivacyLikes=view.findViewById(R.id.tabPrivacyLikes);
+        tabPrivacyLikes = view.findViewById(R.id.tabPrivacyLikes);
         tabPrivacyLikes.setOnClickListener(this);
 
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
@@ -323,7 +323,7 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
             File directory = new File(path);
             File[] files = directory.listFiles();
             if (files.length <= 0) {
-                //draf gone
+                //draft gone
             } else {
                //draf visible
             }
@@ -343,24 +343,25 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
             username.setText(firstName + " " + lastName);
         }
 
-        if (TextUtils.isEmpty(Functions.getSharedPreference(context).getString(Variables.U_BIO, "")))
-        {
+        if (TextUtils.isEmpty(Functions.getSharedPreference(context).getString(Variables.U_BIO, ""))) {
             tvBio.setVisibility(View.GONE);
-        }
-        else
-        {
+        } else {
             tvBio.setVisibility(View.VISIBLE);
             tvBio.setText(Functions.getSharedPreference(context).getString(Variables.U_BIO, ""));
         }
 
-        if (TextUtils.isEmpty(Functions.getSharedPreference(context).getString(Variables.U_LINK, "")))
-        {
+        if (TextUtils.isEmpty(Functions.getSharedPreference(context).getString(Variables.U_LINK, ""))) {
             tabLink.setVisibility(View.GONE);
-        }
-        else
-        {
+        } else {
             tabLink.setVisibility(View.VISIBLE);
             tvLink.setText(Functions.getSharedPreference(context).getString(Variables.U_LINK, ""));
+        }
+
+        if (TextUtils.isEmpty(Functions.getSharedPreference(context).getString(Variables.U_COUNTRY, ""))) {
+            tabLocation.setVisibility(View.GONE);
+        } else {
+            tabLocation.setVisibility(View.VISIBLE);
+            tvLocation.setText(Functions.getSharedPreference(context).getString(Variables.U_COUNTRY, ""));
         }
 
         picUrl = Functions.getSharedPreference(context).getString(Variables.U_PIC, "null");
@@ -504,7 +505,6 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
             super.destroyItem(container, position, object);
         }
 
-
         /**
          * Get the Fragment by position
          *
@@ -514,8 +514,6 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
         public Fragment getRegisteredFragment(int position) {
             return registeredFragments.get(position);
         }
-
-
     }
 
 
@@ -537,15 +535,11 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
                 parseData(resp);
             }
         });
-
-
     }
 
-    public void parseData(String responce) {
-
-
+    public void parseData(String response) {
         try {
-            JSONObject jsonObject = new JSONObject(responce);
+            JSONObject jsonObject = new JSONObject(response);
             String code = jsonObject.optString("code");
             if (code.equals("200")) {
 
@@ -553,8 +547,9 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
                 JSONObject msg = jsonObject.optJSONObject("msg");
                 JSONObject pushNotificationSetting = msg.optJSONObject("PushNotification");
                 JSONObject privacyPolicySetting = msg.optJSONObject("PrivacySetting");
+                JSONObject country = msg.optJSONObject("Country");
 
-                UserModel userDetailModel= DataParsing.getUserDataModel(msg.optJSONObject("User"));
+                UserModel userDetailModel = DataParsing.getUserDataModel(msg.optJSONObject("User"));
 
                 pushNotificationSettingModel = new PushNotificationSettingModel();
                 if (pushNotificationSetting != null) {
@@ -584,21 +579,23 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
                 if (TextUtils.isEmpty(userDetailModel.getBio()))
                 {
                     tvBio.setVisibility(View.GONE);
-                }
-                else
-                {
+                } else {
                     tvBio.setVisibility(View.VISIBLE);
                     tvBio.setText(userDetailModel.getBio());
                 }
 
-                if (TextUtils.isEmpty(userDetailModel.getWebsite()))
-                {
+                if (TextUtils.isEmpty(userDetailModel.getWebsite())) {
                     tabLink.setVisibility(View.GONE);
-                }
-                else
-                {
+                } else {
                     tabLink.setVisibility(View.VISIBLE);
                     tvLink.setText(userDetailModel.getWebsite());
+                }
+
+                if (country == null || TextUtils.isEmpty(country.optString("name")) || TextUtils.isEmpty(country.optString("null"))) {
+                    tabLocation.setVisibility(View.GONE);
+                } else {
+                    tabLocation.setVisibility(View.VISIBLE);
+                    tvLocation.setText(country.optString("name"));
                 }
 
                 String firstName = userDetailModel.getFirstName();
@@ -619,12 +616,12 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
                 editor.putString(Variables.U_WALLET, ""+userDetailModel.getWallet());
                 editor.commit();
 
-                followingCount=userDetailModel.getFollowingCount();
-                followerCount=userDetailModel.getFollowersCount();
+                followingCount = userDetailModel.getFollowingCount();
+                followerCount = userDetailModel.getFollowersCount();
                 followCountTxt.setText(followingCount);
                 fansCountTxt.setText(followerCount);
 
-                totalLikes=userDetailModel.getLikesCount();
+                totalLikes = userDetailModel.getLikesCount();
                 heartCountTxt.setText(totalLikes);
 
                 myvideoCount = Functions.parseInterger(userDetailModel.getVideoCount());
@@ -633,19 +630,15 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
                     createPopupLayout.setVisibility(View.GONE);
                     createPopupLayout.clearAnimation();
                 } else {
-
                     createPopupLayout.setVisibility(View.VISIBLE);
                     Animation aniRotate = AnimationUtils.loadAnimation(context, R.anim.up_and_down_animation);
                     createPopupLayout.startAnimation(aniRotate);
-
                 }
 
                 String verified = userDetailModel.getVerified();
                 if (verified != null && verified.equalsIgnoreCase("1")) {
                     view.findViewById(R.id.verified_btn).setVisibility(View.VISIBLE);
                 }
-
-
             } else {
                 Functions.showToast(getActivity(), jsonObject.optString("msg"));
             }
@@ -653,12 +646,10 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
-
     private void openEditProfile() {
-        Intent intent=new Intent(view.getContext(),EditProfileA.class);
+        Intent intent = new Intent(view.getContext(),EditProfileA.class);
         resultCallback.launch(intent);
         getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
     }
@@ -669,11 +660,9 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
-                        if (data.getBooleanExtra("isShow",false))
-                        {
+                        if (data.getBooleanExtra("isShow",false)) {
                             updateProfile();
                         }
-
                     }
                 }
             });
@@ -696,10 +685,7 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
         intent.putExtra("followerCount",""+followerCount);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-
-
     }
-
 
     // open the followers fragment
     private void openFollowers() {
@@ -715,8 +701,6 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
 
     // this will erase all the user info store in locally and logout the user
 
-
-
     // open the live streaming
     public void openTicticLive(String user_id, String user_name, String user_image, int role) {
         Intent intent = new Intent(getActivity(), StreamingMain_A.class);
@@ -727,8 +711,6 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
         startActivity(intent);
     }
 
-
-
     private ActivityResultLauncher<String[]> mPermissionResult = registerForActivityResult(
             new ActivityResultContracts.RequestMultiplePermissions(), new ActivityResultCallback<Map<String, Boolean>>() {
                 @RequiresApi(api = Build.VERSION_CODES.M)
@@ -737,28 +719,20 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
 
                     boolean allPermissionClear=true;
                     List<String> blockPermissionCheck=new ArrayList<>();
-                    for (String key : result.keySet())
-                    {
-                        if (!(result.get(key)))
-                        {
+                    for (String key : result.keySet()) {
+                        if (!(result.get(key))) {
                             allPermissionClear=false;
                             blockPermissionCheck.add(Functions.getPermissionStatus(getActivity(),key));
                         }
                     }
-                    if (blockPermissionCheck.contains("blocked"))
-                    {
+                    if (blockPermissionCheck.contains("blocked")) {
                         Functions.showPermissionSetting(view.getContext(),getString(R.string.we_need_camera_and_recording_permission_for_live_streaming));
-                    }
-                    else
-                    if (allPermissionClear)
-                    {
+                    } else if (allPermissionClear) {
                         goLive();
                     }
 
                 }
             });
-
-
 
     @Override
     public void onDetach() {
@@ -766,6 +740,4 @@ public class ProfileTabF extends RootFragment implements View.OnClickListener {
         Functions.deleteCache(context);
         mPermissionResult.unregister();
     }
-
-
 }

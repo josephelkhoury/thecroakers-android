@@ -5,9 +5,7 @@
     <string name="facebook_app_id" translatable="false">1042008916594737</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb(1042008916594737)</string>
 
-
-    <string name="google_web_client_id" translatable="false">google_auth_web_client_id</string>
-
+    <string name="google_web_client_id" translatable="false">77904546117-k0l0rjkril4smslka5qaccd90f5m30f0.apps.googleusercontent.com</string>
 
      <string name="gif_api_key" translatable="false">Ukj6qBm6fW8D5tv6LV6oCVwkJC7vnLsP</string>
 
@@ -427,7 +425,7 @@
     <string name="please_select_your_gender">Please select your gender</string>
     <string name="please_enter_last_name">Please enter last name</string>
     <string name="please_enter_first_name">Please enter first name</string>
-    <string name="username_length_between_valid">Username Length should be between 4 and 14</string>
+    <string name="username_length_between_valid">Username must be between 4 and 20 characters.</string>
     <string name="please_correct_user_name">Please enter correct username</string>
     <string name="this_user_has_not_publish_any_video">This user has not published any videos</string>
     <string name="your_private_video">Your private videos</string>
@@ -540,7 +538,7 @@
     <string name="verification">Verification</string>
     <string name="verification_instruction_one">A verified badge is check that appears next to an \n</string>
     <string name="verification_instruction_two">accounts name to indicate that the \naccount is the authentic presence of notable \npublic figure , celebrity, global brand or entity it \nrepresents.</string>
-    <string name="username_must_contain_alphabet">User name must contain alphabet</string>
+    <string name="username_must_contain_alphabet">Username contains invalid characters</string>
     <string name="trending_tab_1">Topics</string>
     <string name="trending_tab_2">Publishers</string>
     <string name="trending_tab_3">Croakers</string>

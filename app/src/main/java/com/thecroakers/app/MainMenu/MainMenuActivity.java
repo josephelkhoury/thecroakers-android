@@ -287,7 +287,6 @@ public class MainMenuActivity extends AppCompatActivity {
                         // Get new FCM registration token
                         String token = task.getResult();
                         Functions.getSharedPreference(MainMenuActivity.this).edit().putString(Variables.DEVICE_TOKEN, token).commit();
-
                     }
                 });
     }

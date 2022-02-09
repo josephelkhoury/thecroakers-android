@@ -145,11 +145,11 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
         oldSwipeValue = Constants.SHOW_AD_ON_EVERY;
 
         handler = new Handler(Looper.getMainLooper());
-        tvProgressCount=view.findViewById(R.id.tvProgressCount);
-        progressBar=view.findViewById(R.id.progressBar);
+        tvProgressCount = view.findViewById(R.id.tvProgressCount);
+        progressBar = view.findViewById(R.id.progressBar);
         followingBtn = view.findViewById(R.id.following_btn);
         relatedBtn = view.findViewById(R.id.related_btn);
-        tabNoFollower=view.findViewById(R.id.tabNoFollower);
+        tabNoFollower = view.findViewById(R.id.tabNoFollower);
         followingBtn.setOnClickListener(this);
         relatedBtn.setOnClickListener(this);
         liveUsers = view.findViewById(R.id.live_users);
@@ -204,7 +204,7 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
         }
 
         pagerSatetAdapter = new ViewPagerStatAdapter(getChildFragmentManager(),menuPager,isFirstTime,this::onResponse);
-        menuPager =  view.findViewById(R.id.viewpager);
+        menuPager = view.findViewById(R.id.viewpager);
         menuPager.setAdapter(pagerSatetAdapter);
         menuPager.setOffscreenPageLimit(1);
         menuPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -214,7 +214,7 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
 
             @Override
             public void onPageSelected(int position) {
-                if (position==0) {
+                if (position == 0) {
                     swiperefresh.setEnabled(true);
                 } else {
                     swiperefresh.setEnabled(false);
@@ -406,14 +406,14 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
                     }
 
                     @Override
-                    public void onSuccess(String responce) {
+                    public void onSuccess(String response) {
                         suggestionList.remove(position);
                         adapterSuggestion.notifyDataSetChanged();
                         callVideoApi();
                     }
 
                     @Override
-                    public void onFail(String responce) {
+                    public void onFail(String response) {
                     }
                 });
     }
@@ -561,13 +561,13 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
         }
     }
 
-    private static int callbackVideoLisCode=3292;
+    private static int callbackVideoLisCode = 3292;
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(Constants.tag,"Callback check : "+requestCode);
-        if (requestCode==callbackVideoLisCode) {
-            Bundle bundle=new Bundle();
+        if (requestCode == callbackVideoLisCode) {
+            Bundle bundle = new Bundle();
             bundle.putBoolean("isShow",true);
             VideosListF.videoListCallback.onResponse(bundle);
         }
@@ -587,11 +587,8 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
     public void hideCustomAd() {
         if (MainMenuFragment.tabLayout != null)
                 MainMenuFragment.tabLayout.setVisibility(View.VISIBLE);
-
             view.findViewById(R.id.top_btn_layout).setVisibility(View.VISIBLE);
     }
-
-
 
     // loader the ad and make it ready for show when 4 videos watched
     InterstitialAd mInterstitialAd;
@@ -606,18 +603,13 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
                 mInterstitialAd.loadAd(new AdRequest.Builder().build());
             }
         });
-
-
     }
-
 
     public void showAdd() {
         if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
             mInterstitialAd.show();
         }
     }
-
-
 
     // this will call when go to the home tab From other tab.
     // this is very importent when for video play and pause when the focus is changes
@@ -643,12 +635,8 @@ public class HomeF extends RootFragment implements View.OnClickListener, Fragmen
                     }
                 }
             },200);
-
         }
-
     }
-
-
 
     @Override
     public void onDestroy() {

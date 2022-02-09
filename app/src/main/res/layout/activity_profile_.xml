@@ -447,7 +447,34 @@
 
                                </LinearLayout>
 
+                               <LinearLayout
+                                   android:visibility="gone"
+                                   android:id="@+id/tabLocation"
+                                   android:layout_marginTop="@dimen/_8sdp"
+                                   android:layout_width="wrap_content"
+                                   android:layout_height="wrap_content"
+                                   android:orientation="horizontal"
+                                   android:gravity="center_vertical">
 
+                                   <ImageView
+                                       android:layout_width="@dimen/_16sdp"
+                                       android:layout_height="@dimen/_16sdp"
+                                       android:src="@drawable/ic_location" />
+
+                                   <TextView
+                                       android:layout_width="wrap_content"
+                                       android:layout_gravity="center"
+                                       android:gravity="center"
+                                       android:layout_height="wrap_content"
+                                       android:includeFontPadding="false"
+                                       android:layout_marginStart="@dimen/_4sdp"
+                                       android:layout_marginEnd="@dimen/_22sdp"
+                                       android:text=""
+                                       android:id="@+id/tvLocation"
+                                       android:textColor="@color/black"
+                                       android:textSize="@dimen/_10sdp" />
+
+                               </LinearLayout>
 
                            </LinearLayout>
 
@@ -494,8 +521,6 @@
                                            android:src="@drawable/ic_round_alert"
                                            android:layout_gravity="center"/>
 
-
-
                                    </LinearLayout>
 
                                    <LinearLayout
@@ -525,7 +550,6 @@
                                            android:src="@drawable/recv_ic_arrow"
                                            android:layout_gravity="center"/>
 
-
                                    </LinearLayout>
 
                                </RelativeLayout>
@@ -542,7 +566,7 @@
                                    android:id="@+id/tvNoSuggestionFound"
                                    android:layout_width="wrap_content"
                                    android:layout_height="wrap_content"
-                                  android:layout_marginTop="@dimen/_15sdp"
+                                   android:layout_marginTop="@dimen/_15sdp"
                                    android:layout_marginBottom="@dimen/_15sdp"
                                    android:layout_gravity="center"
                                    android:text="@string/no_suggested_account_found"

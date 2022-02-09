@@ -175,13 +175,11 @@ public class NotificationReceive extends FirebaseMessagingService {
         protected void onPostExecute(Bitmap result) {
             super.onPostExecute(result);
             // its for multiple account notification handling
-            if (Functions.getSharedPreference(getApplicationContext()).getString(Variables.U_ID,"").equalsIgnoreCase(userId))
-            {
+            if (Functions.getSharedPreference(getApplicationContext()).getString(Variables.U_ID,"").equalsIgnoreCase(userId)) {
 
                 showNotification(ctx, title, message, result);
 
                 if (MainMenuActivity.mainMenuActivity != null) {
-
 
                     if (snackbar != null) {
                         snackbar.getView().setVisibility(View.INVISIBLE);
@@ -191,7 +189,6 @@ public class NotificationReceive extends FirebaseMessagingService {
                     if (handler != null && runnable != null) {
                         handler.removeCallbacks(runnable);
                     }
-
 
                     View layout = MainMenuActivity.mainMenuActivity.getLayoutInflater().inflate(R.layout.item_layout_custom_notification, null);
                     TextView titletxt = layout.findViewById(R.id.username);

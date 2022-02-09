@@ -194,7 +194,7 @@ public class CreateUsernameF extends Fragment {
             usernameEdit.setFocusable(true);
             return false;
         }
-        if (uname.length() < 4 || uname.length() > 14) {
+        if (uname.length() < 4 || uname.length() > 20) {
             usernameEdit.setError(view.getContext().getString(R.string.username_length_between_valid));
             usernameEdit.setFocusable(true);
             return false;
@@ -209,7 +209,7 @@ public class CreateUsernameF extends Fragment {
     }
 
     private boolean UserNameTwoCaseValidate(String name) {
-        Pattern let_p = Pattern.compile("[a-z]", Pattern.CASE_INSENSITIVE);
+        Pattern let_p = Pattern.compile("[a-zA-Z0-9_]", Pattern.CASE_INSENSITIVE);
         Matcher let_m = let_p.matcher(name);
         boolean let_str = let_m.find();
 

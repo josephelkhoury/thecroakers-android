@@ -4,17 +4,16 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.thecroakers.app.Constants;
+import com.thecroakers.app.Models.CommentModel;
 import com.thecroakers.app.Models.UserModel;
 
 import org.json.JSONObject;
 
 public class DataParsing {
 
-
     public static UserModel getUserDataModel(JSONObject user)
     {
-
-        UserModel model=new UserModel();
+        UserModel model = new UserModel();
         try {
             model.setId(user.optString("id"));
             model.setFirstName(user.optString("first_name"));
@@ -48,7 +47,11 @@ public class DataParsing {
             model.setDevice(user.optString("device"));
             model.setIp(user.optString("ip"));
             model.setCity(user.optString("city"));
-            model.setCountry(user.optString("country"));
+
+            JSONObject country = user.optJSONObject("Country");
+            if (country != null)
+                model.setCountry(country.optString("name"));
+
             model.setCityId(user.optString("city_id"));
             model.setStateId(user.optString("state_id"));
             model.setCountryId(user.optString("country_id"));
@@ -63,9 +66,32 @@ public class DataParsing {
             model.setVideoCount(user.optString("video_count","0"));
             model.setNotification(user.optString("notification","1"));
             model.setButton(user.optString("button"));
+        } catch (Exception e) {
+            Log.d(Constants.tag,"Exception : "+e);
         }
-        catch (Exception e)
-        {
+
+        return model;
+    }
+
+    public static CommentModel getCommentDataModel(JSONObject comment, UserModel user) {
+        CommentModel model = new CommentModel();
+
+        try {
+            if (user == null)
+                user = DataParsing.getUserDataModel(comment.optJSONObject("User"));
+
+            model.id = comment.optString("id");
+            model.comment_id = comment.optString("comment_id");
+            model.like_count = comment.optString("like_count");
+            model.liked = comment.optString("like");
+            model.comments = comment.optString("comment");
+            model.created = comment.optString("created");
+
+            model.user_id = user.getId();
+            model.user_name = user.getUsername();
+            model.profile_pic = user.getProfilePic();
+            //model.parent_comment_id = comment.optString("id");
+        } catch (Exception e) {
             Log.d(Constants.tag,"Exception : "+e);
         }
 

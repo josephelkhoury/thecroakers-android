@@ -89,13 +89,13 @@
                     android:layout_marginTop="@dimen/_15sdp">
 
                     <EditText
-                        android:layout_toStartOf="@+id/username_count_txt"
                         android:id="@+id/username_edit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
+                        android:layout_toStartOf="@+id/username_count_txt"
                         android:backgroundTint="@color/transparent"
-                        android:digits="0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"
+                        android:digits="0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz_."
                         android:hint="@string/username"
                         android:inputType="text"
                         android:textColor="@color/black"

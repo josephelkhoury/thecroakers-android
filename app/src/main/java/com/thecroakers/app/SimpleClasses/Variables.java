@@ -58,6 +58,7 @@ public class Variables {
     public static final String DEFAULT_LANGUAGE_CODE = "en";
     public static final String DEFAULT_LANGUAGE = "English";
     public static final String U_ROLE = "u_role";
+    public static final String U_COUNTRY = "u_country";
 
 
     public static final String IsExtended = "IsExtended";

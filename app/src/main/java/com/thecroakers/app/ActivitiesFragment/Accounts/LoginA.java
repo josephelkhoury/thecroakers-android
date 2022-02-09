@@ -389,7 +389,7 @@ public class LoginA extends AppCompatActivity implements View.OnClickListener {
     }
 
 
-    //google Implimentation
+    //google Implementation
     GoogleSignInClient mGoogleSignInClient;
     public void signInWithGmail() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -398,41 +398,34 @@ public class LoginA extends AppCompatActivity implements View.OnClickListener {
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-
         try {
             mGoogleSignInClient.signOut();
-        }catch (Exception e){}
+        } catch (Exception e){}
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(LoginA.this);
 
         if (account != null) {
-
             String id = ""+account.getId();
             String fname = "" + account.getGivenName();
             String lname = "" + account.getFamilyName();
             String email = ""+account.getEmail();
-            String auth_tokon = ""+account.getIdToken();
-            String image=""+account.getPhotoUrl();
+            String auth_token = ""+account.getIdToken();
+            String image = ""+account.getPhotoUrl();
 
             userRegisterModel = new UserRegisterModel();
             userRegisterModel.fname = Functions.removeSpecialChar(fname);
             userRegisterModel.email = email;
             userRegisterModel.lname = Functions.removeSpecialChar(lname);
             userRegisterModel.socailId = id;
-            userRegisterModel.authTokon = auth_tokon;
-            userRegisterModel.picture=image;
+            userRegisterModel.authTokon = auth_token;
+            userRegisterModel.picture = image;
 
             userRegisterModel.socailType = "google";
-
-
-            String auth_token = "" + account.getIdToken();
-
 
             Functions.printLog(Constants.tag, "signInResult:auth_token===" + auth_token);
             callApiForLogin("" + id,
                     "google",
                     auth_token);
-
         } else {
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             resultCallbackForGoogle.launch(signInIntent);

@@ -45,7 +45,7 @@ public class Constants {
     public final static int VIDEO_DESCRIPTION_CHAR_LIMIT = 150;
 
     // Username char limit during signup and edit the account
-    public static final int USERNAME_CHAR_LIMIT = 30;
+    public static final int USERNAME_CHAR_LIMIT = 20;
 
     // user profile bio char limit during edit the profile
     public static final int BIO_CHAR_LIMIT = 150;

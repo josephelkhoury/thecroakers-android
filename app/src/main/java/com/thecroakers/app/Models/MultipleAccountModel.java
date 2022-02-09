@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class MultipleAccountModel implements Serializable {
 
-    String id,fName,lName,uName,uBio,uLink,gender,role,uPic,uWallet,uPayoutId,authToken,phoneNo,email,socialId
+    String id,fName,lName,uName,uBio,uLink,gender,role,country,uPic,uWallet,uPayoutId,authToken,phoneNo,email,socialId
             ,verified,applyVerification;
     boolean isLogin,isCheck;
 
@@ -122,6 +122,14 @@ public class MultipleAccountModel implements Serializable {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getuPic() {

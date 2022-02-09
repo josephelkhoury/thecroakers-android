@@ -634,7 +634,6 @@ public class Functions {
     }
 
 
-
     // Bottom is all the Apis which is mostly used in app we have add it
     // just one time and whenever we need it we will call it
 
@@ -660,20 +659,16 @@ public class Functions {
                     api_callBack.onSuccess(resp);
             }
         });
-
-
     }
 
 
     // this method will like the comment
-    public static void callApiForLikeComment(final Activity activity,
-                                             String video_id,
-                                             final APICallBack api_callBack) {
+    public static void callApiForLikeComment(final Activity activity, String comment_id, final APICallBack api_callBack) {
 
         JSONObject parameters = new JSONObject();
         try {
             parameters.put("user_id", Functions.getSharedPreference(activity).getString(Variables.U_ID, "0"));
-            parameters.put("comment_id", video_id);
+            parameters.put("comment_id", comment_id);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -688,8 +683,31 @@ public class Functions {
                     api_callBack.onSuccess(resp);
             }
         });
+    }
 
+    // this method will delete the comment
+    public static void callApiForDeleteComment(final Activity activity,
+                                             String comment_id,
+                                             final APICallBack api_callBack) {
 
+        JSONObject parameters = new JSONObject();
+        try {
+            parameters.put("user_id", Functions.getSharedPreference(activity).getString(Variables.U_ID, "0"));
+            parameters.put("comment_id", comment_id);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        VolleyRequest.JsonPostRequest(activity, ApiLinks.deleteComment, parameters, Functions.getHeaders(activity),new Callback() {
+            @Override
+            public void onResponce(String resp) {
+                Functions.checkStatus(activity,resp);
+
+                if (api_callBack != null)
+                    api_callBack.onSuccess(resp);
+            }
+        });
     }
 
 
@@ -718,25 +736,21 @@ public class Functions {
                     api_callBack.onSuccess(resp);
             }
         });
-
-
     }
 
-
-    public static void callApiForSendComment(final Activity activity, String videoId, String comment, final APICallBack api_callBack) {
+    public static void callApiForSendComment(final Activity activity, String videoId, String comment, String comment_id, final APICallBack api_callBack) {
 
         JSONObject parameters = new JSONObject();
         try {
             parameters.put("user_id", Functions.getSharedPreference(activity).getString(Variables.U_ID, "0"));
             parameters.put("video_id", videoId);
             parameters.put("comment", comment);
-
+            parameters.put("comment_id", comment_id);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-
-        VolleyRequest.JsonPostRequest(activity, ApiLinks.postCommentOnVideo, parameters,Functions.getHeaders(activity), new Callback() {
+        VolleyRequest.JsonPostRequest(activity, ApiLinks.postCommentOnVideo, parameters, Functions.getHeaders(activity), new Callback() {
             @Override
             public void onResponce(String resp) {
                 Functions.checkStatus(activity,resp);
@@ -746,43 +760,25 @@ public class Functions {
                     JSONObject response = new JSONObject(resp);
                     String code = response.optString("code");
                     if (code.equals("200")) {
-
                         JSONObject msg = response.optJSONObject("msg");
                         JSONObject videoComment = msg.optJSONObject("VideoComment");
 
-                        UserModel userDetailModel=DataParsing.getUserDataModel(msg.optJSONObject("User"));
-
-                        CommentModel item = new CommentModel();
-
-                        item.fb_id = userDetailModel.getId();
-                        item.user_name = userDetailModel.getUsername();
-                        item.first_name = userDetailModel.getFirstName();
-                        item.last_name = userDetailModel.getLastName();
-                        item.profile_pic = userDetailModel.getProfilePic();
-
-                        item.video_id = videoComment.optString("video_id");
-                        item.comments = videoComment.optString("comment");
-                        item.created = videoComment.optString("created");
+                        UserModel userDetailModel = DataParsing.getUserDataModel(msg.optJSONObject("User"));
+                        CommentModel item = DataParsing.getCommentDataModel(videoComment, userDetailModel);
 
                         arrayList.add(item);
 
                         api_callBack.arrayData(arrayList);
-
                     } else {
                         Functions.showToast(activity, "" + response.optString("msg"));
                     }
-
                 } catch (Exception e) {
                     api_callBack.onFail(e.toString());
                     e.printStackTrace();
                 }
-
             }
         });
-
-
     }
-
 
     // this method will send the reply to the comment of the video
     public static void callApiForSendCommentReply(final Activity activity, String commentId, String comment, final APICallBack api_callBack) {
@@ -967,10 +963,7 @@ public class Functions {
     }
 
 
-    public static void callApiForDeleteVideo
-            (final Activity activity,
-             String videoId,
-             final APICallBack api_callBack) {
+    public static void callApiForDeleteVideo(final Activity activity, String videoId, final APICallBack api_callBack) {
 
         JSONObject parameters = new JSONObject();
         try {
@@ -992,7 +985,6 @@ public class Functions {
                     if (code.equals("200")) {
                         if (api_callBack != null)
                             api_callBack.onSuccess(response.toString());
-
                     } else {
                         Functions.showToast(activity, "" + response.optString("msg"));
                     }
@@ -1002,19 +994,14 @@ public class Functions {
                         api_callBack.onFail(e.toString());
                     e.printStackTrace();
                 }
-
-
             }
         });
-
-
     }
-
 
     public static HomeModel parseVideoData(JSONObject userObj, JSONObject sound, JSONObject video, JSONObject topic, JSONObject country, JSONObject userPrivacy, JSONObject userPushNotification) {
         HomeModel item = new HomeModel();
 
-        UserModel userDetailModel=DataParsing.getUserDataModel(userObj);
+        UserModel userDetailModel = DataParsing.getUserDataModel(userObj);
         if (!(TextUtils.isEmpty(userDetailModel.getId()))) {
             item.user_id = userDetailModel.getId();
             item.username = userDetailModel.getUsername();
@@ -1207,6 +1194,7 @@ public class Functions {
         accountModel.setSocialId(Functions.getSharedPreference(context).getString(Variables.U_SOCIAL_ID, ""));
         accountModel.setGender(Functions.getSharedPreference(context).getString(Variables.GENDER, ""));
         accountModel.setRole(Functions.getSharedPreference(context).getString(Variables.U_ROLE, ""));
+        accountModel.setCountry(Functions.getSharedPreference(context).getString(Variables.U_COUNTRY, ""));
         accountModel.setuPic(Functions.getSharedPreference(context).getString(Variables.U_PIC, ""));
         accountModel.setuWallet(Functions.getSharedPreference(context).getString(Variables.U_WALLET, "0"));
         accountModel.setuPayoutId(Functions.getSharedPreference(context).getString(Variables.U_PAYOUT_ID, ""));
@@ -1237,6 +1225,7 @@ public class Functions {
         editor.putString(Variables.U_SOCIAL_ID, item.getSocialId());
         editor.putString(Variables.GENDER, item.getGender());
         editor.putString(Variables.U_ROLE, item.getRole());
+        editor.putString(Variables.U_COUNTRY, item.getCountry());
         editor.putString(Variables.U_PIC, item.getuPic());
         editor.putString(Variables.U_WALLET, item.getuWallet());
         editor.putString(Variables.U_PAYOUT_ID, item.getuPayoutId());
@@ -1456,7 +1445,7 @@ public class Functions {
 
 
     // manage for store user data
-    public static void storeUserLoginDataIntoDb(Context context,UserModel userDetailModel) {
+    public static void storeUserLoginDataIntoDb(Context context, UserModel userDetailModel) {
         SharedPreferences.Editor editor = Functions.getSharedPreference(context).edit();
         editor.putString(Variables.U_ID, userDetailModel.getId());
         editor.putString(Variables.F_NAME, userDetailModel.getFirstName());
@@ -1476,6 +1465,7 @@ public class Functions {
         editor.putString(Variables.IS_VERIFICATION_APPLY, userDetailModel.getApplyVerification());
         editor.putBoolean(Variables.IS_LOGIN, true);
         editor.putString(Variables.U_ROLE, userDetailModel.getRole());
+        editor.putString(Variables.U_COUNTRY, userDetailModel.getCountry());
         editor.commit();
     }
 

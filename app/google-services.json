@@ -23,6 +23,30 @@
           }
         },
         {
+          "client_id": "77904546117-fu8c0l1qep2ma54mntcmfgti2rjbbg42.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.thecroakers.app",
+            "certificate_hash": "685ed0ff9718c7cbe656eb21dcb69fa77b9254d6"
+          }
+        },
+        {
+          "client_id": "77904546117-oudrfdru5hv5jbgf1uv6ia6e1cuol49m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.thecroakers.app",
+            "certificate_hash": "b0b63885582c23dcc043e43ba91c5da5be4fae13"
+          }
+        },
+        {
+          "client_id": "77904546117-tar93undkntb5j2vrrmm6386cgj0s4qp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.thecroakers.app",
+            "certificate_hash": "5e8b9e6eb48492db1068dafd947cf690d6098f73"
+          }
+        },
+        {
           "client_id": "77904546117-k0l0rjkril4smslka5qaccd90f5m30f0.apps.googleusercontent.com",
           "client_type": 3
         }

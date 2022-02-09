@@ -2,10 +2,13 @@ package com.thecroakers.app.ActivitiesFragment;
 
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +46,7 @@ import com.thecroakers.app.SimpleClasses.Variables;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -73,7 +77,7 @@ public class CommentF extends RootFragment {
     public static int commentCount = 0;
 
     int pageCount = 0;
-    boolean ispostFinish;
+    boolean isPostFinish;
     ProgressBar loadMoreProgress;
     LinearLayoutManager linearLayoutManager;
 
@@ -88,7 +92,6 @@ public class CommentF extends RootFragment {
     public CommentF(int count, FragmentDataSend fragmentDataSend ) {
         commentCount = count;
         this.fragmentDataSend = fragmentDataSend;
-
     }
 
     @Override
@@ -146,50 +149,58 @@ public class CommentF extends RootFragment {
         dataList = new ArrayList<>();
         adapter = new CommentsAdapter(context, dataList, new CommentsAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(int position, CommentModel item, View view) {
+            public void onItemClick(int position, CommentModel commentModel, View view) {
 
                 switch (view.getId()) {
 
                     case R.id.user_pic:
-                        openProfile();
+                        openProfile(commentModel);
                         break;
 
                     case R.id.message_layout:
-                        messageEdit.setHint(context.getString(R.string.reply_to)+" " + item.user_name);
+                        replyUserName = commentModel.user_name;
+                        messageEdit.setHint(context.getString(R.string.reply_to)+" " + commentModel.user_name);
+                        messageEdit.setText("@" + replyUserName + " ");
                         messageEdit.requestFocus();
+                        messageEdit.setSelection(messageEdit.getText().length());
                         replyStatus = "reply";
-                        commentId = item.comment_id;
+                        commentId = commentModel.id;
                         Functions.showKeyboard(getActivity());
                         break;
 
                     case R.id.like_layout:
                         if (Functions.checkLoginUser(getActivity())) {
-                            likeComment(position, item);
+                            likeComment(position, commentModel);
                         }
                         break;
                 }
             }
-        }, new CommentsAdapter.onRelyItemCLickListener() {
+
+            @Override
+            public void onItemLongClick(int position, CommentModel item, View view) {
+                deleteComment(position, item);
+            }
+        }, new CommentsAdapter.onReplyItemCLickListener() {
             @Override
             public void onItemClick(ArrayList<CommentModel> arrayList, int position, View view) {
                 switch (view.getId()) {
 
                     case R.id.user_pic:
                         CommentModel item = arrayList.get(position);
-                        openProfile();
+                        openProfile(item);
                         break;
-
 
                     case R.id.reply_layout:
-                        replyUserName = arrayList.get(position).replay_user_name;
+                        replyUserName = arrayList.get(position).user_name;
                         messageEdit.setHint(context.getString(R.string.reply_to)+" " + replyUserName);
+                        messageEdit.setText("@" + replyUserName + " ");
                         messageEdit.requestFocus();
+                        messageEdit.setSelection(messageEdit.getText().length());
                         replyStatus = "reply";
-                        commentId = arrayList.get(position).comment_reply_id;
-                        parentCommentId = arrayList.get(position).parent_comment_id;
+                        commentId = arrayList.get(position).id;
+                        parentCommentId = arrayList.get(position).comment_id;
                         Functions.showKeyboard(getActivity());
                         break;
-
 
                     case R.id.like_layout:
                         if (Functions.checkLoginUser(getActivity())) {
@@ -197,6 +208,11 @@ public class CommentF extends RootFragment {
                         }
                         break;
                 }
+            }
+
+            @Override
+            public void onItemLongClick(ArrayList<CommentModel> arrayList, int position, View view) {
+                deleteComment(position, arrayList.get(position));
             }
         }, new CommentsAdapter.LinkClickListener() {
             @Override
@@ -229,7 +245,7 @@ public class CommentF extends RootFragment {
                 if (userScrolled && (scrollOutitems == dataList.size() - 1)) {
                     userScrolled = false;
 
-                    if (loadMoreProgress.getVisibility() != View.VISIBLE && !ispostFinish) {
+                    if (loadMoreProgress.getVisibility() != View.VISIBLE && !isPostFinish) {
                         loadMoreProgress.setVisibility(View.VISIBLE);
                         pageCount = pageCount + 1;
                         getAllComments();
@@ -240,7 +256,7 @@ public class CommentF extends RootFragment {
 
         messageEdit = view.findViewById(R.id.message_edit);
 
-        noDataLoader=view.findViewById(R.id.noDataLoader);
+        noDataLoader = view.findViewById(R.id.noDataLoader);
         sendProgress = view.findViewById(R.id.send_progress);
         sendBtn = view.findViewById(R.id.send_btn);
         sendBtn.setOnClickListener(v -> {
@@ -248,12 +264,13 @@ public class CommentF extends RootFragment {
             if (!TextUtils.isEmpty(message)) {
                 if (Functions.checkLoginUser(getActivity())) {
                     if (replyStatus == null) {
-                        sendComments(videoId, message);
+                        sendComment(videoId, message, "0");
                     } else if (parentCommentId != null && !parentCommentId.equals("")) {
-                        message = context.getString(R.string.replied_to)+" " + "@" + replyUserName + " " + message;
-                        sendCommentsReply(parentCommentId, message);
+                        //message = "@" + replyUserName + " " + message;
+                        sendCommentReply(videoId, message, parentCommentId);
                     } else {
-                        sendCommentsReply(commentId, message);
+                        //message = "@" + replyUserName + " " + message;
+                        sendCommentReply(videoId, message, commentId);
                     }
                     messageEdit.setText(null);
                     sendProgress.setVisibility(View.VISIBLE);
@@ -270,8 +287,7 @@ public class CommentF extends RootFragment {
 
         if (item.apply_privacy_model.getVideo_comment().equalsIgnoreCase("everyone") ||
                 (item.apply_privacy_model.getVideo_comment().equalsIgnoreCase("friend") &&
-                        item.follow_status_button.equalsIgnoreCase("friends")))
-        {
+                        item.follow_status_button.equalsIgnoreCase("friends"))) {
             write_layout.setVisibility(View.VISIBLE);
             getAllComments();
         } else {
@@ -286,59 +302,48 @@ public class CommentF extends RootFragment {
     }
 
     private void likeCommentReply(int position, CommentModel item) {
-
-        String action = item.comment_reply_liked;
+        String action = item.liked;
 
         if (action != null) {
             if (action.equals("1")) {
                 action = "0";
-                item.reply_liked_count = "" + (Functions.parseInterger(item.reply_liked_count) - 1);
+                item.like_count = "" + (Functions.parseInterger(item.like_count) - 1);
             } else {
                 action = "1";
-                item.reply_liked_count = "" + (Functions.parseInterger(item.reply_liked_count) + 1);
+                item.like_count = "" + (Functions.parseInterger(item.like_count) + 1);
             }
         }
 
         for (int i = 0; i < dataList.size(); i++) {
-
             if (!dataList.isEmpty() && !dataList.get(i).arrayList.isEmpty()) {
-
-                if (item.parent_comment_id.equals(dataList.get(i).comment_id)) {
-
+                if (item.comment_id.equals(dataList.get(i).id)) {
                     dataList.get(i).arrayList.remove(position);
-                    item.comment_reply_liked = action;
+                    item.liked = action;
                     dataList.get(i).arrayList.add(position, item);
-
                 }
-
             }
         }
+
         adapter.notifyDataSetChanged();
-        Functions.callApiForLikeCommentReply(
+        Functions.callApiForLikeComment(getActivity(), item.id, new APICallBack() {
+            @Override
+            public void arrayData(ArrayList arrayList) {
 
-                getActivity(), item.comment_reply_id, new
+            }
 
-                        APICallBack() {
-                            @Override
-                            public void arrayData(ArrayList arrayList) {
+            @Override
+            public void onSuccess(String response) {
 
-                            }
+            }
 
-                            @Override
-                            public void onSuccess(String response) {
+            @Override
+            public void onFail(String response) {
 
-                            }
-
-                            @Override
-                            public void onFail(String response) {
-
-                            }
-                        });
+            }
+        });
     }
 
-
     private void likeComment(int position, CommentModel item) {
-
         String action = item.liked;
 
         if (action != null) {
@@ -355,7 +360,7 @@ public class CommentF extends RootFragment {
             dataList.add(position, item);
             adapter.notifyDataSetChanged();
         }
-        Functions.callApiForLikeComment(getActivity(), item.comment_id, new APICallBack() {
+        Functions.callApiForLikeComment(getActivity(), item.id, new APICallBack() {
             @Override
             public void arrayData(ArrayList arrayList) {
             }
@@ -394,7 +399,7 @@ public class CommentF extends RootFragment {
             e.printStackTrace();
         }
 
-        VolleyRequest.JsonPostRequest(getActivity(), ApiLinks.showVideoComments, parameters,Functions.getHeaders(getActivity()), new Callback() {
+        VolleyRequest.JsonPostRequest(getActivity(), ApiLinks.showVideoComments, parameters, Functions.getHeaders(getActivity()), new Callback() {
             @Override
             public void onResponce(String resp) {
                 Functions.checkStatus(getActivity(),resp);
@@ -424,40 +429,17 @@ public class CommentF extends RootFragment {
                                 for (int j = 0; j < videoCommentReply.length(); j++) {
                                     JSONObject jsonObject = videoCommentReply.getJSONObject(j);
 
-                                    UserModel userDetailModelReply=DataParsing.getUserDataModel(jsonObject.optJSONObject("User"));
-                                    CommentModel comment_model = new CommentModel();
-
-                                    comment_model.comment_reply_id = jsonObject.optString("id");
-                                    comment_model.reply_liked_count = jsonObject.optString("like_count");
-                                    comment_model.comment_reply_liked = jsonObject.optString("like");
-                                    comment_model.comment_reply = jsonObject.optString("comment");
-                                    comment_model.created = jsonObject.optString("created");
-
-
-                                    comment_model.replay_user_name = userDetailModelReply.getUsername();
-                                    comment_model.replay_user_url = userDetailModelReply.getProfilePic();
+                                    CommentModel comment_model = DataParsing.getCommentDataModel(jsonObject, null);
                                     comment_model.parent_comment_id = videoComment.optString("id");
 
                                     replyList.add(comment_model);
                                 }
                             }
 
-                            CommentModel item = new CommentModel();
+                            CommentModel item = DataParsing.getCommentDataModel(videoComment, userDetailModel);
 
-                            item.fb_id = userDetailModel.getId();
-                            item.user_name = userDetailModel.getUsername();
-                            item.first_name = userDetailModel.getFirstName();
-                            item.last_name = userDetailModel.getLastName();
-                            item.arraylist_size = String.valueOf(videoCommentReply.length());
-                            item.profile_pic = userDetailModel.getProfilePic();
-
+                            //item.arraylist_size = String.valueOf(videoCommentReply.length());
                             item.arrayList = replyList;
-                            item.video_id = videoComment.optString("video_id");
-                            item.comments = videoComment.optString("comment");
-                            item.liked = videoComment.optString("like");
-                            item.like_count = videoComment.optString("like_count");
-                            item.comment_id = videoComment.optString("id");
-                            item.created = videoComment.optString("created");
 
                             dataList.add(item);
                             adapter.notifyItemInserted(dataList.size());
@@ -483,8 +465,8 @@ public class CommentF extends RootFragment {
     }
 
     // this function will call an api to upload your comment reply
-    private void sendCommentsReply(String commentId, String message) {
-        Functions.callApiForSendCommentReply(getActivity(), commentId, message, new APICallBack() {
+    private void sendCommentReply(String video_id, final String comment, String comment_id) {
+        Functions.callApiForSendComment(getActivity(), video_id, comment, comment_id, new APICallBack() {
             @Override
             public void arrayData(ArrayList arrayList) {
                 sendProgress.setVisibility(View.GONE);
@@ -495,22 +477,26 @@ public class CommentF extends RootFragment {
                 ArrayList<CommentModel> arrayList1 = arrayList;
 
                 for (int i = 0; i < dataList.size(); i++) {
+                    if (dataList.get(i).arrayList == null)
+                        dataList.get(i).arrayList = new ArrayList<>();
+
                     if (parentCommentId != null) {
-                        if (parentCommentId.equals(dataList.get(i).comment_id)) {
+                        if (parentCommentId.equals(dataList.get(i).id)) {
                             for (CommentModel item : arrayList1) {
                                 dataList.get(i).arrayList.add(item);
+                                dataList.get(i).item_count_replies = ""+(Integer.valueOf(dataList.get(i).item_count_replies) + 1);
                             }
                         }
                     } else {
-                        if (commentId.equals(dataList.get(i).comment_id)) {
-                            CommentModel comment_model = new CommentModel();
-                            comment_model.item_count_replies = "1";
+                        if (commentId.equals(dataList.get(i).id)) {
                             for (CommentModel item : arrayList1) {
                                 dataList.get(i).arrayList.add(item);
+                                dataList.get(i).item_count_replies = ""+(Integer.valueOf(dataList.get(i).item_count_replies) + 1);
                             }
                         }
                     }
                     adapter.notifyDataSetChanged();
+                    adapter.commentsReplyAdapter.notifyDataSetChanged();
                 }
                 replyStatus = null;
                 parentCommentId = null;
@@ -529,9 +515,9 @@ public class CommentF extends RootFragment {
     }
 
     // this function will call an api to upload your comment
-    public void sendComments(String video_id, final String comment) {
+    public void sendComment(String video_id, final String comment, String comment_id) {
 
-        Functions.callApiForSendComment(getActivity(), video_id, comment, new APICallBack() {
+        Functions.callApiForSendComment(getActivity(), video_id, comment, comment_id, new APICallBack() {
             @Override
             public void arrayData(ArrayList arrayList) {
                 sendProgress.setVisibility(View.GONE);
@@ -547,9 +533,8 @@ public class CommentF extends RootFragment {
                     if (fragmentDataSend != null)
                         fragmentDataSend.onDataSent("" + commentCount);
 
+                    adapter.notifyDataSetChanged();
                 }
-                adapter.notifyDataSetChanged();
-
             }
 
             @Override
@@ -559,59 +544,72 @@ public class CommentF extends RootFragment {
 
             @Override
             public void onFail(String response) {
-
                 // this will return the failed response
             }
-
         });
-
     }
 
-
-      // get the profile data by sending the username instead of id
+    // get the profile data by sending the username instead of id
     private void openProfileByUsername(String username) {
-
-        if (Functions.getSharedPreference(context).getString(Variables.U_NAME, "0").equals(username)) {
-
-            TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(4);
-            profile.select();
-
-        } else {
-
-            Intent intent=new Intent(view.getContext(), ProfileA.class);
-            intent.putExtra("user_name", username);
-            startActivity(intent);
-            getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-
-        }
-
-
+        Intent intent = new Intent(view.getContext(), ProfileA.class);
+        intent.putExtra("user_name", username);
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
     }
-
 
     // this will open the profile of user which have uploaded the currently running video
-    private void openProfile() {
-
-        if (!Functions.getSharedPreference(context).getString(Variables.U_ID, "0").equals(item.user_id)) {
-
-
-            Intent intent=new Intent(view.getContext(), ProfileA.class);
-            intent.putExtra("user_id", item.user_id);
-            intent.putExtra("user_name", item.username);
-            intent.putExtra("user_pic", item.profile_pic);
-            startActivity(intent);
-            getActivity().overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
-
-        }
-
-
+    private void openProfile(CommentModel item) {
+        Intent intent = new Intent(view.getContext(), ProfileA.class);
+        intent.putExtra("user_id", item.user_id);
+        intent.putExtra("user_name", item.user_name);
+        intent.putExtra("user_pic", item.profile_pic);
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
     }
 
+    public void deleteComment(int position, CommentModel commentModel) {
+        if (Functions.getSharedPreference(context).getString(Variables.U_ID, "0").equals(commentModel.user_id) || Functions.getSharedPreference(context).getString(Variables.U_ID, "0").equals(item.user_id)) {
+            new AlertDialog.Builder(this.getContext())
+                    .setTitle("Delete Comment?")
+                    .setMessage("Are you sure you want to delete the comment?")
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            Functions.callApiForDeleteComment(getActivity(), commentModel.id, new APICallBack() {
+                                @Override
+                                public void arrayData(ArrayList arrayList) {
+                                }
 
+                                @Override
+                                public void onSuccess(String response) {
+                                    try {
+                                        if (dataList.contains(commentModel))
+                                            dataList.remove(commentModel);
+                                        else {
+                                            for (int i = 0; i < dataList.size(); i++) {
+                                                if (!dataList.isEmpty() && !dataList.get(i).arrayList.isEmpty()) {
+                                                    if (commentModel.id.equals(dataList.get(i).arrayList.get(position).id)) {
+                                                        dataList.get(i).arrayList.remove(position);
+                                                        dataList.get(i).item_count_replies = ""+(Integer.valueOf(dataList.get(i).item_count_replies) - 1);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        adapter.notifyDataSetChanged();
+                                        adapter.commentsReplyAdapter.notifyDataSetChanged();
+                                    } catch(Exception e) {
 
+                                    }
+                                }
 
-
-
-
+                                @Override
+                                public void onFail(String response) {
+                                }
+                            });
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, null).show();
+        }
+    }
 }

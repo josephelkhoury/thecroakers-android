@@ -235,8 +235,8 @@ public class TagedVideosA extends AppCompatActivity implements View.OnClickListe
                         user = itemdata.optJSONObject("User");
                         sound = itemdata.optJSONObject("Sound");
                     }
-                    JSONObject topic = itemdata.optJSONObject("Topic");
-                    JSONObject country = itemdata.optJSONObject("Country");
+                    JSONObject topic = video.optJSONObject("Topic");
+                    JSONObject country = video.optJSONObject("Country");
                     JSONObject userPrivacy = user.optJSONObject("PrivacySetting");
                     JSONObject userPushNotification = user.optJSONObject("PushNotification");
 

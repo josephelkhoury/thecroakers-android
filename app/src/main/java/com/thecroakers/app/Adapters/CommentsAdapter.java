@@ -1,7 +1,9 @@
 package com.thecroakers.app.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -30,41 +32,42 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Custom
 
     public Context context;
     public CommentsAdapter.OnItemClickListener listener;
-    public CommentsAdapter.onRelyItemCLickListener onRelyItemCLickListener;
+    public CommentsAdapter.onReplyItemCLickListener onReplyItemCLickListener;
     LinkClickListener linkClickListener;
     private ArrayList<CommentModel> dataList;
     public Comments_Reply_Adapter commentsReplyAdapter;
-
 
     // meker the onitemclick listener interface and this interface is impliment in Chatinbox activity
     // for to do action when user click on item
 
     public interface LinkClickListener {
-
         void onLinkClicked(SocialView view, String matchedText);
     }
 
-
     public interface OnItemClickListener {
-        void onItemClick(int positon, CommentModel item, View view);
+        void onItemClick(int position, CommentModel item, View view);
+        void onItemLongClick(int position, CommentModel item, View view);
     }
 
-    public interface onRelyItemCLickListener {
-        void onItemClick(ArrayList<CommentModel> arrayList, int postion, View view);
+    public interface onReplyItemCLickListener {
+        void onItemClick(ArrayList<CommentModel> arrayList, int position, View view);
+        void onItemLongClick(ArrayList<CommentModel> arrayList, int position, View view);
     }
 
+    public interface onLongPressListener {
+        void onItemClick(int position, CommentModel item, View view);
+    }
 
-    public CommentsAdapter(Context context, ArrayList<CommentModel> dataList, CommentsAdapter.OnItemClickListener listener, CommentsAdapter.onRelyItemCLickListener onRelyItemCLickListener, LinkClickListener linkClickListener) {
+    public CommentsAdapter(Context context, ArrayList<CommentModel> dataList, CommentsAdapter.OnItemClickListener listener, CommentsAdapter.onReplyItemCLickListener onReplyItemCLickListener, LinkClickListener linkClickListener) {
         this.context = context;
         this.dataList = dataList;
         this.listener = listener;
         this.linkClickListener = linkClickListener;
-        this.onRelyItemCLickListener = onRelyItemCLickListener;
-
+        this.onReplyItemCLickListener = onReplyItemCLickListener;
     }
 
     @Override
-    public CommentsAdapter.CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewtype) {
+    public CommentsAdapter.CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_comment_layout, null);
         view.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
         CommentsAdapter.CustomViewHolder viewHolder = new CommentsAdapter.CustomViewHolder(view);
@@ -76,7 +79,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Custom
         return dataList.size();
     }
 
-
     @Override
     public void onBindViewHolder(final CommentsAdapter.CustomViewHolder holder, final int i) {
         final CommentModel item = dataList.get(i);
@@ -84,9 +86,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Custom
         holder.setIsRecyclable(true);
         holder.username.setText(item.user_name);
 
-
         if (item.profile_pic != null && !item.profile_pic.equals("")) {
-
             holder.userPic.setController(Functions.frescoImageLoad(item.profile_pic,holder.userPic,false));
         }
 
@@ -94,7 +94,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Custom
             if (item.liked.equals("1")) {
                 holder.likeImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_like_fill));
             } else {
-                holder.likeImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_heart_gray_out));
+                holder.likeImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_like));
             }
         }
 
@@ -111,7 +111,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Custom
         } else {
             holder.replyCount.setVisibility(View.GONE);
         }
-
 
         holder.replyCount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,9 +135,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Custom
         holder.replyRecyclerView.setAdapter(commentsReplyAdapter);
         holder.replyRecyclerView.setHasFixedSize(false);
         holder.bind(i, item, listener);
-
     }
-
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
 
@@ -164,29 +161,30 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Custom
             likeLayout = view.findViewById(R.id.like_layout);
         }
 
-        public void bind(final int postion, final CommentModel item, final CommentsAdapter.OnItemClickListener listener) {
+        public void bind(final int position, final CommentModel item, final CommentsAdapter.OnItemClickListener listener) {
 
             itemView.setOnClickListener(v -> {
-                listener.onItemClick(postion, item, v);
+                listener.onItemClick(position, item, v);
             });
 
             userPic.setOnClickListener(v -> {
-                listener.onItemClick(postion, item, v);
+                listener.onItemClick(position, item, v);
             });
 
             messageLayout.setOnClickListener(v -> {
-                listener.onItemClick(postion, item, v);
+                listener.onItemClick(position, item, v);
+            });
+
+            messageLayout.setOnLongClickListener(v -> {
+                listener.onItemLongClick(position, item, v);
+                return true;
             });
 
             likeLayout.setOnClickListener(v -> {
-                listener.onItemClick(postion, item, v);
+                listener.onItemClick(position, item, v);
             });
-
         }
-
-
     }
-
 
     public class Comments_Reply_Adapter extends RecyclerView.Adapter<Comments_Reply_Adapter.CustomViewHolder> {
 
@@ -196,11 +194,10 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Custom
         public Comments_Reply_Adapter(Context context, ArrayList<CommentModel> dataList) {
             this.context = context;
             this.dataList = dataList;
-
         }
 
         @Override
-        public Comments_Reply_Adapter.CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewtype) {
+        public Comments_Reply_Adapter.CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
             View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_comment_reply_layout, null);
             view.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
             Comments_Reply_Adapter.CustomViewHolder viewHolder = new Comments_Reply_Adapter.CustomViewHolder(view);
@@ -212,34 +209,27 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Custom
             return dataList.size();
         }
 
-
         @Override
         public void onBindViewHolder(final Comments_Reply_Adapter.CustomViewHolder holder, final int i) {
             final CommentModel item = dataList.get(i);
             holder.setIsRecyclable(true);
-            holder.username.setText(item.replay_user_name);
+            holder.username.setText(item.user_name);
 
-
-            if (item.replay_user_url != null && !item.replay_user_url.equals("")) {
-
-                holder.user_pic.setController(Functions.frescoImageLoad(Constants.BASE_URL + item.replay_user_url,holder.user_pic,false));
-
+            if (item.profile_pic != null && !item.profile_pic.equals("")) {
+                holder.user_pic.setController(Functions.frescoImageLoad(Constants.BASE_URL + item.profile_pic, holder.user_pic,false));
             }
 
+            holder.message.setText(item.comments);
 
-            holder.message.setText(item.comment_reply);
-
-
-            Functions.printLog("tictic_logged", "itemlike" + item.comment_reply_liked);
-            if (item.comment_reply_liked != null && !item.comment_reply_liked.equals("")) {
-                if (item.comment_reply_liked.equals("1")) {
+            if (item.liked != null && !item.liked.equals("")) {
+                if (item.liked.equals("1")) {
                     holder.reply_like_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_like_fill));
                 } else {
-                    holder.reply_like_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_heart_gray_out));
+                    holder.reply_like_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_like));
                 }
             }
 
-            holder.like_txt.setText(Functions.getSuffix(item.reply_liked_count));
+            holder.like_txt.setText(Functions.getSuffix(item.like_count));
 
             holder.message.setOnMentionClickListener(new SocialView.OnClickListener() {
                 @Override
@@ -248,11 +238,8 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Custom
                 }
             });
 
-
-            holder.bind(i, dataList, onRelyItemCLickListener);
-
+            holder.bind(i, dataList, onReplyItemCLickListener);
         }
-
 
         class CustomViewHolder extends RecyclerView.ViewHolder {
 
@@ -274,26 +261,29 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Custom
                 like_txt = view.findViewById(R.id.like_txt);
             }
 
-            public void bind(final int postion, ArrayList<CommentModel> datalist, final CommentsAdapter.onRelyItemCLickListener listener) {
+            public void bind(final int position, ArrayList<CommentModel> datalist, final CommentsAdapter.onReplyItemCLickListener listener) {
 
                 itemView.setOnClickListener(v -> {
-                    CommentsAdapter.this.onRelyItemCLickListener.onItemClick(datalist, postion, v);
+                    CommentsAdapter.this.onReplyItemCLickListener.onItemClick(datalist, position, v);
                 });
 
                 user_pic.setOnClickListener(v -> {
-                    CommentsAdapter.this.onRelyItemCLickListener.onItemClick(datalist, postion, v);
+                    CommentsAdapter.this.onReplyItemCLickListener.onItemClick(datalist, position, v);
                 });
 
                 reply_layout.setOnClickListener(v -> {
-                    CommentsAdapter.this.onRelyItemCLickListener.onItemClick(datalist, postion, v);
+                    CommentsAdapter.this.onReplyItemCLickListener.onItemClick(datalist, position, v);
+                });
+
+                message.setOnLongClickListener(v -> {
+                    listener.onItemLongClick(datalist, position, v);
+                    return true;
                 });
 
                 like_layout.setOnClickListener(v -> {
-                    CommentsAdapter.this.onRelyItemCLickListener.onItemClick(datalist, postion, v);
+                    CommentsAdapter.this.onReplyItemCLickListener.onItemClick(datalist, position, v);
                 });
             }
         }
     }
-
-
 }

@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,11 +74,11 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
     Context context;
     LinearLayout tabPrivacyLikes;
     RelativeLayout viewTabLikes;
-    public TextView username, username2Txt,tvFollowBtn,tvBio,tvLink,tvEditProfile;
+    public TextView username, username2Txt, tvFollowBtn, tvBio, tvLink, tvEditProfile, tvLocation;
     public SimpleDraweeView imageView,suggestionBtn;
     public TextView followCountTxt, fansCountTxt, heartCountTxt;
     ImageView backBtn, messageBtn,unFriendBtn,notificationBtn,favBtn,ivMultipleAccount;
-    String userId, userName,fullName,buttonStatus, userPic,totalLikes="";
+    String userId, userName, fullName, buttonStatus, userPic, totalLikes="";
     RecyclerView rvSuggestion;
     SuggestionAdapter adapterSuggestion;
     protected TabLayout tabLayout;
@@ -85,7 +86,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
     private ViewPagerAdapter adapter;
     public boolean isdataload = false ,isDirectMessage=false,isLikeVideoShow=false;
     public String picUrl,followerCount,followingCount;
-    LinearLayout tabSuggestion,tabAllSuggestion,tabLink,tabAccount;
+    LinearLayout tabSuggestion,tabAllSuggestion,tabLink,tabAccount,tabLocation;
     LinearLayout tabFollowOtherUser,tabFollowSelfUser;
     LikedVideoF likedFragment;
     String notificationType = "1";
@@ -265,7 +266,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
             });
 
     private void openEditProfile() {
-        Intent intent=new Intent(ProfileA.this,EditProfileA.class);
+        Intent intent = new Intent(ProfileA.this,EditProfileA.class);
         resultCallback.launch(intent);
         overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
     }
@@ -292,6 +293,12 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
         } else {
             tabLink.setVisibility(View.VISIBLE);
             tvLink.setText(Functions.getSharedPreference(context).getString(Variables.U_LINK, ""));
+        }
+        if (TextUtils.isEmpty(Functions.getSharedPreference(context).getString(Variables.U_COUNTRY, ""))) {
+            tabLocation.setVisibility(View.GONE);
+        } else {
+            tabLocation.setVisibility(View.VISIBLE);
+            tvLocation.setText(Functions.getSharedPreference(context).getString(Variables.U_COUNTRY, ""));
         }
         picUrl = Functions.getSharedPreference(context).getString(Variables.U_PIC, "null");
         imageView.setController(Functions.frescoImageLoad(picUrl, imageView,false));
@@ -450,6 +457,9 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
         tabLink = findViewById(R.id.tabLink);
         tabLink.setOnClickListener(this);
 
+        tabLocation = findViewById(R.id.tabLocation);
+        tvLocation = findViewById(R.id.tvLocation);
+
         favBtn = findViewById(R.id.favBtn);
         favBtn.setOnClickListener(this);
 
@@ -494,6 +504,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
             setupTabIcons();
             setupProfileIcon();
         }
+
         callApiForGetAllVideos();
     }
 
@@ -504,7 +515,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
             tabFollowSelfUser.setVisibility(View.VISIBLE);
             tabFollowOtherUser.setVisibility(View.GONE);
             ivMultipleAccount.setVisibility(View.VISIBLE);
-            tabAccount=findViewById(R.id.tabAccount);
+            tabAccount = findViewById(R.id.tabAccount);
             tabAccount.setOnClickListener(this);
         } else {
             //notificationBtn.setVisibility(View.VISIBLE);
@@ -512,7 +523,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
             tabFollowSelfUser.setVisibility(View.GONE);
             tabFollowOtherUser.setVisibility(View.VISIBLE);
             ivMultipleAccount.setVisibility(View.GONE);
-            tabAccount=findViewById(R.id.tabAccount);
+            tabAccount = findViewById(R.id.tabAccount);
         }
     }
 
@@ -671,27 +682,25 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
 
         JSONObject parameters = new JSONObject();
         try {
+            parameters.put("user_id", Functions.getSharedPreference(context).getString(Variables.U_ID, ""));
             if (Functions.getSharedPreference(context).getBoolean(Variables.IS_LOGIN, false) && userId != null) {
-                parameters.put("user_id", Functions.getSharedPreference(context).getString(Variables.U_ID, ""));
                 parameters.put("other_user_id", userId);
             } else if (userId != null) {
-                parameters.put("user_id", userId);
+                parameters.put("other_user_id", userId);
             } else {
-                if (Functions.getSharedPreference(context).getString(Variables.IS_LOGIN, "").equalsIgnoreCase(""))
-                {
+                if (Functions.getSharedPreference(context).getString(Variables.IS_LOGIN, "").equalsIgnoreCase("")) {
                     parameters.put("user_id",  Functions.getSharedPreference(context).getString(Variables.U_ID, ""));
                 }
                 parameters.put("username", userName);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        VolleyRequest.JsonPostRequest(ProfileA.this, ApiLinks.showUserDetail, parameters,Functions.getHeaders(this), new Callback() {
+        VolleyRequest.JsonPostRequest(ProfileA.this, ApiLinks.showUserDetail, parameters, Functions.getHeaders(this), new Callback() {
             @Override
             public void onResponce(String resp) {
-                Functions.checkStatus(ProfileA.this,resp);
+                Functions.checkStatus(ProfileA.this, resp);
                 isRunFirstTime = true;
                 parseData(resp);
             }
@@ -708,6 +717,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
                 UserModel userDetailModel = DataParsing.getUserDataModel(msg.optJSONObject("User"));
                 JSONObject push_notification_setting = msg.optJSONObject("PushNotification");
                 JSONObject privacy_policy_setting = msg.optJSONObject("PrivacySetting");
+                JSONObject country = msg.optJSONObject("Country");
 
                 if (userId == null) {
                     userId = userDetailModel.getId();
@@ -743,6 +753,13 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
                 } else {
                     tabLink.setVisibility(View.VISIBLE);
                     tvLink.setText(userDetailModel.getWebsite());
+                }
+
+                if (country == null || TextUtils.isEmpty(country.optString("name")) || TextUtils.isEmpty(country.optString("null"))) {
+                    tabLocation.setVisibility(View.GONE);
+                } else {
+                    tabLocation.setVisibility(View.VISIBLE);
+                    tvLocation.setText(country.optString("name"));
                 }
 
                 followingCount = userDetailModel.getFollowingCount();

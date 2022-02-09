@@ -120,35 +120,34 @@
                         android:src="@drawable/ic_profile_white" />
 
                     <EditText
-                        android:layout_toStartOf="@+id/username_count_txt"
-                        android:layout_toEndOf="@+id/ivUserName"
                         android:id="@+id/username_edit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
+                        android:layout_toStartOf="@+id/username_count_txt"
+                        android:layout_toEndOf="@+id/ivUserName"
                         android:backgroundTint="@color/transparent"
+                        android:digits="0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz_."
                         android:hint="@string/username"
-                        android:digits="0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"
                         android:inputType="text"
-                        android:textColor="@color/black"
                         android:paddingStart="@dimen/_6sdp"
                         android:paddingEnd="@dimen/_6sdp"
+                        android:textColor="@color/black"
                         android:textColorHint="@color/graycolor"
                         android:textSize="@dimen/_11sdp" />
 
 
-
                     <TextView
+                        android:id="@+id/username_count_txt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0/30"
-                        android:textSize="@dimen/_10sdp"
-                        android:id="@+id/username_count_txt"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:elevation="0.5dp"
-                        android:textStyle="italic"
-                        android:textColor="@color/dimgray"/>
+                        android:text="0/20"
+                        android:textColor="@color/dimgray"
+                        android:textSize="@dimen/_10sdp"
+                        android:textStyle="italic" />
 
 
 

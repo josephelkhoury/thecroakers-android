@@ -41,42 +41,42 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentTop="true"
                 android:id="@+id/message_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
                 android:orientation="vertical">
 
 
                 <TextView
-                    android:layout_marginEnd="@dimen/_32sdp"
                     android:id="@+id/username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_32sdp"
                     android:text="@string/username"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11sdp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_marginEnd="@dimen/_32sdp"
                     android:id="@+id/message"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_4sdp"
+                    android:layout_marginEnd="@dimen/_32sdp"
                     android:text="@string/comment_message_here"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_10sdp" />
 
 
                 <TextView
-                    android:layout_marginEnd="@dimen/_32sdp"
-                    android:layout_marginStart="@dimen/_6sdp"
                     android:id="@+id/reply_count"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_6sdp"
                     android:layout_marginTop="@dimen/_4sdp"
+                    android:layout_marginEnd="@dimen/_32sdp"
                     android:text=""
                     android:textColor="@color/darkgray"
                     android:textSize="@dimen/_10sdp" />
@@ -84,10 +84,10 @@
                 <LinearLayout
                     android:id="@+id/less_layout"
                     android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:visibility="gone"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_4sdp"
-                    android:layout_height="wrap_content">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/reply_recycler_view"
@@ -120,11 +120,11 @@
 
                 <ImageView
                     android:id="@+id/like_image"
-                    android:layout_width="@dimen/_14sdp"
-                    android:layout_height="@dimen/_14sdp"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
                     android:layout_gravity="center"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_heart_gray_out" />
+                    android:src="@drawable/ic_like" />
 
                 <TextView
                     android:id="@+id/like_txt"

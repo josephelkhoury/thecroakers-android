@@ -14,8 +14,6 @@
         android:padding="@dimen/_6sdp"
         android:layout_centerVertical="true">
 
-
-
         <com.facebook.drawee.view.SimpleDraweeView
             android:layout_width="@dimen/_26sdp"
             android:layout_height="@dimen/_26sdp"
@@ -47,7 +45,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:id="@+id/reply_layout">
-
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -84,11 +81,11 @@
 
                 <ImageView
                     android:id="@+id/reply_like_image"
-                    android:layout_width="@dimen/_14sdp"
-                    android:layout_height="@dimen/_14sdp"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
                     android:layout_gravity="center"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_heart_gray_out" />
+                    android:src="@drawable/ic_like" />
 
                 <TextView
                     android:layout_width="wrap_content"

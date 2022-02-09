@@ -204,7 +204,7 @@ public class SuggestedUserF extends Fragment {
                                 if(msg!=null){
                                     UserModel userDetailModel= DataParsing.getUserDataModel(msg.optJSONObject("User"));
                                     if(!(TextUtils.isEmpty(userDetailModel.getId()))){
-                                        FollowingModel itemUpdte=item;
+                                        FollowingModel itemUpdte = item;
                                         String userStatus=userDetailModel.getButton().toLowerCase();
                                         itemUpdte.follow_status_button=Functions.getFollowButtonStatus(userStatus,view.getContext());
                                         datalist.set(position,itemUpdte);
@@ -271,7 +271,7 @@ public class SuggestedUserF extends Fragment {
                 for (int i = 0; i < msgArray.length(); i++) {
 
                     JSONObject object = msgArray.optJSONObject(i);
-                    UserModel userDetailModel=DataParsing.getUserDataModel(object.optJSONObject("User"));
+                    UserModel userDetailModel = DataParsing.getUserDataModel(object.optJSONObject("User"));
 
                     FollowingModel item = new FollowingModel();
                     item.fb_id = userDetailModel.getId();

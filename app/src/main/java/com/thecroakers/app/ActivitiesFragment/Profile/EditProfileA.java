@@ -87,12 +87,11 @@ public class EditProfileA extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_edit_profile);
         context = EditProfileA.this;
 
-        takePermissionUtils=new PermissionUtils(EditProfileA.this,mPermissionResult);
+        takePermissionUtils = new PermissionUtils(EditProfileA.this,mPermissionResult);
 
         findViewById(R.id.goBack).setOnClickListener(this);
         findViewById(R.id.save_btn).setOnClickListener(this);
         findViewById(R.id.upload_pic_btn).setOnClickListener(this);
-
 
         usernameEdit = findViewById(R.id.username_edit);
         profileImage = findViewById(R.id.profile_image);
@@ -107,17 +106,15 @@ public class EditProfileA extends AppCompatActivity implements View.OnClickListe
 
         String pic = Functions.getSharedPreference(context).getString(Variables.U_PIC, "");
 
-        profileImage.setController(Functions.frescoImageLoad(pic,profileImage,false));
+        profileImage.setController(Functions.frescoImageLoad(pic, profileImage,false));
 
         maleBtn = findViewById(R.id.male_btn);
         femaleBtn = findViewById(R.id.female_btn);
 
-
         usernameCountTxt = findViewById(R.id.username_count_txt);
         bioCountTxt = findViewById(R.id.bio_count_txt);
 
-
-        // add the input filter to eidt text of username
+        // add the input filter to edit text of username
         InputFilter[] username_filters = new InputFilter[1];
         username_filters[0] = new InputFilter.LengthFilter(Constants.USERNAME_CHAR_LIMIT);
         usernameEdit.setFilters(username_filters);
@@ -164,38 +161,33 @@ public class EditProfileA extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    //intialize the keyboard listener
-    int priviousHeight = 0;
+    //initialize the keyboard listener
+    int previousHeight = 0;
 
     private void setKeyboardListener() {
-
         KeyboardHeightProvider keyboardHeightProvider = new KeyboardHeightProvider(EditProfileA.this);
         keyboardHeightProvider.setKeyboardHeightObserver(new KeyboardHeightObserver() {
             @Override
             public void onKeyboardHeightChanged(int height, int orientation) {
                 Functions.printLog(Constants.tag, "" + height);
                 if (height < 0) {
-                    priviousHeight = Math.abs(height);
+                    previousHeight = Math.abs(height);
                 }
 
                 LinearLayout main_layout = findViewById(R.id.main_layout);
 
                 FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(main_layout.getWidth(), main_layout.getHeight());
-                params.bottomMargin = height + priviousHeight;
+                params.bottomMargin = height + previousHeight;
                 main_layout.setLayoutParams(params);
             }
         });
-
 
        findViewById(R.id.edit_Profile_F).post(new Runnable() {
             public void run() {
                 keyboardHeightProvider.start();
             }
         });
-
-
     }
-
 
     @Override
     public void onClick(View v) {
@@ -213,9 +205,7 @@ public class EditProfileA extends AppCompatActivity implements View.OnClickListe
             case R.id.upload_pic_btn:
                 if (takePermissionUtils.isStorageCameraPermissionGranted()) {
                     selectImage();
-                }
-                else
-                {
+                } else {
                     takePermissionUtils.
                             showStorageCameraPermissionDialog(getString(R.string.we_need_storage_and_camera_permission_for_upload_profile_pic));
                 }
@@ -226,7 +216,6 @@ public class EditProfileA extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
     private ActivityResultLauncher<String[]> mPermissionResult = registerForActivityResult(
             new ActivityResultContracts.RequestMultiplePermissions(), new ActivityResultCallback<Map<String, Boolean>>() {
                 @RequiresApi(api = Build.VERSION_CODES.M)
@@ -235,16 +224,13 @@ public class EditProfileA extends AppCompatActivity implements View.OnClickListe
 
                     boolean allPermissionClear=true;
                     List<String> blockPermissionCheck=new ArrayList<>();
-                    for (String key : result.keySet())
-                    {
-                        if (!(result.get(key)))
-                        {
-                            allPermissionClear=false;
+                    for (String key : result.keySet()) {
+                        if (!(result.get(key))) {
+                            allPermissionClear = false;
                             blockPermissionCheck.add(Functions.getPermissionStatus(EditProfileA.this,key));
                         }
                     }
-                    if (blockPermissionCheck.contains("blocked"))
-                    {
+                    if (blockPermissionCheck.contains("blocked")) {
                         Functions.showPermissionSetting(EditProfileA.this,getString(R.string.we_need_storage_and_camera_permission_for_upload_profile_pic));
                     }
                     else
@@ -256,17 +242,10 @@ public class EditProfileA extends AppCompatActivity implements View.OnClickListe
                 }
             });
 
-
-
-
-
-
-    // this method will show the dialog of selete the either take a picture form camera or pick the image from gallary
+    // this method will show the dialog of select the either take a picture form camera or pick the image from gallary
     private void selectImage() {
 
-        final CharSequence[] options = {getString(R.string.take_photo),
-                getString(R.string.choose_from_gallery), getString(R.string.cancel_)};
-
+        final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel_)};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
 
@@ -283,20 +262,13 @@ public class EditProfileA extends AppCompatActivity implements View.OnClickListe
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     resultCallbackForGallery.launch(intent);
                 } else if (options[item].equals(getString(R.string.cancel_))) {
-
                     dialog.dismiss();
-
                 }
-
             }
-
-
         });
 
         builder.show();
-
     }
-
 
     ActivityResultLauncher<Intent> resultCallbackForCrop = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
@@ -309,7 +281,6 @@ public class EditProfileA extends AppCompatActivity implements View.OnClickListe
                     }
                 }
             });
-
 
     ActivityResultLauncher<Intent> resultCallbackForGallery = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
@@ -376,9 +347,7 @@ public class EditProfileA extends AppCompatActivity implements View.OnClickListe
     String imageFilePath;
 
     private File createImageFile() throws Exception {
-        String timeStamp =
-                new SimpleDateFormat("yyyyMMdd_HHmmss",
-                        Locale.ENGLISH).format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ENGLISH).format(new Date());
         String imageFileName = "IMG_" + timeStamp + "_";
         File storageDir =
                 getExternalFilesDir(Environment.DIRECTORY_PICTURES);
@@ -394,7 +363,6 @@ public class EditProfileA extends AppCompatActivity implements View.OnClickListe
 
     // this will check the validations like none of the field can be the empty
     public boolean checkValidation() {
-
         String uname = usernameEdit.getText().toString();
         String firstname = firstnameEdit.getText().toString();
         String lastname = lastnameEdit.getText().toString();
@@ -403,17 +371,16 @@ public class EditProfileA extends AppCompatActivity implements View.OnClickListe
             usernameEdit.setError(getString(R.string.please_correct_user_name));
             usernameEdit.setFocusable(true);
             return false;
-        } else if (uname.length() < 4 || uname.length() > 14) {
+        } else if (uname.length() < 4 || uname.length() > 20) {
             usernameEdit.setError(getString(R.string.username_length_between_valid));
            usernameEdit.setFocusable(true);
             return false;
         } else
-        if (!(UserNameTwoCaseValidate(uname)))
-        {
+        if (!(UserNameTwoCaseValidate(uname))) {
             usernameEdit.setError(getString(R.string.username_must_contain_alphabet));
             usernameEdit.setFocusable(true);
             return false;
-        }else if (TextUtils.isEmpty(firstname)) {
+        } else if (TextUtils.isEmpty(firstname)) {
             firstnameEdit.setError(getString(R.string.please_enter_first_name));
             firstnameEdit.setFocusable(true);
             return false;
@@ -430,20 +397,17 @@ public class EditProfileA extends AppCompatActivity implements View.OnClickListe
     }
 
     private boolean UserNameTwoCaseValidate(String name) {
-
-        Pattern let_p = Pattern.compile("[a-z]", Pattern.CASE_INSENSITIVE);
+        Pattern let_p = Pattern.compile("[a-zA-Z0-9_]", Pattern.CASE_INSENSITIVE);
         Matcher let_m = let_p.matcher(name);
         boolean let_str = let_m.find();
 
-        if (let_str)
-        {
+        if (let_str) {
             return true;
         }
         return false;
     }
 
-
-    String imageBas64Small,imageBas64Big;
+    String imageBas64Small, imageBas64Big;
 
     private void beginCrop(Uri source) {
         Intent intent=CropImage.activity(source).setCropShape(CropImageView.CropShape.OVAL)
@@ -451,7 +415,7 @@ public class EditProfileA extends AppCompatActivity implements View.OnClickListe
         resultCallbackForCrop.launch(intent);
     }
 
-    // get the image uri after the image crope
+    // get the image uri after the image crop
     private void handleCrop(Uri userimageuri) {
 
         InputStream imageStream = null;
@@ -487,7 +451,6 @@ public class EditProfileA extends AppCompatActivity implements View.OnClickListe
             }
         }
 
-
         Bitmap rotatedBitmap = Bitmap.createBitmap(imagebitmap, 0, 0, imagebitmap.getWidth(), imagebitmap.getHeight(), matrix, true);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
@@ -497,7 +460,6 @@ public class EditProfileA extends AppCompatActivity implements View.OnClickListe
 
         callApiForImage();
     }
-
 
     public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
         int width = image.getWidth();
@@ -513,7 +475,6 @@ public class EditProfileA extends AppCompatActivity implements View.OnClickListe
         }
         return Bitmap.createScaledBitmap(image, width, height, true);
     }
-
 
     // call api for upload the image on server
     public void callApiForImage() {
@@ -544,30 +505,18 @@ public class EditProfileA extends AppCompatActivity implements View.OnClickListe
                     String code = response.optString("code");
                     JSONObject msg = response.optJSONObject("msg");
                     if (code.equals("200")) {
-
-
                         UserModel userDetailModel= DataParsing.getUserDataModel(msg.optJSONObject("User"));
-
                         Functions.getSharedPreference(context).edit().putString(Variables.U_PIC, userDetailModel.getProfilePic()).commit();
-
                         profileImage.setController(Functions.frescoImageLoad(Functions.getSharedPreference(context).getString(Variables.U_PIC, ""),profileImage,false));
-
-
-
 
                         Functions.showToast(context, getString(R.string.image_update_successfully));
                     }
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
             }
         });
-
-
     }
-
 
     // this will update the latest info of user in database
     public void callApiForEditProfile() {
@@ -643,7 +592,6 @@ public class EditProfileA extends AppCompatActivity implements View.OnClickListe
         finish();
     }
 
-
     // this will get the user data and parse the data and show the data into views
     public void callApiForUserDetails() {
         Functions.showLoader(context, false, false);
@@ -656,21 +604,21 @@ public class EditProfileA extends AppCompatActivity implements View.OnClickListe
                     }
 
                     @Override
-                    public void onSuccess(String responce) {
+                    public void onSuccess(String response) {
                         Functions.cancelLoader();
-                        parseUserData(responce);
+                        parseUserData(response);
                     }
 
                     @Override
-                    public void onFail(String responce) {
+                    public void onFail(String response) {
 
                     }
                 });
     }
 
-    public void parseUserData(String responce) {
+    public void parseUserData(String response) {
         try {
-            JSONObject jsonObject = new JSONObject(responce);
+            JSONObject jsonObject = new JSONObject(response);
 
             String code = jsonObject.optString("code");
 
@@ -694,7 +642,6 @@ public class EditProfileA extends AppCompatActivity implements View.OnClickListe
                     femaleBtn.setChecked(true);
                 }
 
-
                 websiteEdit.setText(userDetailModel.getWebsite());
                 userBioEdit.setText(userDetailModel.getBio());
 
@@ -709,14 +656,12 @@ public class EditProfileA extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
     // show the txt char limit of username and userbio
     public void showTextLimit() {
         usernameCountTxt.setText(usernameEdit.getText().length() + "/" + Constants.USERNAME_CHAR_LIMIT);
         bioCountTxt.setText(userBioEdit.getText().length() + "/" + Constants.BIO_CHAR_LIMIT);
 
     }
-
 
     @Override
     protected void onDestroy() {

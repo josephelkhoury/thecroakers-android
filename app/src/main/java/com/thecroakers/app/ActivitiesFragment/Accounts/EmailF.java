@@ -310,7 +310,7 @@ public class EmailF extends Fragment implements View.OnClickListener {
             if (code.equals("200")) {
 
                 JSONObject jsonObj = jsonObject.getJSONObject("msg");
-                 UserModel userDetailModel = DataParsing.getUserDataModel(jsonObj.optJSONObject("User"));
+                UserModel userDetailModel = DataParsing.getUserDataModel(jsonObj.optJSONObject("User"));
                 Functions.storeUserLoginDataIntoDb(view.getContext(),userDetailModel);
 
                 Functions.setUpMultipleAccount(view.getContext());
@@ -320,19 +320,15 @@ public class EmailF extends Fragment implements View.OnClickListener {
                 Variables.reloadMyLikesInner = true;
                 Variables.reloadMyNotification = true;
 
-                if (Paper.book(Variables.MultiAccountKey).getAllKeys().size()>1)
-                {
-                    Intent intent=new Intent(view.getContext(), SplashA.class);
+                if (Paper.book(Variables.MultiAccountKey).getAllKeys().size() > 1) {
+                    Intent intent = new Intent(view.getContext(), SplashA.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    view.getContext().startActivity(intent);
+                } else {
+                    Intent intent = new Intent(view.getContext(), MainMenuActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     view.getContext().startActivity(intent);
                 }
-                else
-                {
-                    Intent intent=new Intent(view.getContext(), MainMenuActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    view.getContext().startActivity(intent);
-                }
-
             } else {
                 Toast.makeText(getActivity(), jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();
             }

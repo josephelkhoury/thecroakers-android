@@ -58,6 +58,8 @@ public class ApiLinks {
 
     public static final String likeComment = API_BASE_URL + "likeComment";
 
+    public static final String deleteComment = API_BASE_URL + "deleteComment";
+
     public static final String likeCommentReply = API_BASE_URL + "likeCommentReply";
 
     public static final String editProfile = API_BASE_URL + "editProfile";

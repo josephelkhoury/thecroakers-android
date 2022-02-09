@@ -618,7 +618,7 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                     public void onLongPress(MotionEvent e) {
                         super.onLongPress(e);
 
-                        if(isVisibleToUser) {
+                        if (isVisibleToUser) {
                             showVideoOption(item);
                         }
                     }
