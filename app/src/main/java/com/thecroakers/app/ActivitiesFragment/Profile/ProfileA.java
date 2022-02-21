@@ -849,9 +849,9 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
     private void shareProfile() {
         boolean fromSetting = false;
         if (userId.equalsIgnoreCase(Functions.getSharedPreference(ProfileA.this).getString(Variables.U_ID,""))) {
-            fromSetting=true;
+            fromSetting = true;
         } else {
-            fromSetting=false;
+            fromSetting = false;
         }
 
         final ShareUserProfileF fragment = new ShareUserProfileF(userId,userName,fullName,userPic,buttonStatus,isDirectMessage,fromSetting, new FragmentCallBack() {
@@ -875,14 +875,14 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
                     }
 
                     @Override
-                    public void onSuccess(String responce) {
+                    public void onSuccess(String response) {
                         suggestionList.remove(position);
                         adapterSuggestion.notifyDataSetChanged();
                         callApiForGetAllVideos();
                     }
 
                     @Override
-                    public void onFail(String responce) {
+                    public void onFail(String response) {
                     }
                 });
     }
@@ -929,7 +929,6 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
         });
         f.show(getSupportFragmentManager(), "");
     }
-
 
     // open the following screen
     private void openFollowing() {

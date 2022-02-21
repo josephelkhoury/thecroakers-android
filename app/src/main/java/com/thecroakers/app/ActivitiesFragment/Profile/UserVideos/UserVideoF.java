@@ -74,7 +74,7 @@ public class UserVideoF extends Fragment {
     public UserVideoF(boolean is_my_profile, String userId, String userName) {
         this.is_my_profile = is_my_profile;
         this.userId = userId;
-        this.userName=userName;
+        this.userName = userName;
     }
 
     private class NewVideoBroadCast extends BroadcastReceiver {

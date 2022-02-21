@@ -44,6 +44,7 @@
         <entry key="app/src/main/res/layout/fragment_video_action.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/item_comment_layout.xml" value="0.335" />
         <entry key="app/src/main/res/layout/item_comment_reply_layout.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/item_discover_layout.xml" value="0.3567708333333333" />
         <entry key="app/src/main/res/layout/item_hashtag_favourite_list.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_home_layout.xml" value="0.375" />
         <entry key="app/src/main/res/layout/item_myvideo_layout.xml" value="0.19610507246376813" />

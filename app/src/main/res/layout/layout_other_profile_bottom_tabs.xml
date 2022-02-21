@@ -46,10 +46,10 @@
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/pager"
-            android:layout_centerHorizontal="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/tabBottomLine" />
+            android:layout_below="@+id/tabBottomLine"
+            android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
 

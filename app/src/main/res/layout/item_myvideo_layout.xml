@@ -5,16 +5,13 @@
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-
     <com.facebook.drawee.view.SimpleDraweeView
-        android:layout_centerInParent="true"
+        android:id="@+id/thumb_image"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_119sdp"
-        android:id="@+id/thumb_image"
-        fresco:placeholderImage="@drawable/image_placeholder"
-        android:scaleType="centerCrop"/>
-
+        android:layout_centerInParent="true"
+        android:scaleType="centerCrop"
+        fresco:placeholderImage="@drawable/image_placeholder" />
 
     <LinearLayout
         android:layout_centerHorizontal="true"
