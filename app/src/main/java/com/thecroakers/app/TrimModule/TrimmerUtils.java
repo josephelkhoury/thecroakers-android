@@ -193,7 +193,7 @@ public class TrimmerUtils {
         return formattedTime;
     }
 
-    public static String getLimitedTimeFormatted(long secs){
+    public static String getLimitedTimeFormatted(long secs) {
             long hours = secs / 3600;
             long secondsLeft = secs - hours * 3600;
             long minutes = secondsLeft / 60;
@@ -214,7 +214,7 @@ public class TrimmerUtils {
         return value == null ? "" : value.trim();
     }
 
-    public static boolean hasSpecialChar(String value){
+    public static boolean hasSpecialChar(String value) {
         value=clearNull(value);
         Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(value);

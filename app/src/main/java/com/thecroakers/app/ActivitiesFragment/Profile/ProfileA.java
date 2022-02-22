@@ -150,7 +150,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
                             }
                         }
                     }).start();
-                    isSuggestion=false;
+                    isSuggestion = false;
                 } else {
                     suggestionBtn.animate().rotation(0).setDuration(300).setListener(new AnimatorListenerAdapter() {
                         @Override
@@ -159,7 +159,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
                             tabSuggestion.setVisibility(View.GONE);
                         }
                     }).start();
-                    isSuggestion=true;
+                    isSuggestion = true;
                 }
             }
             break;
@@ -247,7 +247,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
 
     // open the favourite videos fragment
     private void openFavouriteVideos() {
-        Intent intent=new Intent(ProfileA.this, FavouriteMainA.class);
+        Intent intent = new Intent(ProfileA.this, FavouriteMainA.class);
         startActivity(intent);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
@@ -316,7 +316,7 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
             @Override
             public void onResponse(Bundle bundle) {
                 if (bundle.getBoolean("isShow",false)) {
-                    notificationType=bundle.getString("type");
+                    notificationType = bundle.getString("type");
                     setUpNotificationIcon(notificationType);
                 } else {
                     callApiForGetAllVideos();
@@ -564,7 +564,6 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
     }
 
     private void setupTabIcons() {
-
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
         tabLayout.setupWithViewPager(pager);
@@ -616,7 +615,6 @@ public class ProfileA extends AppCompatActivity implements View.OnClickListener 
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
     }

@@ -71,7 +71,7 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
     ShimmerFrameLayout shimmerFrameLayout;
     CoordinatorLayout dataContainer;
     int pageCount = 0;
-    boolean ispostFinish;
+    boolean isPostFinish;
     ProgressBar loadMoreProgress;
     LinearLayoutManager linearLayoutManager;
     Button countryBtn;
@@ -82,6 +82,9 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
     int section = 0;
     String country_id = "0";
     String country_emoji = "\uD83C\uDF10";
+
+    public DiscoverF() {
+    }
 
     public DiscoverF(int section) {
         this.section = section;
@@ -151,7 +154,7 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
                 if (userScrolled && (scrollOutitems == datalist.size() - 1)) {
                     userScrolled = false;
 
-                    if (loadMoreProgress.getVisibility() != View.VISIBLE && !ispostFinish) {
+                    if (loadMoreProgress.getVisibility() != View.VISIBLE && !isPostFinish) {
                         loadMoreProgress.setVisibility(View.VISIBLE);
                         pageCount = pageCount + 1;
                         callApiForAllVideos();
@@ -309,7 +312,7 @@ public class DiscoverF extends RootFragment implements View.OnClickListener {
         VolleyRequest.JsonPostRequest(getActivity(), ApiLinks.showDiscoverySections, parameters,Functions.getHeaders(getActivity()), new Callback() {
             @Override
             public void onResponce(String resp) {
-                Functions.checkStatus(getActivity(),resp);
+                Functions.checkStatus(getActivity(), resp);
                 isDiscoverAPiCall = false;
                 shimmerFrameLayout.stopShimmer();
                 shimmerFrameLayout.setVisibility(View.GONE);

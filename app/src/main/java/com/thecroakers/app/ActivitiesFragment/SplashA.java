@@ -48,7 +48,7 @@ public class SplashA extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        Functions.setLocale(Functions.getSharedPreference(SplashA.this).getString(Variables.APP_LANGUAGE_CODE,Variables.DEFAULT_LANGUAGE_CODE)
+        Functions.setLocale(Functions.getSharedPreference(SplashA.this).getString(Variables.APP_LANGUAGE_CODE, Variables.DEFAULT_LANGUAGE_CODE)
                 , this, SplashA.class,false);
         setContentView(R.layout.activity_splash);
 
@@ -101,7 +101,7 @@ public class SplashA extends AppCompatActivity {
     }
 
     private void apiCallHit() {
-        callApiForGetad();
+        //callApiForGetAd();
         if (Functions.getSharedPreference(this).getString(Variables.DEVICE_ID, "0").equals("0")) {
             callApiRegisterDevice();
         }
@@ -109,7 +109,7 @@ public class SplashA extends AppCompatActivity {
             jump();
     }
 
-    private void callApiForGetad() {
+    private void callApiForGetAd() {
         JSONObject parameters = new JSONObject();
         VolleyRequest.JsonPostRequest(SplashA.this, ApiLinks.showVideoDetailAd, parameters,Functions.getHeaders(this), new Callback() {
             @Override
@@ -224,7 +224,7 @@ public class SplashA extends AppCompatActivity {
         Functions.RegisterConnectivity(this, new InternetCheckCallback() {
             @Override
             public void GetResponse(String requestType, String response) {
-                if(response.equalsIgnoreCase("disconnected")) {
+                if (response.equalsIgnoreCase("disconnected")) {
                     connectionCallback.launch(new Intent(getApplicationContext(), NoInternetA.class));
                     overridePendingTransition(R.anim.in_from_bottom,R.anim.out_to_top);
                 }

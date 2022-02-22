@@ -73,8 +73,7 @@ public class TheCroakers extends Application {
         }
 
         initCrashActivity();
-        initConfig();
-
+        //initConfig();
     }
 
     // below code is for cache the videos in local
@@ -131,7 +130,6 @@ public class TheCroakers extends Application {
     private StatsManager mStatsManager = new StatsManager();
 
     private void initConfig() {
-
         try {
             mRtcEngine = RtcEngine.create(getApplicationContext(), getString(R.string.agora_app_id), mHandler);
             mRtcEngine.setChannelProfile(io.agora.rtc.Constants.CHANNEL_PROFILE_LIVE_BROADCASTING);

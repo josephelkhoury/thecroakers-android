@@ -113,16 +113,11 @@ public class ActVideoTrimmer  extends AppCompatActivity implements View.OnClickL
         String videoOption = bundle.getString(TrimVideo.TRIM_VIDEO_OPTION);
         trimVideoOptions = gson.fromJson(videoOption, TrimVideoOptions.class);
         progressView = new CustomProgressView(this);
-        btnNext=findViewById(R.id.btnNext);
+        btnNext = findViewById(R.id.btnNext);
         btnNext.setOnClickListener(this);
-        btnBack=findViewById(R.id.btnBack);
+        btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(this);
     }
-
-
-
-
-
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
@@ -395,7 +390,6 @@ public class ActVideoTrimmer  extends AppCompatActivity implements View.OnClickL
         }
     }
 
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -424,12 +418,10 @@ public class ActVideoTrimmer  extends AppCompatActivity implements View.OnClickL
         return super.onPrepareOptionsMenu(menu);
     }
 
-
-
     private void trimVideo() {
         if (isValidVideo) {
             //not exceed given maxDuration if has given
-            outputPath = Functions.getAppFolder(ActVideoTrimmer.this)+Variables.gallery_trimed_video;
+            outputPath = Functions.getAppFolder(ActVideoTrimmer.this) + Variables.gallery_trimed_video;
             Log.d(Constants.tag,"outputPath::" + outputPath );
             Log.d(Constants.tag,"sourcePath::" + uri);
             videoPlayer.setPlayWhenReady(false);
@@ -534,8 +526,6 @@ public class ActVideoTrimmer  extends AppCompatActivity implements View.OnClickL
                     }
                 }
             }).start();
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -594,7 +584,6 @@ public class ActVideoTrimmer  extends AppCompatActivity implements View.OnClickL
             e.printStackTrace();
         }
     }
-
 
     void startProgress() {
         updateSeekbar.run();

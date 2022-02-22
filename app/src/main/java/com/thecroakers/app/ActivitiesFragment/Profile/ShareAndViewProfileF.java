@@ -51,13 +51,12 @@ public class ShareAndViewProfileF extends BottomSheetDialogFragment implements V
     public ShareAndViewProfileF() {
     }
 
-    public ShareAndViewProfileF(String id,boolean fromSetting,String picUrl, FragmentCallBack callback) {
+    public ShareAndViewProfileF(String id, boolean fromSetting, String picUrl, FragmentCallBack callback) {
         userId = id;
         this.fromSetting=fromSetting;
         this.callback = callback;
-        this.picUrl=picUrl;
+        this.picUrl = picUrl;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,7 +71,10 @@ public class ShareAndViewProfileF extends BottomSheetDialogFragment implements V
         bottomBtn = view.findViewById(R.id.bottom_btn);
         bottomBtn.setOnClickListener(this);
 
-        userImage.setController(Functions.frescoImageLoad(picUrl,userImage,false));
+        try {
+            userImage.setController(Functions.frescoImageLoad(picUrl, userImage,false));
+        } catch (Exception e) {
+        }
 
         if(Functions.getSharedPreference(context).getBoolean(Variables.IS_LOGIN,false)) {
             getSharedApp();

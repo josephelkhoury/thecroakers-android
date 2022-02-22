@@ -169,8 +169,8 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK ) {
                         Intent data = result.getData();
-                        if (TrimmerUtils.getDuration(VideoRecoderA.this,data.getData())<Constants.MIN_TRIM_TIME){
-                            Toast.makeText(VideoRecoderA.this,getString(R.string.video_must_be_larger_then_second),Toast.LENGTH_SHORT).show();
+                        if (TrimmerUtils.getDuration(VideoRecoderA.this,data.getData()) < Constants.MIN_TRIM_TIME){
+                            Toast.makeText(VideoRecoderA.this,getString(R.string.video_must_be_larger_then_second), Toast.LENGTH_SHORT).show();
                             return;
                         }
                         if (data.getData() != null) {
@@ -660,6 +660,7 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
                 .setTrimType(TrimType.MIN_MAX_DURATION)
                 .setMinToMax(Constants.MIN_TRIM_TIME, Constants.MAX_TRIM_TIME)
                 .setMinDuration(Constants.MAX_TRIM_TIME)
+                .setAccurateCut(true)
                 .setTitle("")//seconds
                 .start(this,videoTrimResultLauncher);
     }

@@ -56,7 +56,6 @@ public class TrimVideo {
             return this;
         }
 
-
         public ActivityBuilder showFileLocationAlert() {
             options.showFileLocationAlert = true;
             return this;
@@ -125,13 +124,11 @@ public class TrimVideo {
         private Intent getIntent(Activity activity) {
             Intent intent = new Intent(activity,  ActVideoTrimmer.class);
             Gson gson = new Gson();
-            Bundle bundle=new Bundle();
+            Bundle bundle = new Bundle();
             bundle.putString(TRIM_VIDEO_URI, videoUri);
             bundle.putString(TRIM_VIDEO_OPTION, gson.toJson(options));
             intent.putExtras(bundle);
             return intent;
         }
     }
-
-
 }

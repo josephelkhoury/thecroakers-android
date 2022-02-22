@@ -166,14 +166,10 @@ public class GallerySelectedVideoA extends AppCompatActivity implements View.OnC
                                 soundFilePath = data.getStringExtra("outputFile");
                                 preparedAudio();
                             }
-
                         }
-
                     }
                 }
             });
-
-
 
     // this will play the sound with the video when we select the audio
     MediaPlayer audio;
@@ -189,17 +185,14 @@ public class GallerySelectedVideoA extends AppCompatActivity implements View.OnC
                 audio.prepare();
                 audio.setLooping(true);
 
-
                 videoPlayer.seekTo(0);
                 videoPlayer.setPlayWhenReady(true);
                 audio.start();
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
-
 
     public void goToPreviewActivity() {
         try {

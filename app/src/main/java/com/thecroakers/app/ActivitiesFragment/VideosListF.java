@@ -217,7 +217,10 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
 
         skipBtn.setOnClickListener(this::onClick);
 
-        thumb_image.setController(Functions.frescoImageLoad(item.thum,thumb_image,false));
+        try {
+            thumb_image.setController(Functions.frescoImageLoad(item.thum, thumb_image,false));
+        } catch (Exception e) {
+        }
 
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override

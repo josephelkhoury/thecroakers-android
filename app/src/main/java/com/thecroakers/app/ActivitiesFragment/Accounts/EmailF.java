@@ -296,7 +296,7 @@ public class EmailF extends Fragment implements View.OnClickListener {
         VolleyRequest.JsonPostRequest(getActivity(), ApiLinks.login, parameters,Functions.getHeaders(getActivity()), new Callback() {
             @Override
             public void onResponce(String resp) {
-                Functions.checkStatus(getActivity(),resp);
+                Functions.checkStatus(getActivity(), resp);
                 Functions.cancelLoader();
                 parseLoginData(resp);
             }

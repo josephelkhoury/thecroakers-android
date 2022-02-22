@@ -1250,7 +1250,6 @@ public class Functions {
         }
     }
 
-
     public static void setUpSwitchOtherAccount(Context context,String userId) {
         for(String key:Paper.book(Variables.MultiAccountKey).getAllKeys()) {
             MultipleAccountModel account = Paper.book(Variables.MultiAccountKey).read(key);
@@ -1392,7 +1391,6 @@ public class Functions {
         return controller;
     }
 
-
     public static String getFollowButtonStatus(String button,Context context) {
         String userStatus=button;
         if (userStatus.equalsIgnoreCase("following")) {
@@ -1435,14 +1433,13 @@ public class Functions {
         if (isRefresh) {
             updateActivity(context,className);
         }
-
     }
+
     public static void updateActivity(Activity context, Class<?> className) {
         Intent intent = new Intent(context,className);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
-
 
     // manage for store user data
     public static void storeUserLoginDataIntoDb(Context context, UserModel userDetailModel) {
@@ -1511,14 +1508,12 @@ public class Functions {
         try {
             if (broadcastReceiver != null)
                 mContext.unregisterReceiver(broadcastReceiver);
-
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
     }
 
     public static void RegisterConnectivity(Context context, final InternetCheckCallback callback) {
-
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -1535,7 +1530,6 @@ public class Functions {
 
     public static Boolean isConnectedToInternet(Context context) {
         try {
-
             ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
             if (networkInfo != null && networkInfo.isConnected()) {
@@ -1601,12 +1595,9 @@ public class Functions {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (file.exists())
-        {
+        if (file.exists()) {
             return file;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
@@ -1614,35 +1605,33 @@ public class Functions {
     // logout to app automatically when the login token expire
     public static void checkStatus(Activity activity, String responseStr) {
         try {
-        JSONObject response = new JSONObject(responseStr);
-        if (response.optString("code", "").equalsIgnoreCase("501")) {
+            JSONObject response = new JSONObject(responseStr);
+            if (response.optString("code", "").equalsIgnoreCase("501")) {
+                GoogleSignInOptions gso = new GoogleSignInOptions.
+                        Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).
+                        build();
+                GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(activity, gso);
+                googleSignInClient.signOut();
 
-            GoogleSignInOptions gso = new GoogleSignInOptions.
-                    Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).
-                    build();
-            GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(activity, gso);
-            googleSignInClient.signOut();
+                LoginManager.getInstance().logOut();
 
-            LoginManager.getInstance().logOut();
+                removeMultipleAccount(activity);
 
-            removeMultipleAccount(activity);
+                SharedPreferences.Editor editor = getSharedPreference(activity).edit();
+                Paper.book(Variables.PrivacySetting).destroy();
+                editor.clear();
+                editor.commit();
+                activity.finish();
 
-            SharedPreferences.Editor editor = getSharedPreference(activity).edit();
-            Paper.book(Variables.PrivacySetting).destroy();
-            editor.clear();
-            editor.commit();
-            activity.finish();
-
-            setUpExistingAccountLogin(activity);
-            activity.startActivity(new Intent(activity, MainMenuActivity.class));
-
-        }
+                setUpExistingAccountLogin(activity);
+                activity.startActivity(new Intent(activity, MainMenuActivity.class));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    public static HashMap<String, String> getHeaders(Context context){
+    public static HashMap<String, String> getHeaders(Context context) {
         HashMap<String, String> headers = new HashMap<String, String>();
         headers.put("Api-Key", Constants.API_KEY);
         headers.put("User-Id", getSharedPreference(context).getString(Variables.U_ID, null));

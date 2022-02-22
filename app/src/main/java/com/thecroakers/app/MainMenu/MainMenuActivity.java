@@ -362,5 +362,4 @@ public class MainMenuActivity extends AppCompatActivity {
         super.onPause();
         Functions.unRegisterConnectivity(getApplicationContext());
     }
-
 }
