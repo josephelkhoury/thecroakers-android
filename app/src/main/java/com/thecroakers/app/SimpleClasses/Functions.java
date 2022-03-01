@@ -973,7 +973,7 @@ public class Functions {
             e.printStackTrace();
         }
 
-        VolleyRequest.JsonPostRequest(activity, ApiLinks.deleteVideo, parameters,Functions.getHeaders(activity), new Callback() {
+        VolleyRequest.JsonPostRequest(activity, ApiLinks.deleteVideo, parameters, Functions.getHeaders(activity), new Callback() {
             @Override
             public void onResponce(String resp) {
                 Functions.checkStatus(activity,resp);

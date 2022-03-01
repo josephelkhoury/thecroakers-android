@@ -440,7 +440,7 @@ public class ActVideoTrimmer  extends AppCompatActivity implements View.OnClickL
                 complexCommand = new String[]{"-ss", TrimmerUtils.formatCSeconds(lastMinValue),
                         "-i", String.valueOf(uri),
                         "-t",
-                        TrimmerUtils.formatCSeconds(lastMaxValue - lastMinValue),
+                        TrimmerUtils.formatCSeconds(lastMaxValue - lastMinValue + 1),
                         "-async", "1", "-strict", "-2", "-c", "copy", outputPath};
             }
             execFFmpegBinary(complexCommand, true);

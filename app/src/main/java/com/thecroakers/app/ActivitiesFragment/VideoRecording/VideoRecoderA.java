@@ -660,7 +660,6 @@ public class VideoRecoderA extends AppCompatActivity implements View.OnClickList
                 .setTrimType(TrimType.MIN_MAX_DURATION)
                 .setMinToMax(Constants.MIN_TRIM_TIME, Constants.MAX_TRIM_TIME)
                 .setMinDuration(Constants.MAX_TRIM_TIME)
-                .setAccurateCut(true)
                 .setTitle("")//seconds
                 .start(this,videoTrimResultLauncher);
     }

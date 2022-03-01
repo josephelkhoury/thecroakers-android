@@ -276,7 +276,6 @@ public class MainMenuActivity extends AppCompatActivity {
      }
 
     public void addFirebaseToken() {
-
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override

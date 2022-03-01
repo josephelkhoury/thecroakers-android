@@ -231,7 +231,7 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
     }
 
     public void setData() {
-        if (view == null && item != null)
+        if ((view == null && item != null) || item == null)
             return;
         else {
             username.setText(""+Functions.showUsername(""+item.username));
@@ -255,15 +255,15 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                     onPause();
                     if (friendsTag.contains("#")) {
                         Log.d(Constants.tag,"Hash "+friendsTag);
-                        if (friendsTag.charAt(0)=='#') {
-                            friendsTag=friendsTag.substring(1);
+                        if (friendsTag.charAt(0) == '#') {
+                            friendsTag = friendsTag.substring(1);
                             openHashtag(friendsTag);
                         }
                     }
                     else if (friendsTag.contains("@")) {
                         Log.d(Constants.tag,"Friends "+friendsTag);
-                        if (friendsTag.charAt(0)=='@') {
-                            friendsTag=friendsTag.substring(1);
+                        if (friendsTag.charAt(0) == '@') {
+                            friendsTag = friendsTag.substring(1);
                             openUserProfile(friendsTag);
                         }
                     }
@@ -517,56 +517,57 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                 }
             });
 
-    // initlize the player for play video
+    // initialize the player for play video
     private void initializePlayer() {
-        if (exoplayer==null && item!=null) {
-            ExecutorService executorService= Executors.newSingleThreadExecutor();
+        if (exoplayer == null && item != null) {
+            /*ExecutorService executorService = Executors.newSingleThreadExecutor();
             executorService.execute(new Runnable() {
                 @Override
                 public void run() {
-                    LoadControl loadControl = new DefaultLoadControl.Builder()
-                            .setAllocator(new DefaultAllocator(true, 16))
-                            .setBufferDurationsMs(1 * 1024, 1 * 1024, 500, 1024)
-                            .setTargetBufferBytes(-1)
-                            .setPrioritizeTimeOverSizeThresholds(true)
+                }
+            });*/
+
+            LoadControl loadControl = new DefaultLoadControl.Builder()
+                    .setAllocator(new DefaultAllocator(true, 16))
+                    .setBufferDurationsMs(1 * 1024, 1 * 1024, 500, 1024)
+                    .setTargetBufferBytes(-1)
+                    .setPrioritizeTimeOverSizeThresholds(true)
+                    .build();
+
+            DefaultTrackSelector trackSelector = new DefaultTrackSelector(context);
+            try {
+                exoplayer = new SimpleExoPlayer.Builder(context).
+                        setTrackSelector(trackSelector)
+                        .setLoadControl(loadControl)
+                        .build();
+
+                DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(view.getContext(), context.getString(R.string.app_name));
+                MediaSource videoSource = new ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(MediaItem.fromUri(item.video_url));
+                exoplayer.setThrowsWhenUsingWrongThread(false);
+                exoplayer.addMediaSource(videoSource);
+                exoplayer.prepare();
+                exoplayer.addListener(VideosListF.this);
+                exoplayer.setRepeatMode(Player.REPEAT_MODE_ALL);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                            .setUsage(C.USAGE_MEDIA)
+                            .setContentType(C.CONTENT_TYPE_MOVIE)
                             .build();
+                    exoplayer.setAudioAttributes(audioAttributes, true);
+                }
+            } catch (Exception e) {
+                Log.d(Constants.tag,"Exception audio focus : "+e);
+            }
 
-                    DefaultTrackSelector trackSelector = new DefaultTrackSelector(context);
-                    try {
-                    exoplayer = new SimpleExoPlayer.Builder(context).
-                            setTrackSelector(trackSelector)
-                            .setLoadControl(loadControl)
-                            .build();
-
-                        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(view.getContext(), context.getString(R.string.app_name));
-                        MediaSource videoSource = new ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(MediaItem.fromUri(item.video_url));
-                        exoplayer.setThrowsWhenUsingWrongThread(false);
-                        exoplayer.addMediaSource(videoSource);
-                        exoplayer.prepare();
-                        exoplayer.addListener(VideosListF.this);
-                        exoplayer.setRepeatMode(Player.REPEAT_MODE_ALL);
-
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                                    .setUsage(C.USAGE_MEDIA)
-                                    .setContentType(C.CONTENT_TYPE_MOVIE)
-                                    .build();
-                            exoplayer.setAudioAttributes(audioAttributes, true);
-                        }
-                    } catch (Exception e) {
-                        Log.d(Constants.tag,"Exception audio focus : "+e);
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    playerView = view.findViewById(R.id.playerview);
+                    playerView.findViewById(R.id.exo_play).setVisibility(View.GONE);
+                    if (exoplayer != null) {
+                        playerView.setPlayer(exoplayer);
                     }
-
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            playerView = view.findViewById(R.id.playerview);
-                            playerView.findViewById(R.id.exo_play).setVisibility(View.GONE);
-                            if (exoplayer!=null) {
-                                playerView.setPlayer(exoplayer);
-                            }
-                        }
-                    });
                 }
             });
         }
@@ -574,7 +575,7 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
 
     public void setPlayer(boolean isVisibleToUser) {
         if (exoplayer != null) {
-            if (exoplayer!=null) {
+            if (exoplayer != null) {
                 if (isVisibleToUser) {
                     exoplayer.setPlayWhenReady(true);
                 } else {
@@ -597,7 +598,6 @@ public class VideosListF extends RootFragment implements Player.Listener, View.O
                                 openProfile(item, true);
                             }
                         }
-
                         return true;
                     }
 

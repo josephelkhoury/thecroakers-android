@@ -231,7 +231,6 @@ public class PhoneOtpF extends Fragment implements View.OnClickListener {
                 }
 
             } else if (code.equals("201") && !jsonObject.optString("msg").contains("have been blocked")) {
-
                 if (userRegisterModel.dateOfBirth == null) {
                     Functions.showAlert(getActivity(), "", view.getContext().getString(R.string.incorrect_login_details), view.getContext().getString(R.string.signup),view.getContext().getString(R.string.cancel_) , new Callback() {
                         @Override

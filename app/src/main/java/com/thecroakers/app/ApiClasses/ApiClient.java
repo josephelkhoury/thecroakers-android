@@ -1,6 +1,7 @@
 package com.thecroakers.app.ApiClasses;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.thecroakers.app.BuildConfig;
 import com.thecroakers.app.Constants;
@@ -45,6 +46,7 @@ public class ApiClient {
                     .client(httpClient.build())
                     .build();
         }
+
         return retrofit;
     }
 }
